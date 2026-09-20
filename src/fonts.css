@@ -1,0 +1,47 @@
+@font-face {
+  font-family: Modam;
+  src: url('./fonts/Modam-ExtraLight.woff') format('woff');
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Modam;
+  src: url('./fonts/Modam-Regular.woff') format('woff');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Modam;
+  src: url('./fonts/Modam-SemiBold.woff') format('woff');
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Modam;
+  src: url('./fonts/Modam-Bold.woff') format('woff');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Modam;
+  src: url('./fonts/Modam-ExtraBold.woff') format('woff');
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Modam;
+  src: url('./fonts/Modam-Black.woff') format('woff');
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+}

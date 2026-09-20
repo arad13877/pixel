@@ -1,0 +1,48 @@
+.hero-contours {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 660px;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 24%, transparent 82%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 24%, transparent 82%);
+}
+
+.hero-contours svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  stroke: #6f8dbf;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.hero-contours .hero-contours-mobile { display: none; }
+
+.hero .art-orbit { border-color: #dce5f070; }
+.hero .orbit-two { opacity: .4; }
+
+.hero-path-node {
+  position: absolute;
+  z-index: 1;
+  top: 9%;
+  left: 3%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #adc0df;
+  box-shadow: 0 0 0 5px rgb(173 192 223 / 14%);
+  pointer-events: none;
+}
+
+@media (max-width: 760px) {
+  .hero-contours {
+    height: 270px;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 28%, transparent 78%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 28%, transparent 78%);
+  }
+  .hero-contours .hero-contours-desktop { display: none; }
+  .hero-contours .hero-contours-mobile { display: block; }
+  .hero-path-node { top: 6%; left: 5%; }
+}

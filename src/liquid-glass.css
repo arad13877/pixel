@@ -1,0 +1,171 @@
+/* Buttons 24:59 is the sole material reference. Geometry belongs to the
+   consuming component. See LiquidGlassMaterial.tsx for the optical stack. */
+.liquid-glass {
+  --liquid-glass-mask-center: .01;
+  --liquid-glass-fog-opacity: .5;
+  --liquid-glass-blur-start: 1px;
+  --liquid-glass-blur-mid: 4px;
+  --liquid-glass-blur-end: 10px;
+  --liquid-glass-edge-width: 1px;
+  --liquid-glass-texture-size: 100px;
+  --liquid-glass-edge-dark: rgb(0 0 0 / 30%);
+  --liquid-glass-edge-bottom: rgb(0 0 0 / 20%);
+  --liquid-glass-highlight-angle: 122deg;
+
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  background: transparent;
+  border: 1px solid transparent;
+  box-shadow: 0 21px 40px -5px rgb(0 0 0 / 20%);
+  /* The host must not become a backdrop root: every blur samples the page. */
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.liquid-glass > :not(.liquid-glass__optics) {
+  position: relative;
+  z-index: 1;
+}
+
+.liquid-glass__optics,
+.liquid-glass__optics > span,
+.liquid-glass__light::before,
+.liquid-glass__light::after {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.liquid-glass__optics {
+  inset: -1px;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* Rectangle 3: a nearly transparent lens, not a gray background fill. */
+.liquid-glass__base {
+  background: rgb(0 0 0 / 1%);
+  -webkit-backdrop-filter: blur(var(--liquid-glass-blur-start));
+  backdrop-filter: blur(var(--liquid-glass-blur-start));
+}
+
+/* Rectangle 4: CSS approximation of its opposing progressive blurs.
+   Independent sibling layers avoid nesting a blur inside a backdrop root. */
+.liquid-glass__blur-top {
+  -webkit-backdrop-filter: blur(var(--liquid-glass-blur-end));
+  backdrop-filter: blur(var(--liquid-glass-blur-end));
+  -webkit-mask-image: linear-gradient(#000, transparent 50%);
+  mask-image: linear-gradient(#000, transparent 50%);
+}
+
+.liquid-glass__blur-mid {
+  -webkit-backdrop-filter: blur(var(--liquid-glass-blur-mid));
+  backdrop-filter: blur(var(--liquid-glass-blur-mid));
+  -webkit-mask-image: linear-gradient(transparent 25%, #000 70%);
+  mask-image: linear-gradient(transparent 25%, #000 70%);
+}
+
+.liquid-glass__blur-deep {
+  -webkit-backdrop-filter: blur(var(--liquid-glass-blur-end));
+  backdrop-filter: blur(var(--liquid-glass-blur-end));
+  -webkit-mask-image: linear-gradient(transparent 50%, #000);
+  mask-image: linear-gradient(transparent 50%, #000);
+}
+
+/* Rectangle 10 is masked by Rectangle 3. Its 50% gray is transmitted
+   through a 1% center (0.5% effective coverage), with a stronger rim.
+   The first mask restores that clear center to the two-mask edge ring. */
+.liquid-glass__fog {
+  padding: 3px;
+  background: #e1e1e1;
+  opacity: var(--liquid-glass-fog-opacity);
+  filter: blur(25px);
+  -webkit-mask:
+    linear-gradient(rgb(0 0 0 / var(--liquid-glass-mask-center)) 0 0),
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask:
+    linear-gradient(rgb(0 0 0 / var(--liquid-glass-mask-center)) 0 0),
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: source-over, xor;
+  mask-composite: add, exclude;
+}
+
+/* Rectangle 11 is flipped horizontally in Figma. Keep its dark contour
+   separate from additive highlights so the depth is not bleached out. */
+.liquid-glass__depth {
+  box-shadow:
+    inset -3px 0 3px 1px var(--liquid-glass-edge-dark),
+    inset 0 -1px 2px 1px var(--liquid-glass-edge-bottom);
+}
+
+/* Three directional, feathered strokes from Rectangles 7–9. Masking the
+   center is essential: a border-box gradient also paints behind padding. */
+.liquid-glass__light {
+  /* Contain additive glints; blending directly with the page can replace
+     the filtered backdrop with the sharp source in Chromium. */
+  isolation: isolate;
+}
+
+.liquid-glass__light::before {
+  content: "";
+  padding: var(--liquid-glass-edge-width);
+  background:
+    linear-gradient(var(--liquid-glass-highlight-angle), #fff, transparent 65%),
+    linear-gradient(calc(var(--liquid-glass-highlight-angle) + 180deg), #fff, transparent 65%),
+    linear-gradient(141deg, #fff, transparent 55%),
+    url('/liquid-glass-noise.svg');
+  background-size: auto, auto, auto, var(--liquid-glass-texture-size) var(--liquid-glass-texture-size);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  filter: blur(.5px);
+}
+
+.liquid-glass__light::after {
+  content: "";
+  background: rgb(255 255 255 / .05%);
+  box-shadow:
+    inset 6px 6px 3px -6px #fff,
+    inset 9px 9px 1.5px -10.5px #fff,
+    inset -6px 9px 7px -6px #fff,
+    inset 6px -6px 3px -6px #fff;
+  mix-blend-mode: screen;
+}
+
+@supports (mix-blend-mode: plus-lighter) {
+  .liquid-glass__light::after { mix-blend-mode: plus-lighter; }
+}
+
+/* Readable fallback for browsers without native backdrop sampling. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .liquid-glass__base { background: rgb(247 249 252 / 94%); }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .liquid-glass__base { background: #f7f9fc; }
+  .liquid-glass__blur-top,
+  .liquid-glass__blur-mid,
+  .liquid-glass__blur-deep { display: none; }
+}
+
+/* The existing button layout owns its size and typography. The shared
+   material supplies only its surface and remains transparent on hover. */
+.button.liquid-glass,
+.button.liquid-glass:not(:disabled):hover {
+  background: transparent;
+  box-shadow:
+    0 -3px 9px -7px rgb(24 38 60 / 7%),
+    0 6px 18px -10px rgb(24 38 60 / 14%),
+    0 2px 6px -5px rgb(24 38 60 / 8%);
+}
+
+.showcase-contact.liquid-glass,
+.agent-contact.liquid-glass,
+.faq-contact.liquid-glass {
+  min-height: 44px;
+}

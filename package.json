@@ -1,0 +1,39 @@
+{
+  "name": "pixel-homepage",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --configLoader runner",
+    "dev:crm": "vite --config vite.crm.config.ts --host 127.0.0.1 --configLoader runner",
+    "build": "tsc --noEmit && vite build --configLoader runner",
+    "build:crm": "tsc --noEmit && vite build --config vite.crm.config.ts --configLoader runner",
+    "preview": "vite preview --host 127.0.0.1 --configLoader runner",
+    "preview:crm": "vite preview --config vite.crm.config.ts --host 127.0.0.1 --configLoader runner",
+    "test": "node scripts/verify.mjs && node scripts/verify-web-design.mjs && node scripts/verify-portfolio.mjs && node scripts/verify-articles.mjs",
+    "test:crm": "node scripts/verify-crm.mjs",
+    "test:request": "node scripts/verify-request.mjs"
+  },
+  "dependencies": {
+    "@daypicker/persian": "10.0.1",
+    "@daypicker/react": "10.0.1",
+    "@supabase/supabase-js": "2.116.0",
+    "gsap": "^3.15.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "7.18.4"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@types/node": "^22.15.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@vitejs/plugin-react": "^4.5.0",
+    "agent-browser": "^0.27.0",
+    "lighthouse": "^12.8.2",
+    "supabase": "2.117.0",
+    "tsx": "^4.19.0",
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5"
+  }
+}
