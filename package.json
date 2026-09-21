@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "generate:articles": "node --experimental-strip-types scripts/generate-articles.ts",
+    "generate:articles:crm": "node --experimental-strip-types scripts/generate-articles.ts --crm",
     "dev": "npm run generate:articles && vite --host 127.0.0.1 --configLoader runner",
     "dev:crm": "npm run generate:articles && vite --config vite.crm.config.ts --host 127.0.0.1 --configLoader runner",
     "build": "npm run generate:articles && tsc --noEmit && vite build --configLoader runner",
-    "build:crm": "npm run generate:articles && tsc --noEmit && vite build --config vite.crm.config.ts --configLoader runner",
+    "build:crm": "npm run generate:articles:crm && tsc --noEmit && vite build --config vite.crm.config.ts --configLoader runner",
     "preview": "vite preview --host 127.0.0.1 --configLoader runner",
     "preview:crm": "vite preview --config vite.crm.config.ts --host 127.0.0.1 --configLoader runner",
     "test": "node scripts/verify.mjs && node scripts/verify-web-design.mjs && node scripts/verify-portfolio.mjs && node scripts/verify-articles.mjs",

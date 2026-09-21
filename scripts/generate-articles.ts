@@ -14,7 +14,8 @@ const root = resolve(import.meta.dirname, '..');
 const generatedRoot = resolve(root, '.generated/articles');
 const outputModule = resolve(root, 'src/articles.generated.ts');
 const mode = process.env.ARTICLE_DATA_MODE || 'fixture';
-if (process.env.VERCEL_ENV === 'production' && mode !== 'supabase') throw new Error('Production builds require ARTICLE_DATA_MODE=supabase');
+const isCrmBuild = process.argv.includes('--crm');
+if (process.env.VERCEL_ENV === 'production' && mode !== 'supabase' && !isCrmBuild) throw new Error('Production builds require ARTICLE_DATA_MODE=supabase');
 const fixtureSeo: Record<string, { title: string; description: string; og: string }> = {
   'why-business-needs-website': { title: 'چرا کسب‌وکار شما به سایت حرفه‌ای نیاز دارد؟ | پیکسل', description: 'سایت حرفه‌ای چگونه به اعتماد، دیده‌شدن و ارتباط بهتر با مشتری کمک می‌کند؟ راهنمای عملی برای کسب‌وکارهایی که هنوز سایت ندارند.', og: 'راهنمای عملی اعتماد، دیده‌شدن و تبدیل بازدیدکننده به ارتباط واقعی.' },
   'website-design-cost-guide': { title: 'هزینه طراحی سایت به چه چیزهایی بستگی دارد؟ | پیکسل', description: 'عوامل واقعی تعیین‌کننده هزینه طراحی سایت، روش مقایسه پیشنهادها و چک‌لیست تصمیم‌گیری پیش از شروع پروژه.', og: 'راهنمای شفاف عوامل هزینه و مقایسه پیشنهادهای طراحی سایت.' },
