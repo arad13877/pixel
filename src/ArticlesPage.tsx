@@ -1,8 +1,11 @@
 import { Contact } from './Contact';
 import { Icon } from './Icons';
-import { articles, getArticle, type ArticleRecord } from './articles';
+import { articles, getArticle, type ArticleRecord } from './articles.generated';
 
-function ArticleCover({ article, compact = false }: { article: ArticleRecord; compact?: boolean }) {
+export function ArticleCover({ article, compact = false }: { article: ArticleRecord; compact?: boolean }) {
+  if (article.coverData?.kind === 'image') return <figure className={`article-cover article-cover-image${compact ? ' is-compact' : ''}`}>
+    <img src={article.coverData.url} alt={article.coverData.alt} loading={compact ? 'lazy' : 'eager'}/>
+  </figure>;
   return <div className={`article-cover article-cover-${article.cover}${compact ? ' is-compact' : ''}`} aria-hidden="true">
     <span className="article-cover-grid"/>
     <span className="article-cover-ring orbit-a"/><span className="article-cover-ring orbit-b"/>
@@ -42,10 +45,14 @@ export function ArticlesIndexPage() {
 export function ArticleDetailPage({ slug }: { slug?: string }) {
   const article = getArticle(slug);
   const related = articles.filter(item => item.slug !== article.slug);
+  return <ArticleDetailContent article={article} related={related}/>;
+}
+
+export function ArticleDetailContent({ article, related = [] }: { article: ArticleRecord; related?: ArticleRecord[] }) {
   return <div className="article-detail-page">
     <header className="container article-detail-hero">
       <nav className="article-breadcrumb" aria-label="مسیر صفحه"><a href="/">پیکسل</a><Icon name="chevron" size={14}/><a href="/articles/">مقالات</a><Icon name="chevron" size={14}/><span aria-current="page">{article.category}</span></nav>
-      <div className="article-detail-heading"><div><ArticleMeta article={article}/><h1>{article.title}</h1><p>{article.excerpt}</p><div className="article-author"><span className="article-author-mark" aria-hidden="true"><i/><i/><i/><i/></span><span><strong>تحریریه پیکسل</strong><small>راهنمای عملی برای تصمیم بهتر</small></span></div></div><ArticleCover article={article}/></div>
+      <div className="article-detail-heading"><div><ArticleMeta article={article}/><h1>{article.title}</h1><p>{article.excerpt}</p><div className="article-author"><span className="article-author-mark" aria-hidden="true"><i/><i/><i/><i/></span><span><strong>{article.authorName || 'تحریریه پیکسل'}</strong><small>{article.authorSubtitle || 'راهنمای عملی برای تصمیم بهتر'}</small></span></div></div><ArticleCover article={article}/></div>
     </header>
 
     <main className="container article-layout">
@@ -57,6 +64,6 @@ export function ArticleDetailPage({ slug }: { slug?: string }) {
       </article>
     </main>
 
-    <section className="container related-articles" aria-labelledby="related-title"><div className="related-heading"><span>ادامه مسیر</span><h2 id="related-title">مقاله‌های مرتبط</h2></div><div>{related.map(item=><ArticleCard key={item.slug} article={item} compact/>)}</div></section>
+    {related.length > 0 && <section className="container related-articles" aria-labelledby="related-title"><div className="related-heading"><span>ادامه مسیر</span><h2 id="related-title">مقاله‌های مرتبط</h2></div><div>{related.map(item=><ArticleCard key={item.slug} article={item} compact/>)}</div></section>}
   </div>;
 }

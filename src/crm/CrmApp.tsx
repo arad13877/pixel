@@ -7,6 +7,7 @@ import { formatPersianDate, tehranDayBounds, tehranDueIso, toPersianNumber } fro
 import { invokeFunction, isSupabaseConfigured, requireSupabase, supabase } from './supabase';
 import type { Activity, CompanyRecord, ContactRecord, LeadSubmission, Membership, Opportunity, PipelineStage, Role, ServiceType, TimelineEvent } from './types';
 import { serviceLabels } from './types';
+import { ArticleEditor, ArticlesList } from './ArticlesManager';
 
 type AuthState = { loading: boolean; session: Session | null; membership: Membership | null; preview: boolean; error: string };
 type CrmContextValue = { membership: Membership; preview: boolean; refreshKey: number; refresh(): void };
@@ -20,6 +21,7 @@ const navigation: { to: string; label: string; icon: IconName; end?: boolean }[]
   { to: '/contacts', label: 'مخاطبان', icon: 'support' },
   { to: '/companies', label: 'کسب‌وکارها', icon: 'globe' },
   { to: '/tasks', label: 'پیگیری‌ها', icon: 'check' },
+  { to: '/articles', label: 'مقالات', icon: 'spark' },
 ];
 
 function useCrm() {
@@ -69,6 +71,9 @@ export default function CrmApp() {
       <Route path="companies" element={<Directory kind="companies"/>}/>
       <Route path="companies/:id" element={<RecordDetail kind="companies"/>}/>
       <Route path="tasks" element={<Tasks/>}/>
+      <Route path="articles" element={<ArticlesRoute/>}/>
+      <Route path="articles/new" element={<ArticleEditorRoute/>}/>
+      <Route path="articles/:id/edit" element={<ArticleEditorRoute/>}/>
       <Route path="settings/team" element={<AdminOnly><TeamSettings/></AdminOnly>}/>
       <Route path="settings/pipeline" element={<AdminOnly><PipelineSettings/></AdminOnly>}/>
       <Route path="settings/archive" element={<AdminOnly><ArchiveSettings/></AdminOnly>}/>
@@ -172,6 +177,9 @@ function DataState({ loading, error, children }: { loading: boolean; error: stri
 function EmptyState({ title, text, action }: { title: string; text: string; action?: ReactNode }) {
   return <section className="empty-state"><span><Icon name="spark" size={22}/></span><h2>{title}</h2><p>{text}</p>{action}</section>;
 }
+
+function ArticlesRoute(){const context=useCrm();return <ArticlesList {...context}/>}
+function ArticleEditorRoute(){const context=useCrm();return <ArticleEditor {...context}/>}
 
 function Dashboard() {
   const { membership, preview, refreshKey } = useCrm();

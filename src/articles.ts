@@ -8,6 +8,10 @@ export type ArticleSection = {
 
 export type ArticleSource = { label: string; href: string };
 
+export type ArticleCover =
+  | { kind: 'preset'; preset: 'signal' | 'layers' | 'orbit' }
+  | { kind: 'image'; url: string; alt: string; path: string };
+
 export type ArticleRecord = {
   slug: string;
   title: string;
@@ -17,6 +21,13 @@ export type ArticleRecord = {
   publishedLabel: string;
   readingMinutes: string;
   cover: 'signal' | 'layers' | 'orbit';
+  coverData?: ArticleCover;
+  authorName?: string;
+  authorSubtitle?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  ogDescription?: string;
+  modifiedAt?: string;
   ctaTitle: string;
   ctaText: string;
   ctaLabel: string;
@@ -35,6 +46,10 @@ export const articles: ArticleRecord[] = [
     publishedAt: '2026-09-19',
     publishedLabel: '۲۸ شهریور ۱۴۰۵',
     readingMinutes: '۱۴ دقیقه مطالعه',
+    seoTitle: 'چرا کسب‌وکار شما به سایت حرفه‌ای نیاز دارد؟ | پیکسل',
+    seoDescription: 'سایت حرفه‌ای چگونه به اعتماد، دیده‌شدن و ارتباط بهتر با مشتری کمک می‌کند؟ راهنمای عملی برای کسب‌وکارهایی که هنوز سایت ندارند.',
+    ogDescription: 'راهنمای عملی اعتماد، دیده‌شدن و تبدیل بازدیدکننده به ارتباط واقعی.',
+    modifiedAt: '2026-09-19',
     cover: 'signal',
     ctaTitle: 'حضور حرفه‌ای کسب‌وکارت را از یک سایت درست شروع کن.',
     ctaText: 'در یک مشاوره اولیه رایگان، نیاز کسب‌وکارت را بررسی می‌کنیم و می‌گوییم چه نوع سایتی برای شروع مناسب‌تر است.',
@@ -126,6 +141,10 @@ export const articles: ArticleRecord[] = [
     publishedAt: '2026-09-19',
     publishedLabel: '۲۸ شهریور ۱۴۰۵',
     readingMinutes: '۱۵ دقیقه مطالعه',
+    seoTitle: 'هزینه طراحی سایت به چه چیزهایی بستگی دارد؟ | پیکسل',
+    seoDescription: 'عوامل واقعی تعیین‌کننده هزینه طراحی سایت، روش مقایسه پیشنهادها و چک‌لیست تصمیم‌گیری پیش از شروع پروژه.',
+    ogDescription: 'راهنمای شفاف عوامل هزینه و مقایسه پیشنهادهای طراحی سایت.',
+    modifiedAt: '2026-09-19',
     cover: 'layers',
     ctaTitle: 'برای پروژه خودت یک برآورد واقعی بگیر.',
     ctaText: 'نیاز، صفحات و امکانات پروژه را بررسی می‌کنیم و بعد از مشاوره اولیه، پیشنهاد متناسب با همان دامنه کار ارائه می‌دهیم.',
@@ -188,6 +207,10 @@ export const articles: ArticleRecord[] = [
     publishedAt: '2026-09-19',
     publishedLabel: '۲۸ شهریور ۱۴۰۵',
     readingMinutes: '۱۶ دقیقه مطالعه',
+    seoTitle: 'AI Agent چیست و چه کمکی به کسب‌وکار می‌کند؟ | پیکسل',
+    seoDescription: 'AI Agent چگونه با ابزارها کار می‌کند، چه تفاوتی با چت‌بات دارد و چطور یک فرایند مناسب و قابل‌اندازه‌گیری برای شروع انتخاب کنیم؟',
+    ogDescription: 'راهنمای کاربرد، محدودیت و مسیر درست شروع یک AI Agent.',
+    modifiedAt: '2026-09-19',
     cover: 'orbit',
     ctaTitle: 'یک فرایند واقعی را برای ایجنت کسب‌وکارت انتخاب کنیم.',
     ctaText: 'درباره کارهای تکراری، ابزارهای فعلی و نتیجه‌ای که می‌خواهی صحبت می‌کنیم تا مشخص شود ایجنت راه‌حل مناسبی هست یا نه.',

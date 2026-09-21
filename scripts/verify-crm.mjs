@@ -29,11 +29,24 @@ try {
     if (width === 1440) {
       const axe = await new AxeBuilder({ page }).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
       report.accessibility = axe.violations.map(({ id, impact, nodes }) => ({ id, impact, nodes: nodes.map(node => node.target) }));
-      for (const [name, heading] of [['ورودی‌ها','سرنخ‌های جدید'],['فروش','پایپ‌لاین فرصت‌ها'],['مخاطبان','مخاطبان'],['پیگیری‌ها','پیگیری‌ها']]) {
+      for (const [name, heading] of [['ورودی‌ها','سرنخ‌های جدید'],['فروش','پایپ‌لاین فرصت‌ها'],['مخاطبان','مخاطبان'],['پیگیری‌ها','پیگیری‌ها'],['مقالات','مدیریت مقالات']]) {
         await page.getByRole('link', { name, exact: true }).first().click();
         await page.getByRole('heading', { name: heading, level: 1 }).waitFor();
         report.routes.push(name);
       }
+      await page.getByRole('link', { name: 'مقاله جدید' }).click();
+      await page.getByRole('heading', { name: 'پیش‌نویس بدون عنوان', level: 1 }).waitFor();
+      assert.ok(await page.getByRole('heading', { name: 'بدنه مقاله' }).isVisible());
+      const previewButton = page.getByRole('button', { name: 'پیش‌نمایش' });
+      await previewButton.click();
+      const previewDialog = page.getByRole('dialog', { name: 'پیش‌نمایش مقاله' });
+      await previewDialog.waitFor();
+      assert.ok(await page.getByRole('button', { name: 'بستن پیش‌نمایش' }).evaluate(element => element === document.activeElement));
+      await page.keyboard.press('Escape');
+      assert.ok(await previewButton.evaluate(element => element === document.activeElement));
+      const editorAxe = await new AxeBuilder({ page }).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
+      report.accessibility.push(...editorAxe.violations.map(({ id, impact, nodes }) => ({ id, impact, nodes: nodes.map(node => node.target) })));
+      report.routes.push('ویرایشگر مقاله');
     }
     await context.close();
   }

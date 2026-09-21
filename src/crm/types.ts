@@ -109,8 +109,24 @@ export interface TimelineEvent {
   created_at: string;
 }
 
+export interface CmsArticle {
+  id: string;
+  workspace_id: string;
+  slug: string;
+  status: 'draft' | 'published' | 'archived';
+  draft_payload: ArticleRecord & { readingMinutesValue?: number };
+  published_payload: ArticleRecord | null;
+  sort_order: number;
+  published_at: string | null;
+  archived_at: string | null;
+  deployment_status: 'idle' | 'pending' | 'requested' | 'failed';
+  deployment_error: string | null;
+  updated_at: string;
+}
+
 export const serviceLabels: Record<ServiceType, string> = {
   web_design: 'طراحی سایت',
   ai_agent: 'AI Agent اختصاصی',
   other: 'سایر',
 };
+import type { ArticleRecord } from '../articles';

@@ -52,6 +52,10 @@ npx supabase functions deploy submit-lead --no-verify-jwt
 npx supabase functions deploy invite-member
 npx supabase functions deploy deactivate-member
 npx supabase functions deploy purge-record
+npx supabase functions deploy save-article-draft
+npx supabase functions deploy publish-article
+npx supabase functions deploy archive-article
+npx supabase functions deploy retry-article-deploy
 ```
 
 ## Vercel
@@ -76,23 +80,42 @@ npx supabase functions deploy purge-record
 
 ## فرمان‌های staging
 
+برای مدیریت مقالات، ابتدا در پروژهٔ عمومی Vercel یک Deploy Hook بسازید. مقدار کامل Hook فقط به‌عنوان secret زیر در Supabase ثبت می‌شود و نباید وارد env مرورگر یا مخزن شود:
+
+```sh
+npx supabase secrets set PUBLIC_SITE_DEPLOY_HOOK_URL=<VERCEL_PUBLIC_SITE_DEPLOY_HOOK>
+```
+
+پروژهٔ عمومی Vercel نیز برای build استاتیک مقالات به متغیرهای `ARTICLE_DATA_MODE=supabase`، `SITE_SUPABASE_URL` و `SITE_SUPABASE_PUBLISHABLE_KEY` نیاز دارد. Preview باید به Supabase staging و Production فقط به Supabase production متصل باشد.
+
 بعد از ساخت یک پروژه Supabase و یک پروژه Vercel مستقل برای staging، از ریشه مخزن اجرا کنید:
 
 ```sh
 npx supabase login
 npx supabase link --project-ref <STAGING_SUPABASE_PROJECT_REF>
 npx supabase db push
-npx supabase secrets set TURNSTILE_SECRET_KEY=<STAGING_SECRET> RATE_LIMIT_SALT=<LONG_RANDOM_VALUE> ALLOWED_ORIGINS=https://<STAGING_CRM_DOMAIN>,https://<STAGING_PUBLIC_DOMAIN>
+npx supabase secrets set TURNSTILE_SECRET_KEY=<STAGING_SECRET> RATE_LIMIT_SALT=<LONG_RANDOM_VALUE> ALLOWED_ORIGINS=https://<STAGING_CRM_DOMAIN>,https://<STAGING_PUBLIC_DOMAIN> PUBLIC_SITE_DEPLOY_HOOK_URL=<STAGING_PUBLIC_SITE_DEPLOY_HOOK>
 npx supabase functions deploy submit-lead --no-verify-jwt
 npx supabase functions deploy invite-member
 npx supabase functions deploy deactivate-member
 npx supabase functions deploy purge-record
+npx supabase functions deploy save-article-draft
+npx supabase functions deploy publish-article
+npx supabase functions deploy archive-article
+npx supabase functions deploy retry-article-deploy
 
 cd crm
 vercel link --yes
 vercel env add VITE_SUPABASE_URL preview
 vercel env add VITE_SUPABASE_PUBLISHABLE_KEY preview
 vercel env add VITE_TURNSTILE_SITE_KEY preview
+vercel --yes
+
+cd ..
+vercel link --yes
+vercel env add ARTICLE_DATA_MODE preview
+vercel env add SITE_SUPABASE_URL preview
+vercel env add SITE_SUPABASE_PUBLISHABLE_KEY preview
 vercel --yes
 ```
 

@@ -16,6 +16,18 @@ verify_jwt = true
 [functions.purge-record]
 verify_jwt = true
 
+[functions.save-article-draft]
+verify_jwt = true
+
+[functions.publish-article]
+verify_jwt = true
+
+[functions.archive-article]
+verify_jwt = true
+
+[functions.retry-article-deploy]
+verify_jwt = true
+
 [api]
 enabled = true
 # Port to use for the API URL.
