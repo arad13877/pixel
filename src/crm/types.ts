@@ -9,7 +9,7 @@ export interface Membership {
   user_id: string;
   role: Role;
   is_active: boolean;
-  profile?: { full_name: string | null; email: string | null } | null;
+  profile?: { full_name: string | null; email: string | null; username: string | null } | null;
 }
 
 export interface LeadSubmission {

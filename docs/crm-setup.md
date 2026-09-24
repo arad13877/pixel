@@ -37,14 +37,16 @@ do update set role = 'admin', is_active = true, deactivated_at = null;
 
 ## Auth، SMTP و Edge Functions
 
-- ورود self-service را در هر دو پروژه Supabase غیرفعال نگه دارید؛ فقط `inviteUserByEmail` عضو می‌سازد.
+- ثبت‌نام self-service را در هر دو پروژه Supabase غیرفعال نگه دارید؛ فقط `inviteUserByEmail` عضو می‌سازد. ورود روزمره با نام کاربری و رمز از `sign-in-username` انجام می‌شود. لینک ایمیلی فقط برای راه‌اندازی حساب دعوت‌شده و بازیابی رمز است.
 - در Data API هر پروژه فقط schema `public` و فقط جدول‌های CRM موردنیاز را expose کنید. جدول `private.submission_rate_limits` هرگز نباید expose شود. grantهای migration عمداً صریح‌اند و به auto-exposure تکیه نمی‌کنند.
 - Site URL production: `https://crm.pxlgrid.design`؛ Site URL staging را روی دامنه staging CRM بگذارید.
-- Redirect URLها: callback محلی، callback دقیق staging و `https://crm.pxlgrid.design/auth/callback`. از wildcard عمومی استفاده نکنید.
+- Redirect URLها: `/auth/callback` و `/auth/reset-password` روی دامنه‌های محلی، staging و production. از wildcard عمومی استفاده نکنید.
 - پیش از production، SMTP اختصاصی فعال شود.
 - secretهای Functions: `TURNSTILE_SECRET_KEY`، `RATE_LIMIT_SALT` و `ALLOWED_ORIGINS`. مقدار آخر باید فقط originهای همان محیط باشد؛ نمونه staging: `https://crm-staging.pxlgrid.design,https://pxlgrid-staging.design`.
 - متغیرهای داخلی `SUPABASE_URL` و `SUPABASE_SERVICE_ROLE_KEY` را خود Supabase در runtime فراهم می‌کند و هرگز نباید به Vercel یا bundle مرورگر منتقل شوند.
-- `submit-lead` عمومی است؛ سه Function مدیریتی JWT معتبر و نقش admin می‌خواهند.
+- `submit-lead` و `sign-in-username` به JWT قبلی نیاز ندارند؛ دومی رمز را فقط در Supabase Auth بررسی می‌کند و IP/نام کاربری را محدود می‌کند. Functionهای مدیریتی JWT معتبر و نقش admin می‌خواهند.
+- `sign-in-username` از `RATE_LIMIT_SALT` و `ALLOWED_ORIGINS` همین محیط استفاده می‌کند. `SUPABASE_ANON_KEY` و `SUPABASE_SERVICE_ROLE_KEY` فقط در runtime توابع باقی می‌مانند؛ هیچ‌کدام را با پیشوند `VITE_` منتشر نکنید.
+- نشست CRM در مرورگر ۲۴ ساعت از زمان ورود معتبر است، حتی با refresh توکن تمدید نمی‌شود. این محدودیت مرورگری است، نه انقضای سخت سمت سرور.
 
 ```sh
 npx supabase secrets set TURNSTILE_SECRET_KEY=... RATE_LIMIT_SALT=... ALLOWED_ORIGINS=https://crm-staging.pxlgrid.design,https://pxlgrid-staging.design
@@ -56,6 +58,7 @@ npx supabase functions deploy save-article-draft
 npx supabase functions deploy publish-article
 npx supabase functions deploy archive-article
 npx supabase functions deploy retry-article-deploy
+npx supabase functions deploy sign-in-username --no-verify-jwt
 ```
 
 ## Vercel
@@ -103,6 +106,7 @@ npx supabase functions deploy save-article-draft
 npx supabase functions deploy publish-article
 npx supabase functions deploy archive-article
 npx supabase functions deploy retry-article-deploy
+npx supabase functions deploy sign-in-username --no-verify-jwt
 
 cd crm
 vercel link --yes

@@ -14,6 +14,7 @@
     "preview:crm": "vite preview --config vite.crm.config.ts --host 127.0.0.1 --configLoader runner",
     "test": "node scripts/verify.mjs && node scripts/verify-web-design.mjs && node scripts/verify-portfolio.mjs && node scripts/verify-articles.mjs",
     "test:crm": "node scripts/verify-crm.mjs",
+    "test:crm:auth": "node --experimental-strip-types --test scripts/verify-crm-auth.mjs",
     "test:request": "node scripts/verify-request.mjs"
   },
   "dependencies": {

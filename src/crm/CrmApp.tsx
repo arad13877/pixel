@@ -4,10 +4,12 @@ import type { Session } from '@supabase/supabase-js';
 import LiquidGlassMaterial from '../LiquidGlassMaterial';
 import { Icon, type IconName } from '../Icons';
 import { formatPersianDate, tehranDayBounds, tehranDueIso, toPersianNumber } from './format';
-import { invokeFunction, isSupabaseConfigured, requireSupabase, supabase } from './supabase';
+import { invokeFunction, requireSupabase, supabase } from './supabase';
 import type { Activity, CompanyRecord, ContactRecord, LeadSubmission, Membership, Opportunity, PipelineStage, Role, ServiceType, TimelineEvent } from './types';
 import { serviceLabels } from './types';
 import { ArticleEditor, ArticlesList } from './ArticlesManager';
+import { AccountSecurityPage, AccountSetupPage, ForgotPasswordPage, LoginPage, ResetPasswordPage } from './AuthPages';
+import { clearLogin, remainingLoginTime } from './auth-session';
 
 type AuthState = { loading: boolean; session: Session | null; membership: Membership | null; preview: boolean; error: string };
 type CrmContextValue = { membership: Membership; preview: boolean; refreshKey: number; refresh(): void };
@@ -31,28 +33,59 @@ function useCrm() {
 }
 
 function useAuth(): AuthState {
+  const routePath = useLocation().pathname;
   const preview = ['127.0.0.1','localhost'].includes(location.hostname) && new URLSearchParams(location.search).get('preview') === 'empty';
   const [state, setState] = useState<AuthState>(() => preview ? {
     loading: false, session: null, preview: true, error: '',
-    membership: { workspace_id: '00000000-0000-0000-0000-000000000001', user_id: 'preview', role: 'admin', is_active: true, profile: { full_name: 'پیش‌نمایش خالی', email: 'preview@local' } },
+    membership: { workspace_id: '00000000-0000-0000-0000-000000000001', user_id: 'preview', role: 'admin', is_active: true, profile: { full_name: 'پیش‌نمایش خالی', email: 'preview@local', username: 'preview' } },
   } : { loading: true, session: null, membership: null, preview: false, error: '' });
 
   useEffect(() => {
     if (preview) return;
     if (!supabase) { setState(current => ({ ...current, loading: false })); return; }
     let active = true;
+    let expiryTimer: number | undefined;
+    let lastSession: Session | null = null;
     async function resolveMembership(session: Session | null) {
       if (!active) return;
+      window.clearTimeout(expiryTimer);
       if (!session) { setState({ loading: false, session: null, membership: null, preview: false, error: '' }); return; }
-      const { data, error } = await supabase!.from('workspace_members').select('workspace_id,user_id,role,is_active,profile:profiles(full_name,email)').eq('user_id', session.user.id).maybeSingle();
+      lastSession = session;
+      if (routePath === '/auth/reset-password') {
+        setState({ loading: false, session, membership: null, preview: false, error: '' });
+        return;
+      }
+      const { data, error } = await supabase!.from('workspace_members').select('workspace_id,user_id,role,is_active,profile:profiles(full_name,email,username)').eq('user_id', session.user.id).maybeSingle();
       if (!active) return;
       if (error) setState({ loading: false, session, membership: null, preview: false, error: 'دسترسی حساب قابل بررسی نیست.' });
-      else setState({ loading: false, session, membership: data as unknown as Membership | null, preview: false, error: '' });
+      else if (!data?.is_active) {
+        clearLogin(session);
+        setState({ loading: false, session: null, membership: null, preview: false, error: '' });
+        void supabase!.auth.signOut({ scope: 'local' });
+      } else {
+        const membership = data as unknown as Membership;
+        const remaining = remainingLoginTime(session, Date.now(), !membership.profile?.username);
+        if (remaining <= 0) {
+          clearLogin(session);
+          setState({ loading: false, session: null, membership: null, preview: false, error: '' });
+          void supabase!.auth.signOut({ scope: 'local' });
+          return;
+        }
+        expiryTimer = window.setTimeout(() => void resolveMembership(session), remaining);
+        setState({ loading: false, session, membership, preview: false, error: '' });
+      }
     }
     void supabase.auth.getSession().then(({ data }) => resolveMembership(data.session));
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => { void resolveMembership(session); });
-    return () => { active = false; listener.subscription.unsubscribe(); };
-  }, [preview]);
+    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') { clearLogin(lastSession); lastSession = null; }
+      void resolveMembership(session);
+    });
+    const recheck = () => { if (document.visibilityState === 'visible') void supabase!.auth.getSession().then(({ data }) => resolveMembership(data.session)); };
+    window.addEventListener('focus', recheck);
+    window.addEventListener('storage', recheck);
+    document.addEventListener('visibilitychange', recheck);
+    return () => { active = false; window.clearTimeout(expiryTimer); listener.subscription.unsubscribe(); window.removeEventListener('focus', recheck); window.removeEventListener('storage', recheck); document.removeEventListener('visibilitychange', recheck); };
+  }, [preview, routePath]);
   return state;
 }
 
@@ -60,9 +93,12 @@ export default function CrmApp() {
   const auth = useAuth();
   if (auth.loading) return <FullPageState title="در حال آماده‌سازی پنل…" loading/>;
   return <Routes>
-    <Route path="/login" element={auth.session || auth.preview ? <Navigate to="/" replace/> : <LoginPage configured={isSupabaseConfigured}/>}/>
+    <Route path="/login" element={auth.session || auth.preview ? <Navigate to="/" replace/> : <LoginPage/>}/>
     <Route path="/auth/callback" element={<AuthCallback/>}/>
-    <Route element={auth.membership?.is_active ? <ProtectedShell membership={auth.membership} preview={auth.preview}/> : <AccessGate auth={auth}/> }>
+    <Route path="/auth/forgot-password" element={<ForgotPasswordPage/>}/>
+    <Route path="/auth/reset-password" element={<ResetPasswordPage session={auth.session}/>}/>
+    <Route path="/account/setup" element={auth.session && auth.membership?.is_active ? auth.membership.profile?.username ? <Navigate to="/" replace/> : <AccountSetupPage session={auth.session} membership={auth.membership}/> : <AccessGate auth={auth}/>}/>
+    <Route element={auth.membership?.is_active ? !auth.preview && !auth.membership.profile?.username ? <Navigate to="/account/setup" replace/> : <ProtectedShell membership={auth.membership} preview={auth.preview}/> : <AccessGate auth={auth}/> }>
       <Route index element={<Dashboard/>}/>
       <Route path="inbox" element={<Inbox/>}/>
       <Route path="pipeline" element={<Pipeline/>}/>
@@ -77,29 +113,10 @@ export default function CrmApp() {
       <Route path="settings/team" element={<AdminOnly><TeamSettings/></AdminOnly>}/>
       <Route path="settings/pipeline" element={<AdminOnly><PipelineSettings/></AdminOnly>}/>
       <Route path="settings/archive" element={<AdminOnly><ArchiveSettings/></AdminOnly>}/>
+      <Route path="account/security" element={auth.session && auth.membership && <AccountSecurityPage session={auth.session} membership={auth.membership}/>}/>
     </Route>
     <Route path="*" element={<Navigate to="/" replace/>}/>
   </Routes>;
-}
-
-function LoginPage({ configured }: { configured: boolean }) {
-  const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle'|'sending'|'sent'|'error'>('idle');
-  const [message, setMessage] = useState('');
-  async function submit(event: FormEvent) {
-    event.preventDefault();
-    if (!supabase) return;
-    setStatus('sending');
-    const { error } = await supabase.auth.signInWithOtp({ email, options: { shouldCreateUser: false, emailRedirectTo: `${location.origin}/auth/callback` } });
-    if (error) { setStatus('error'); setMessage('ارسال لینک ورود انجام نشد. ایمیل یا تنظیمات ورود را بررسی کن.'); }
-    else { setStatus('sent'); setMessage('لینک یک‌بارمصرف ورود به ایمیل شما ارسال شد.'); }
-  }
-  return <main className="login-page"><section className="login-card" aria-labelledby="login-title">
-    <a className="crm-brand login-brand" href="https://pxlgrid.design/" aria-label="بازگشت به سایت پیکسل"><span className="crm-brand-mark"><i/><i/><i/><i/></span><span>پیکسل<small>PIXEL CRM</small></span></a>
-    <span className="login-kicker">پنل داخلی تیم</span><h1 id="login-title">ورود به CRM پیکسل</h1><p>ایمیل دعوت‌شده را وارد کن. لینک امن و یک‌بارمصرف برایت ارسال می‌شود.</p>
-    {!configured ? <div className="notice warning" role="status">اتصال Supabase هنوز تنظیم نشده است. متغیرهای محیطی پروژه CRM را اضافه کنید.</div> : <form onSubmit={submit}><label>ایمیل کاری<input className="crm-field" type="email" value={email} onChange={event => setEmail(event.target.value)} autoComplete="email" required dir="ltr" placeholder="name@example.com"/></label><button className="crm-primary" disabled={status === 'sending'}>{status === 'sending' ? 'در حال ارسال…' : 'ارسال لینک ورود'}</button></form>}
-    <p className={`login-status ${status}`} role="status" aria-live="polite">{message}</p><a className="login-back" href="https://pxlgrid.design/">بازگشت به سایت پیکسل</a>
-  </section></main>;
 }
 
 function AuthCallback() {
@@ -132,7 +149,7 @@ function ProtectedShell({ membership, preview }: { membership: Membership; previ
     <aside className={`crm-sidebar ${mobileOpen ? 'open' : ''}`} aria-label="ناوبری پنل">
       <a className="crm-brand" href="/"><span className="crm-brand-mark"><i/><i/><i/><i/></span><span>پیکسل<small>PIXEL CRM</small></span></a>
       <nav>{navigation.map(item => <NavLink key={item.to} to={item.to} end={item.end}><Icon name={item.icon} size={19}/><span>{item.label}</span></NavLink>)}</nav>
-      <div className="sidebar-settings"><span>مدیریت</span>{membership.role === 'admin' && <><NavLink to="/settings/team"><Icon name="support" size={18}/>تیم</NavLink><NavLink to="/settings/pipeline"><Icon name="layers" size={18}/>مراحل فروش</NavLink><NavLink to="/settings/archive"><Icon name="search" size={18}/>آرشیو</NavLink></>}</div>
+      <div className="sidebar-settings"><span>حساب و مدیریت</span><NavLink to="/account/security"><Icon name="support" size={18}/>امنیت حساب</NavLink>{membership.role === 'admin' && <><NavLink to="/settings/team"><Icon name="support" size={18}/>تیم</NavLink><NavLink to="/settings/pipeline"><Icon name="layers" size={18}/>مراحل فروش</NavLink><NavLink to="/settings/archive"><Icon name="search" size={18}/>آرشیو</NavLink></>}</div>
       <div className="sidebar-user"><span className="avatar">{(membership.profile?.full_name || membership.profile?.email || 'پ').slice(0,1)}</span><span><strong>{membership.profile?.full_name || 'عضو تیم'}</strong><small>{membership.role === 'admin' ? 'مدیر' : 'عضو'}</small></span></div>
     </aside>
     {mobileOpen && <button className="sidebar-scrim" aria-label="بستن منو" onClick={() => setMobileOpen(false)}/>} 

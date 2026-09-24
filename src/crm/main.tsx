@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import '../fonts.css';
 import '../liquid-glass.css';
 import './crm.css';
+import './auth.css';
 import CrmApp from './CrmApp';
 
 createRoot(document.getElementById('crm-root')!).render(<React.StrictMode><BrowserRouter><CrmApp/></BrowserRouter></React.StrictMode>);

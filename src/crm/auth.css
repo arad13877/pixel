@@ -1,0 +1,15 @@
+.login-card .auth-links{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:17px;font-size:.72rem}
+.login-card .auth-links a{color:var(--crm-blue)}
+.login-card .auth-links .text-button{font-size:.72rem}
+.login-card .setup-request{margin-top:18px;padding-top:18px;border-top:1px solid var(--crm-line)}
+.login-card .auth-message{margin:14px 0 0;text-align:right;font-size:.72rem;line-height:1.8}
+.login-card .auth-message.field-error{color:var(--crm-danger)}
+.account-security{max-width:720px;padding:25px;border:1px solid var(--crm-line);border-radius:16px;background:#fff}
+.account-security h2{margin:0 0 18px;color:var(--crm-navy);font-size:1.05rem}
+.account-security form{display:grid;gap:15px}
+.account-security form label{display:grid;gap:7px;color:#526077;font-size:.74rem}
+.account-security form button{justify-self:start}
+.account-reset{margin-top:25px;padding-top:20px;border-top:1px solid var(--crm-line)}
+.account-reset p{color:var(--crm-muted);font-size:.74rem;line-height:1.8}
+.account-security .field-error,.account-security .notice{margin-top:16px}
+@media(max-width:600px){.account-security{padding:18px}.login-card .auth-links{align-items:flex-start;flex-direction:column}}

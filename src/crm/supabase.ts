@@ -21,3 +21,9 @@ export async function invokeFunction<T>(name: string, body: Record<string, unkno
   if (error) throw error;
   return data;
 }
+
+export async function signInWithUsername(username: string, password: string) {
+  const data = await invokeFunction<{ access_token: string; refresh_token: string }>('sign-in-username', { username, password });
+  if (!data?.access_token || !data.refresh_token) throw new Error('invalid_login_response');
+  return data;
+}
