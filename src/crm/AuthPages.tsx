@@ -2,6 +2,7 @@ import { FormEvent, type ReactNode, useState } from 'react';
 import type { Session } from '@supabase/supabase-js';
 import { Link } from 'react-router-dom';
 import { markLogin } from './auth-session';
+import { recoveryLinkFeedback, recoveryRequestFeedback } from './auth-recovery';
 import { isSupabaseConfigured, requireSupabase, signInWithUsername } from './supabase';
 import type { Membership } from './types';
 
@@ -55,15 +56,20 @@ export function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
   async function submit(event: FormEvent) {
-    event.preventDefault(); setBusy(true);
-    try { await requireSupabase().auth.resetPasswordForEmail(email.trim(), { redirectTo: `${location.origin}/auth/reset-password` }); }
-    catch { /* Keep the response indistinguishable from an unknown email. */ }
-    finally { setMessage('اگر حسابی با این ایمیل وجود داشته باشد، لینک تغییر رمز ارسال می‌شود.'); setBusy(false); }
+    event.preventDefault(); setBusy(true); setMessage(''); setError('');
+    try {
+      const result = await requireSupabase().auth.resetPasswordForEmail(email.trim(), { redirectTo: `${location.origin}/auth/reset-password` });
+      const feedback = recoveryRequestFeedback(result.error);
+      if (feedback.ok) setMessage(feedback.message);
+      else setError(feedback.message);
+    } catch { setError(recoveryRequestFeedback({}).message); }
+    finally { setBusy(false); }
   }
-  return <AuthCard title="بازیابی رمز عبور" description="ایمیل ثبت‌شده برای حساب تیم پیکسل را وارد کن.">
+  return <AuthCard title="بازیابی رمز عبور" description="ایمیل ثبت‌شده برای حساب تیم پیکسل را وارد کن. لینک را در همان مرورگر و دستگاه، فقط یک‌بار باز کن.">
     <form onSubmit={submit}><label>ایمیل حساب<input className="crm-field" type="email" dir="ltr" autoComplete="email" value={email} onChange={event => setEmail(event.target.value)} required/></label><button className="crm-primary" disabled={busy}>{busy ? 'در حال ارسال…' : 'ارسال لینک تغییر رمز'}</button></form>
-    {message && <p className="auth-message" role="status">{message}</p>}<Link className="login-back" to="/login">بازگشت به ورود</Link>
+    {message && <p className="auth-message" role="status">{message}</p>}{error && <p className="field-error auth-message" role="alert">{error}</p>}<Link className="login-back" to="/login">بازگشت به ورود</Link>
   </AuthCard>;
 }
 
@@ -83,7 +89,7 @@ export function ResetPasswordPage({ session }: { session: Session | null }) {
     setBusy(false);
   }
   return <AuthCard title="تنظیم رمز تازه" description="بعد از تغییر رمز، با نام کاربری وارد شو.">
-    {done ? <p role="status">رمز تغییر کرد. <Link to="/login">ورود به پنل</Link></p> : !session ? <p role="alert">لینک معتبر نیست یا منقضی شده است. <Link to="/auth/forgot-password">درخواست لینک تازه</Link></p> : <form onSubmit={submit}><label>رمز تازه<input className="crm-field" type="password" autoComplete="new-password" dir="ltr" minLength={12} value={password} onChange={event => setPassword(event.target.value)} required/></label><label>تکرار رمز تازه<input className="crm-field" type="password" autoComplete="new-password" dir="ltr" minLength={12} value={confirm} onChange={event => setConfirm(event.target.value)} required/></label><button className="crm-primary" disabled={busy}>{busy ? 'در حال ثبت…' : 'ثبت رمز تازه'}</button></form>}
+    {done ? <p role="status">رمز تغییر کرد. <Link to="/login">ورود به پنل</Link></p> : !session ? <p role="alert">{recoveryLinkFeedback(location.search, location.hash)} <Link to="/auth/forgot-password">درخواست لینک تازه</Link></p> : <form onSubmit={submit}><label>رمز تازه<input className="crm-field" type="password" autoComplete="new-password" dir="ltr" minLength={12} value={password} onChange={event => setPassword(event.target.value)} required/></label><label>تکرار رمز تازه<input className="crm-field" type="password" autoComplete="new-password" dir="ltr" minLength={12} value={confirm} onChange={event => setConfirm(event.target.value)} required/></label><button className="crm-primary" disabled={busy}>{busy ? 'در حال ثبت…' : 'ثبت رمز تازه'}</button></form>}
     {error && <p className="field-error auth-message" role="alert">{error}</p>}
   </AuthCard>;
 }
@@ -133,8 +139,12 @@ export function AccountSecurityPage({ session, membership }: { session: Session;
   async function sendReset() {
     if (!session.user.email) return;
     setBusy(true); setError(''); setMessage('');
-    try { await requireSupabase().auth.resetPasswordForEmail(session.user.email, { redirectTo: `${location.origin}/auth/reset-password` }); setMessage('لینک تغییر رمز به ایمیل حساب ارسال شد.'); }
-    catch { setError('ارسال لینک انجام نشد. کمی بعد دوباره تلاش کن.'); }
+    try {
+      const result = await requireSupabase().auth.resetPasswordForEmail(session.user.email, { redirectTo: `${location.origin}/auth/reset-password` });
+      const feedback = recoveryRequestFeedback(result.error);
+      if (feedback.ok) setMessage('درخواست لینک تغییر رمز پذیرفته شد. ایمیل حساب را بررسی کن.');
+      else setError(feedback.message);
+    } catch { setError(recoveryRequestFeedback({}).message); }
     finally { setBusy(false); }
   }
   return <><div className="page-header"><div><span>حساب کاربری</span><h1>امنیت حساب</h1><p>نام کاربری ورود: <bdi>{membership.profile?.username}</bdi> · ایمیل بازیابی: <bdi>{session.user.email}</bdi></p></div></div>

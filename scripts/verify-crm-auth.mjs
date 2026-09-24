@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { CRM_SESSION_MS, clearLogin, markLogin, remainingLoginTime } from '../src/crm/auth-session.ts';
+import { recoveryLinkFeedback, recoveryRequestFeedback } from '../src/crm/auth-recovery.ts';
 
 const values = new Map();
 globalThis.localStorage = {
@@ -37,4 +38,17 @@ test('email-link sessions are limited to initial account setup', () => {
   const signedIn = Date.parse(setup.user.last_sign_in_at);
   assert.equal(remainingLoginTime(setup, signedIn), 0);
   assert.equal(remainingLoginTime(setup, signedIn, true), CRM_SESSION_MS);
+});
+
+test('password recovery never claims an email was sent after a rate limit or failure', () => {
+  assert.equal(recoveryRequestFeedback(null).ok, true);
+  assert.equal(recoveryRequestFeedback({ status: 429, code: 'over_email_send_rate_limit' }).ok, false);
+  assert.match(recoveryRequestFeedback({ status: 429 }).message, /محدود/);
+  assert.equal(recoveryRequestFeedback({ status: 500 }).ok, false);
+});
+
+test('recovery screen distinguishes a used token from a missing PKCE session', () => {
+  assert.match(recoveryLinkFeedback('?error_code=otp_expired', ''), /یک‌بارمصرف/);
+  assert.match(recoveryLinkFeedback('', '#error_code=otp_expired'), /یک‌بارمصرف/);
+  assert.match(recoveryLinkFeedback('', ''), /همان مرورگر/);
 });
