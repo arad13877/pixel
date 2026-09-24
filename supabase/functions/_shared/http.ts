@@ -4,7 +4,9 @@ const localOrigins = ['http://127.0.0.1:4173', 'http://localhost:4173', 'http://
 
 export function allowedOrigins() {
   const configured = Deno.env.get('ALLOWED_ORIGINS');
-  return configured ? configured.split(',').map(value => value.trim()).filter(Boolean) : localOrigins;
+  const additional = Deno.env.get('ADDITIONAL_ALLOWED_ORIGINS');
+  const primary = configured ? configured.split(',').map(value => value.trim()).filter(Boolean) : localOrigins;
+  return [...primary, ...(additional ? additional.split(',').map(value => value.trim()).filter(Boolean) : [])];
 }
 
 export function isAllowedOrigin(origin: string) {

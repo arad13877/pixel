@@ -46,6 +46,7 @@ do update set role = 'admin', is_active = true, deactivated_at = null;
 - متغیرهای داخلی `SUPABASE_URL` و `SUPABASE_SERVICE_ROLE_KEY` را خود Supabase در runtime فراهم می‌کند و هرگز نباید به Vercel یا bundle مرورگر منتقل شوند.
 - `submit-lead` و `sign-in-username` به JWT قبلی نیاز ندارند؛ دومی رمز را فقط در Supabase Auth بررسی می‌کند و IP/نام کاربری را محدود می‌کند. Functionهای مدیریتی JWT معتبر و نقش admin می‌خواهند.
 - `sign-in-username` از `RATE_LIMIT_SALT` و `ALLOWED_ORIGINS` همین محیط استفاده می‌کند. `SUPABASE_ANON_KEY` و `SUPABASE_SERVICE_ROLE_KEY` فقط در runtime توابع باقی می‌مانند؛ هیچ‌کدام را با پیشوند `VITE_` منتشر نکنید.
+- برای preview شاخه‌ای که origin آن در allowlist اصلی نیست، `ADDITIONAL_ALLOWED_ORIGINS` را فقط روی Supabase staging با origin دقیق همان شاخه تنظیم کنید؛ این کار مقدار `ALLOWED_ORIGINS` موجود را بازنویسی نمی‌کند.
 - نشست CRM در مرورگر ۲۴ ساعت از زمان ورود معتبر است، حتی با refresh توکن تمدید نمی‌شود. این محدودیت مرورگری است، نه انقضای سخت سمت سرور.
 
 ```sh
