@@ -124,6 +124,21 @@ export interface CmsArticle {
   updated_at: string;
 }
 
+export interface CmsPortfolioItem {
+  id: string;
+  workspace_id: string;
+  kind: 'client' | 'concept';
+  status: 'draft' | 'published' | 'archived';
+  draft_payload: import('../portfolio-data').PortfolioPayload;
+  published_payload: import('../portfolio-data').PortfolioPayload | null;
+  sort_order: number;
+  published_at: string | null;
+  updated_at: string;
+  archived_at: string | null;
+  deployment_status: 'idle' | 'pending' | 'requested' | 'failed';
+  deployment_error: string | null;
+}
+
 export const serviceLabels: Record<ServiceType, string> = {
   web_design: 'طراحی سایت',
   ai_agent: 'AI Agent اختصاصی',

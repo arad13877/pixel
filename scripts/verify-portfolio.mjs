@@ -16,8 +16,14 @@ try {
   await page.evaluate(() => document.fonts.ready);
   assert.match(await page.title(), /نمونه‌کارها \| پیکسل/);
   assert.equal(await page.locator('html').getAttribute('dir'), 'rtl');
-  assert.ok(await page.getByRole('heading', { level: 1, name: 'جایی برای تجربه‌های واقعی.' }).isVisible());
-  assert.ok(await page.getByText('فعلاً نمونه‌کاری برای نمایش عمومی نداریم.', { exact: false }).isVisible());
+  assert.ok(await page.getByRole('heading', { level: 1, name: 'ایده‌هایی که به تجربه تبدیل می‌شوند.' }).isVisible());
+  assert.ok(await page.getByRole('heading', { level: 2, name: /نیلورا/ }).isVisible());
+  assert.ok(await page.getByRole('heading', { level: 2, name: /وِلوما/ }).isVisible());
+  assert.ok(await page.getByRole('heading', { level: 2, name: /لاین صفر/ }).isVisible());
+  assert.ok(await page.getByText('کانسپت نمایشی پیکسل؛ کلینیک واقعی نیست').isVisible());
+  assert.ok(await page.getByText('کانسپت نمایشی پیکسل؛ برند واقعی نیست').isVisible());
+  assert.ok(await page.getByText('کانسپت نمایشی پیکسل؛ کسب‌وکار واقعی نیست').isVisible());
+  assert.deepEqual(await page.getByRole('link', { name: 'مشاهده لندینگ', exact: true }).evaluateAll(links => links.map(link => link.getAttribute('href'))), ['/portfolio/nilora/', '/portfolio/veloma/', '/portfolio/zero-line/']);
 
   for (const width of [360, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
@@ -46,18 +52,21 @@ try {
   report.links.push('Mobile navigation and Escape');
 
   const accessibility = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
-  report.violations = accessibility.violations.map(({ id, impact }) => ({ id, impact }));
+  report.violations = accessibility.violations.map(({ id, impact, nodes }) => ({ id, impact, nodes: nodes.map(({ target, failureSummary }) => ({ target, failureSummary })) }));
   const noScriptContext = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } });
   const noScript = await noScriptContext.newPage();
   await noScript.goto(`${base}/portfolio/`);
   assert.ok(await noScript.getByRole('heading', { level: 1 }).isVisible());
+  assert.ok(await noScript.getByRole('heading', { level: 2, name: /نیلورا/ }).isVisible());
+  assert.ok(await noScript.getByRole('heading', { level: 2, name: /وِلوما/ }).isVisible());
+  assert.ok(await noScript.getByRole('heading', { level: 2, name: /لاین صفر/ }).isVisible());
   assert.match(await noScript.locator('[data-contact-location="portfolio-hero"]').getAttribute('href'), /^https:\/\/wa\.me\//);
   report.links.push('Static content and CTA without JavaScript');
   await noScriptContext.close();
 
+  console.log(JSON.stringify(report, null, 2));
   assert.deepEqual(report.errors, []);
   assert.deepEqual(report.violations, []);
-  console.log(JSON.stringify(report, null, 2));
 } finally {
   await browser.close();
 }

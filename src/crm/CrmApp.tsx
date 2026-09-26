@@ -8,6 +8,7 @@ import { invokeFunction, requireSupabase, supabase } from './supabase';
 import type { Activity, CompanyRecord, ContactRecord, LeadSubmission, Membership, Opportunity, PipelineStage, Role, ServiceType, TimelineEvent } from './types';
 import { serviceLabels } from './types';
 import { ArticleEditor, ArticlesList } from './ArticlesManager';
+import { PortfolioEditor, PortfolioList } from './PortfolioManager';
 import { AccountSecurityPage, AccountSetupPage, ForgotPasswordPage, LoginPage, ResetPasswordPage } from './AuthPages';
 import { clearLogin, remainingLoginTime } from './auth-session';
 
@@ -24,6 +25,7 @@ const navigation: { to: string; label: string; icon: IconName; end?: boolean }[]
   { to: '/companies', label: 'کسب‌وکارها', icon: 'globe' },
   { to: '/tasks', label: 'پیگیری‌ها', icon: 'check' },
   { to: '/articles', label: 'مقالات', icon: 'spark' },
+  { to: '/portfolio', label: 'نمونه‌کارها', icon: 'globe' },
 ];
 
 function useCrm() {
@@ -110,6 +112,9 @@ export default function CrmApp() {
       <Route path="articles" element={<ArticlesRoute/>}/>
       <Route path="articles/new" element={<ArticleEditorRoute/>}/>
       <Route path="articles/:id/edit" element={<ArticleEditorRoute/>}/>
+      <Route path="portfolio" element={<PortfolioListRoute/>}/>
+      <Route path="portfolio/new" element={<PortfolioEditorRoute/>}/>
+      <Route path="portfolio/:id/edit" element={<PortfolioEditorRoute/>}/>
       <Route path="settings/team" element={<AdminOnly><TeamSettings/></AdminOnly>}/>
       <Route path="settings/pipeline" element={<AdminOnly><PipelineSettings/></AdminOnly>}/>
       <Route path="settings/archive" element={<AdminOnly><ArchiveSettings/></AdminOnly>}/>
@@ -197,6 +202,8 @@ function EmptyState({ title, text, action }: { title: string; text: string; acti
 
 function ArticlesRoute(){const context=useCrm();return <ArticlesList {...context}/>}
 function ArticleEditorRoute(){const context=useCrm();return <ArticleEditor {...context}/>}
+function PortfolioListRoute(){const context=useCrm();return <PortfolioList {...context}/>}
+function PortfolioEditorRoute(){const context=useCrm();return <PortfolioEditor {...context}/>}
 
 function Dashboard() {
   const { membership, preview, refreshKey } = useCrm();

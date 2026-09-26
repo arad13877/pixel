@@ -49,3 +49,7 @@ next-env.d.ts
 /work/
 /.generated/
 /src/articles.generated.ts
+/src/portfolio.generated.ts
+
+.vercel
+.env*

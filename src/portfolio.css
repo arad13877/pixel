@@ -86,6 +86,45 @@
 .portfolio-contact { padding-bottom: 86px; }
 .portfolio-contact .closing-card p { max-width: 570px; margin-inline: auto; }
 
+.portfolio-project{display:grid;grid-template-columns:1.1fr .9fr;min-height:500px;margin-top:68px;overflow:hidden;border:1px solid #dce5f0;border-radius:29px;background:#eef3f1}
+.portfolio-project-visual{position:relative;display:block;min-width:0;min-height:500px;overflow:hidden;background:#dce7df}
+.portfolio-project-visual img{display:block;width:100%;height:100%;object-fit:cover;object-position:42% center;transition:transform .5s ease}
+.portfolio-project-visual:hover img{transform:scale(1.035)}
+.portfolio-project-visual-label{position:absolute;bottom:24px;left:27px;color:#fff;font-size:10px;font-weight:700;letter-spacing:.14em;text-shadow:0 1px 9px #163c43}
+.portfolio-project-copy{display:flex;flex-direction:column;align-items:flex-start;padding:52px 44px 42px}
+.portfolio-project-index{color:#496d63;font-size:11px;font-weight:700}
+.portfolio-demo-badge{display:inline-flex;margin-top:25px;padding:7px 12px;border:1px solid #c7dbcf;border-radius:30px;background:#e5f0e8;color:#456b60;font-size:10px;font-weight:600;line-height:1.7}
+.portfolio-project-copy h2{margin:28px 0 15px;color:#153b43;font-size:clamp(2rem,3vw,3rem);font-weight:750;line-height:1.55;letter-spacing:-.05em}
+.portfolio-project-copy h2 span{color:#638e80}
+.portfolio-project-copy>p{max-width:360px;margin:0;color:#637a77;font-size:13px;line-height:2.2}
+.portfolio-project-link{display:inline-flex;align-items:center;gap:15px;min-height:50px;margin-top:auto;border-bottom:1px solid #6c9385;color:#214d49;font-size:12px;font-weight:700;transition:gap .2s}
+.portfolio-project-link:hover{gap:20px}
+.portfolio-project-fashion{margin-top:30px;background:#eee8e0;border-color:#e1d7cc}
+.portfolio-project-fashion .portfolio-project-visual{background:#c8bbae}
+.portfolio-project-fashion .portfolio-project-visual img{object-position:center 30%}
+.portfolio-project-fashion .portfolio-project-index{color:#9b3a2f}
+.portfolio-project-fashion .portfolio-demo-badge{border-color:#e5bdb5;background:#f5e4df;color:#872d24}
+.portfolio-project-fashion .portfolio-project-copy h2{color:#24201d}
+.portfolio-project-fashion .portfolio-project-copy h2 span{color:#ad3d30}
+.portfolio-project-fashion .portfolio-project-copy>p{color:#675b55}
+.portfolio-project-fashion .portfolio-project-link{border-color:#b75a4f;color:#852e25}
+.portfolio-project-carbon{margin-top:30px;background:#1b211e;border-color:#353f34}
+.portfolio-project-carbon .portfolio-project-visual{background:#151c18}
+.portfolio-project-carbon .portfolio-project-visual img{object-position:67% center}
+.portfolio-project-carbon .portfolio-project-index{color:#c8ee7a}
+.portfolio-project-carbon .portfolio-demo-badge{border-color:#70864d;background:#30412c;color:#e3f3bf}
+.portfolio-project-carbon .portfolio-project-copy h2{color:#f1f3e9}
+.portfolio-project-carbon .portfolio-project-copy h2 span{color:#c6ed6e}
+.portfolio-project-carbon .portfolio-project-copy>p{color:#c1cec0}
+.portfolio-project-carbon .portfolio-project-link{border-color:#a1bf69;color:#e0f4b2}
+.portfolio-project-client{background:#f2f6fd;border-color:#dbe5f3}
+.portfolio-project-client .portfolio-project-visual{background:#e3ebf8}
+.portfolio-project-client .portfolio-project-index{color:#4a6592}
+.portfolio-project-client .portfolio-project-copy h2{color:#101c35}
+.portfolio-project-client .portfolio-project-copy h2 span{color:#2864eb}
+.portfolio-project-client .portfolio-project-copy>p{color:#5b6b82}
+.portfolio-project-client .portfolio-project-link{border-color:#6d91e0;color:#2458c6}
+
 @media (max-width: 760px) {
   .portfolio-hero { padding-top: 58px; padding-bottom: 72px; }
   .portfolio-intro h1 { font-size: clamp(2.3rem, 9vw, 3.25rem); line-height: 1.55; letter-spacing: -1.1px; }
@@ -100,6 +139,13 @@
   .portfolio-contact { padding-bottom: 56px; }
   .portfolio-contact .closing-card { padding: 46px 20px; }
   .portfolio-contact .closing-card h2 { font-size: 1.9rem; }
+  .portfolio-project{grid-template-columns:1fr;margin-top:48px;border-radius:23px}
+  .portfolio-project-visual{min-height:300px;height:300px}
+  .portfolio-project-copy{min-height:350px;padding:31px 26px 27px}
+  .portfolio-demo-badge{margin-top:17px}
+  .portfolio-project-copy h2{margin-top:20px}
+  .portfolio-project-fashion{margin-top:22px}
+  .portfolio-project-carbon{margin-top:22px}
 }
 
 @media (max-width: 390px) {

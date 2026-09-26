@@ -26,14 +26,24 @@ try {
       assert.ok(await page.getByRole('complementary', { name: 'ناوبری پنل' }).isVisible());
       await page.keyboard.press('Escape');
     }
+    await page.goto(new URL('/portfolio/new?preview=empty', url).toString(), { waitUntil: 'networkidle' });
+    await page.getByRole('heading', { name: 'نمونه‌کار جدید', level: 1 }).waitFor();
+    const portfolioLayout = await page.evaluate(() => ({ width: innerWidth, scrollWidth: document.documentElement.scrollWidth }));
+    assert.ok(portfolioLayout.scrollWidth <= width, `Portfolio editor overflow at ${width}`);
+    await page.screenshot({ path: `outputs/portfolio-editor-${width}.png`, fullPage: true });
+    await page.goto(new URL('/portfolio?preview=empty', url).toString(), { waitUntil: 'networkidle' });
+    await page.getByRole('heading', { name: 'مدیریت نمونه‌کارها', level: 1 }).waitFor();
+    assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `Portfolio list overflow at ${width}`);
     if (width === 1440) {
+      await page.goto(url, { waitUntil: 'networkidle' });
       const axe = await new AxeBuilder({ page }).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
       report.accessibility = axe.violations.map(({ id, impact, nodes }) => ({ id, impact, nodes: nodes.map(node => node.target) }));
-      for (const [name, heading] of [['ورودی‌ها','سرنخ‌های جدید'],['فروش','پایپ‌لاین فرصت‌ها'],['مخاطبان','مخاطبان'],['پیگیری‌ها','پیگیری‌ها'],['مقالات','مدیریت مقالات']]) {
+      for (const [name, heading] of [['ورودی‌ها','سرنخ‌های جدید'],['فروش','پایپ‌لاین فرصت‌ها'],['مخاطبان','مخاطبان'],['پیگیری‌ها','پیگیری‌ها'],['مقالات','مدیریت مقالات'],['نمونه‌کارها','مدیریت نمونه‌کارها']]) {
         await page.getByRole('link', { name, exact: true }).first().click();
         await page.getByRole('heading', { name: heading, level: 1 }).waitFor();
         report.routes.push(name);
       }
+      await page.getByRole('link', { name: 'مقالات', exact: true }).first().click();
       await page.getByRole('link', { name: 'مقاله جدید' }).click();
       await page.getByRole('heading', { name: 'پیش‌نویس بدون عنوان', level: 1 }).waitFor();
       assert.ok(await page.getByRole('heading', { name: 'بدنه مقاله' }).isVisible());
@@ -47,6 +57,19 @@ try {
       const editorAxe = await new AxeBuilder({ page }).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
       report.accessibility.push(...editorAxe.violations.map(({ id, impact, nodes }) => ({ id, impact, nodes: nodes.map(node => node.target) })));
       report.routes.push('ویرایشگر مقاله');
+      await page.getByRole('link', { name: 'نمونه‌کارها', exact: true }).first().click();
+      await page.getByRole('link', { name: 'نمونه‌کار جدید' }).click();
+      await page.getByRole('heading', { name: 'نمونه‌کار جدید', level: 1 }).waitFor();
+      const portfolioPreviewButton = page.getByRole('button', { name: 'پیش‌نمایش' });
+      await portfolioPreviewButton.click();
+      const portfolioDialog = page.getByRole('dialog', { name: 'پیش‌نمایش نمونه‌کار' });
+      await portfolioDialog.waitFor();
+      assert.ok(await page.getByRole('button', { name: 'بستن پیش‌نمایش' }).evaluate(element => element === document.activeElement));
+      await page.keyboard.press('Escape');
+      assert.ok(await portfolioPreviewButton.evaluate(element => element === document.activeElement));
+      const portfolioAxe = await new AxeBuilder({ page }).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
+      report.accessibility.push(...portfolioAxe.violations.map(({ id, impact, nodes }) => ({ id, impact, nodes: nodes.map(node => node.target) })));
+      report.routes.push('ویرایشگر نمونه‌کار');
     }
     await context.close();
   }

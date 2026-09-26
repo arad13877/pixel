@@ -3,6 +3,9 @@ import react from '@vitejs/plugin-react';
 import { createElement } from 'react';
 import { renderToString } from 'react-dom/server';
 import App from './src/App';
+import NiloraPage from './src/NiloraPage';
+import VelomaPage from './src/VelomaPage';
+import ZeroLinePage from './src/ZeroLinePage';
 import { articles } from './src/articles.generated';
 import { resolve } from 'node:path';
 import { cp, mkdir, rm, writeFile } from 'node:fs/promises';
@@ -31,7 +34,7 @@ function archiveSchema() {
 }
 
 function sitemap() {
-  const staticUrls = ['/', '/web-design/', '/portfolio/', '/request/', '/articles/'];
+  const staticUrls = ['/', '/web-design/', '/web-design-gorgan/', '/portfolio/', '/request/', '/articles/'];
   const urls = [...staticUrls.map(path => `<url><loc>https://pxlgrid.design${path}</loc></url>`), ...articles.map(article => `<url><loc>https://pxlgrid.design/articles/${article.slug}/</loc><lastmod>${(article.modifiedAt || article.publishedAt).slice(0, 10)}</lastmod></url>`)];
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  ${urls.join('\n  ')}\n</urlset>\n`;
 }
@@ -39,7 +42,7 @@ function sitemap() {
 const articleInputs = Object.fromEntries(articles.map(article => [`article-${article.slug}`, resolve(import.meta.dirname, `.generated/articles/${article.slug}/index.html`)]));
 
 export default defineConfig({
-  optimizeDeps: { noDiscovery: true, include: [] },
+  optimizeDeps: { noDiscovery: true, include: ['react', 'react-dom/client'] },
   plugins: [react(), {
     name: 'pixel-static-html',
     configureServer(server) {
@@ -52,9 +55,12 @@ export default defineConfig({
     transformIndexHtml: {
       order: 'pre',
       handler(html, context) {
+        const nilora = context.path.startsWith('/portfolio/nilora/');
+        const veloma = context.path.startsWith('/portfolio/veloma/');
+        const zeroLine = context.path.startsWith('/portfolio/zero-line/');
         const articleMatch = context.path.match(/^\/(?:\.generated\/)?articles\/([^/]+)(?:\/|\/index\.html)/);
-        const page = articleMatch ? 'article' : context.path.startsWith('/articles') ? 'articles' : context.path.startsWith('/web-design') ? 'web-design' : context.path.startsWith('/portfolio') ? 'portfolio' : context.path.startsWith('/request') ? 'request' : 'home';
-        let output = html.replace('<!--app-html-->', renderToString(createElement(App, { page, articleSlug: articleMatch?.[1] })));
+        const page = articleMatch ? 'article' : context.path.startsWith('/articles') ? 'articles' : context.path.startsWith('/web-design-gorgan') ? 'web-design-gorgan' : context.path.startsWith('/web-design') ? 'web-design' : context.path.startsWith('/portfolio') ? 'portfolio' : context.path.startsWith('/request') ? 'request' : 'home';
+        let output = html.replace('<!--app-html-->', renderToString(nilora ? createElement(NiloraPage) : veloma ? createElement(VelomaPage) : zeroLine ? createElement(ZeroLinePage) : createElement(App, { page, articleSlug: articleMatch?.[1] })));
         if (articleMatch) output = output.replace('<!--article-meta-->', articleMetadata(articleMatch[1]));
         if (page === 'articles') output = output.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/, `<script type="application/ld+json">${archiveSchema()}</script>`);
         return output;
@@ -91,7 +97,11 @@ export default defineConfig({
       input: {
         home: resolve(import.meta.dirname, 'index.html'),
         webDesign: resolve(import.meta.dirname, 'web-design/index.html'),
+        webDesignGorgan: resolve(import.meta.dirname, 'web-design-gorgan/index.html'),
         portfolio: resolve(import.meta.dirname, 'portfolio/index.html'),
+        nilora: resolve(import.meta.dirname, 'portfolio/nilora/index.html'),
+        veloma: resolve(import.meta.dirname, 'portfolio/veloma/index.html'),
+        zeroLine: resolve(import.meta.dirname, 'portfolio/zero-line/index.html'),
         request: resolve(import.meta.dirname, 'request/index.html'),
         articles: resolve(import.meta.dirname, 'articles/index.html'),
         ...articleInputs,

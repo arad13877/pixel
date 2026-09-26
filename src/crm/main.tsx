@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import '../fonts.css';
 import '../liquid-glass.css';
+import '../portfolio.css';
 import './crm.css';
 import './auth.css';
 import CrmApp from './CrmApp';

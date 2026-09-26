@@ -79,6 +79,7 @@
 .wd-deliverables-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid rgb(255 255 255 / 16%);border-right:1px solid rgb(255 255 255 / 16%)}
 .wd-deliverable{position:relative;min-height:205px;padding:27px 25px;border-bottom:1px solid rgb(255 255 255 / 16%);border-left:1px solid rgb(255 255 255 / 16%);background:rgb(255 255 255 / 2%);transition:background .2s ease}
 .wd-deliverable:last-child{grid-column:1/-1;min-height:165px}
+.wd-gorgan-page .wd-deliverable:last-child{grid-column:auto;min-height:205px}
 .wd-deliverable-icon{display:grid;place-items:center;width:39px;height:39px;margin-bottom:28px;border:1px solid rgb(255 255 255 / 8%);border-radius:11px;background:rgb(40 100 235 / 28%);color:#a9c2fa}
 .wd-deliverable-number{position:absolute;top:29px;left:25px;color:#8497b6;font-size:.65rem;direction:ltr}
 .wd-deliverable h3{margin:0 0 8px;font-size:1rem}.wd-deliverable p{max-width:300px;margin:0;color:#aebbd0;font-size:.82rem;line-height:1.95}
@@ -128,6 +129,8 @@
   .wd-hero{padding-top:44px}.wd-hero h1{font-size:2.08rem}.wd-actions{gap:6px}.wd-actions .button{min-width:0;padding-inline:14px;font-size:.72rem}.wd-text-link{gap:5px;font-size:.68rem}.wd-hero-art{height:335px}.wd-art-browser{inset:31px 13px 23px}.wd-art-nav>span{display:none}.wd-art-heading strong{font-size:16px}.wd-art-phone{transform:rotate(5deg) scale(.64)}.wd-art-glass{transform:rotate(-3deg) scale(.68)}.wd-demo-label{left:75px}
   .wd-contact .button.primary{padding-inline:17px}
 }
+
+@media(max-width:760px){.wd-gorgan-page .wd-deliverable:last-child{min-height:0}}
 
 @media(prefers-reduced-motion:reduce){
   .web-design-page *,.web-design-page *::before,.web-design-page *::after{transition:none!important}

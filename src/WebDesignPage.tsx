@@ -1,5 +1,6 @@
 import { Contact } from './Contact';
 import { Icon, type IconName } from './Icons';
+import WebDesignHeroArt from './WebDesignHeroArt';
 
 const websiteTypes: { title: string; description: string; icon: IconName }[] = [
   { title: 'وب‌سایت شرکتی', description: 'برند، خدمات و راه‌های ارتباطی را حرفه‌ای معرفی کن تا مشتری با اطمینان بیشتری تو را انتخاب کند.', icon: 'globe' },
@@ -56,21 +57,7 @@ export default function WebDesignPage() {
         </div>
         <span className="wd-channel"><Icon name="chat" size={15}/> گفتگو مستقیم با پیکسل در واتساپ</span>
       </div>
-      <div className="wd-hero-art" role="img" aria-label="نمونه نمایشی طراحی پیکسل در قاب مرورگر و موبایل">
-        <span className="wd-cobalt-shape" aria-hidden="true"/>
-        <div className="wd-halo" aria-hidden="true"/>
-        <div className="wd-art-browser" aria-hidden="true">
-          <div className="wd-art-toolbar"><span className="wd-art-dots"><i/><i/><i/></span><span className="wd-art-address"><Icon name="globe" size={9}/> pixel-demo.example</span></div>
-          <div className="wd-art-canvas">
-            <div className="wd-art-nav"><strong>آرا<small>استودیو معماری</small></strong><span>پروژه‌ها&nbsp;&nbsp; خدمات&nbsp;&nbsp; تماس</span><Icon name="arrow" size={14}/></div>
-            <div className="wd-art-heading"><small>معماری، به زبان زندگی</small><strong>فضایی برای زندگی،<br/><em>جایی برای آرامش.</em></strong></div>
-            <div className="wd-art-image"><img src="/images/interior-900.webp" srcSet="/images/interior-600.webp 600w, /images/interior-900.webp 900w" sizes="(max-width: 760px) 88vw, 480px" alt="" width="900" height="600" fetchPriority="high"/></div>
-          </div>
-        </div>
-        <div className="wd-art-phone" aria-hidden="true"><span className="wd-phone-notch"/><strong>آرا</strong><div className="wd-phone-copy"><i/><i/></div><div className="wd-phone-image"><img src="/images/interior-600.webp" alt="" width="600" height="400" loading="lazy"/></div><span className="wd-phone-button"/></div>
-        <div className="wd-art-glass glass" aria-hidden="true"><span className="wd-glass-icon"><Icon name="check" size={17}/></span><span>آماده برای<br/><strong>هر اندازه.</strong></span></div>
-        <span className="wd-demo-label">نمونه نمایشی طراحی پیکسل <Icon name="arrow" size={14}/></span>
-      </div>
+      <WebDesignHeroArt/>
     </section>
 
     <section className="wd-trust" aria-labelledby="wd-trust-title" data-wd-reveal><div className="container wd-trust-inner"><div><span className="wd-section-index">01 / نقطه شروع</span><h2 id="wd-trust-title">سایت فقط ویترین نیست؛<br/><span>شروع اعتماد مشتری است.</span></h2></div><p>وقتی مشتری نام کسب‌وکارت را جستجو می‌کند، سایت باید سریع به سه سؤال جواب بدهد: چه کاری انجام می‌دهی، چرا می‌تواند به تو اعتماد کند و چطور باید با تو تماس بگیرد.</p><div className="wd-trust-points"><span><Icon name="check" size={16}/> معرفی روشن خدمات</span><span><Icon name="check" size={16}/> تصویر حرفه‌ای از برند</span><span><Icon name="check" size={16}/> دسترسی سریع به تماس</span></div></div></section>

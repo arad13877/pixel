@@ -4,6 +4,7 @@ import { Contact } from './Contact';
 import AgentSection from './AgentSection';
 import { faqs } from './content';
 import WebDesignPage from './WebDesignPage';
+import WebDesignGorganPage from './WebDesignGorganPage';
 import PortfolioPage from './PortfolioPage';
 import LiquidGlassMaterial from './LiquidGlassMaterial';
 import { ArticleDetailPage, ArticlesIndexPage } from './ArticlesPage';
@@ -51,16 +52,18 @@ const homePrinciples: { number: string; icon: IconName; label: string }[] = [
   { number: '04', icon: 'spark', label: 'آماده برای قدم بعدی' },
 ];
 
-export default function App({ page = 'home', articleSlug }: { page?: 'home' | 'web-design' | 'portfolio' | 'articles' | 'article' | 'request'; articleSlug?: string }) {
+export default function App({ page = 'home', articleSlug }: { page?: 'home' | 'web-design' | 'web-design-gorgan' | 'portfolio' | 'articles' | 'article' | 'request'; articleSlug?: string }) {
   const home = page === 'home';
   const webDesign = page === 'web-design';
+  const gorgan = page === 'web-design-gorgan';
+  const webDesignLanding = webDesign || gorgan;
   const portfolio = page === 'portfolio';
   const articlesIndex = page === 'articles';
   const articleDetail = page === 'article';
   const request = page === 'request';
   const articlesPage = articlesIndex || articleDetail;
   const navItems = [
-    { href: webDesign ? '#types' : '/web-design/', label: 'طراحی سایت', current: webDesign },
+    { href: webDesignLanding ? '#types' : '/web-design/', label: 'طراحی سایت', current: webDesignLanding },
     { href: '/portfolio/', label: 'نمونه‌کارها', current: portfolio },
     { href: home ? '#agents' : '/#agents', label: 'ایجنت‌های هوش مصنوعی', badge: true },
     { href: '/articles/', label: 'مقالات', current: articlesPage },
@@ -159,7 +162,7 @@ export default function App({ page = 'home', articleSlug }: { page?: 'home' | 'w
     return () => { disposed = true; capability.removeEventListener('change', start); cleanup(); };
   }, [home]);
   useEffect(() => {
-    if (!webDesign) return;
+    if (!webDesignLanding) return;
     const section = document.querySelector<HTMLElement>('.wd-hero');
     if (!section) return;
 
@@ -239,7 +242,7 @@ export default function App({ page = 'home', articleSlug }: { page?: 'home' | 'w
     capability.addEventListener('change', start);
     start();
     return () => { disposed = true; capability.removeEventListener('change', start); cleanup(); };
-  }, [webDesign]);
+  }, [webDesignLanding]);
   useEffect(() => {
     if (!articlesPage) return;
     const scope = document.querySelector<HTMLElement>(articlesIndex ? '.articles-page' : '.article-detail-page');
@@ -341,7 +344,7 @@ export default function App({ page = 'home', articleSlug }: { page?: 'home' | 'w
   }, []);
   return <>
     <a className="skip-link" href="#main">رفتن به محتوای اصلی</a>
-    {(home || webDesign || articlesPage) && <HeroContours/>}
+    {(home || webDesignLanding || articlesPage) && <HeroContours/>}
     <header ref={header} className="header" data-hidden={headerHidden}>
       <nav className="nav glass liquid-glass" aria-label="ناوبری اصلی">
         <LiquidGlassMaterial/>
@@ -352,7 +355,7 @@ export default function App({ page = 'home', articleSlug }: { page?: 'home' | 'w
       <nav id="mobile-menu" hidden={!menuOpen} className="mobile-menu glass" aria-label="منوی موبایل">{navItems.map(({href,label,current})=><a key={label} href={href} aria-current={current ? 'page' : undefined} onClick={()=>setMenuOpen(false)}>{label}<Icon name="arrow" size={16}/></a>)}</nav>
     </header>
     <main id="main">
-      {request ? <RequestPage/> : articleDetail ? <ArticleDetailPage slug={articleSlug}/> : articlesIndex ? <ArticlesIndexPage/> : portfolio ? <PortfolioPage/> : webDesign ? <WebDesignPage /> : <div className="home-page">
+      {request ? <RequestPage/> : articleDetail ? <ArticleDetailPage slug={articleSlug}/> : articlesIndex ? <ArticlesIndexPage/> : portfolio ? <PortfolioPage/> : webDesign ? <WebDesignPage /> : gorgan ? <WebDesignGorganPage/> : <div className="home-page">
       <section ref={heroRef} className="hero container" aria-labelledby="hero-title"><span className="hero-studio-mark" lang="en" dir="ltr" aria-hidden="true">PIXEL / 01</span><div className="hero-copy"><span className="eyebrow"><span className="blue-dot"/> یک شروع تازه برای کسب‌وکارت</span><h1 id="hero-title">کسب‌وکارت،<br/>یک <span className="blue-word">سایت حرفه‌ای<svg viewBox="0 0 340 16" preserveAspectRatio="none" aria-hidden="true"><path d="M3 12Q150-5 335 8"/></svg></span><br/>کم دارد.</h1><p className="hero-description">ایده و تخصص از تو؛ یک حضور حرفه‌ای در دنیای آنلاین از ما. سایتی می‌سازیم که کسب‌وکارت را درست معرفی کند و راه ارتباط با مشتری‌هایت باشد.</p><div className="hero-actions"><Contact className="primary" location="hero" id="hero-contact">درباره سایتم صحبت کنیم</Contact><a href="/request/" className="text-link">ثبت درخواست پروژه <Icon name="arrow" size={18}/></a></div><div className="hero-footnotes"><span><Icon name="check" size={16}/>طراحی متناسب با برند تو</span><span><Icon name="check" size={16}/>از اولین ایده تا انتشار</span></div></div>
       <div className="hero-art"><span className="hero-cobalt-shape" aria-hidden="true"/><div className="art-orbit orbit-one"/><div className="art-orbit orbit-two"/><span className="hero-path-node" aria-hidden="true"/><div className="floating-tag glass"><span className="tag-icon"><Icon name="layers" size={18}/></span><span>طراحی فکرشده.<br/><strong>برای کسب‌وکار تو.</strong></span><span className="tag-spark">✦</span></div><MockSite/><MockSite phone/><div className="responsive-tag glass"><span className="mini-devices" aria-hidden="true">▣</span><span>یک تجربه خوب،<br/><strong>در هر اندازه.</strong></span><span className="green-check"><Icon name="check" size={13}/></span></div><span className="demo-label">نمونه نمایشی طراحی پیکسل <span>↗</span></span></div>
       </section>
@@ -372,7 +375,7 @@ export default function App({ page = 'home', articleSlug }: { page?: 'home' | 'w
       </div>}
     </main>
     <footer className="container footer"><div className="footer-top"><Brand href={home ? '#' : '/'}/><p>طراحی برای امروز. هوشمند برای فردا.</p><a className="back-top" href="#">بازگشت به بالا <Icon name="arrow" size={15}/></a></div><div className="footer-bottom"><span>پیکسل؛ طراحی سایت و ایجنت‌های هوش مصنوعی</span><a href="https://wa.me/989937825753" target="_blank" rel="noopener noreferrer" data-contact-location="footer" data-contact-service="عمومی"><span>واتساپ</span> <bdi>+98 993 782 5753</bdi></a><span lang="en" dir="ltr">Made with purpose. Built by Pixel.</span></div></footer>
-    {stickyVisible && <aside className="sticky-contact glass" aria-label="گفتگو درباره طراحی سایت"><span>{webDesign ? 'مشاوره رایگان طراحی سایت' : 'یک شروع حرفه‌ای'}{!webDesign && <><br/><small>برای کسب‌وکار تو</small></>}</span><Contact className="primary" location={webDesign ? 'web-design-mobile-sticky' : 'sticky'} service={webDesign ? 'طراحی سایت و مشاوره اولیه رایگان' : 'طراحی سایت'}>{webDesign ? 'شروع گفتگو' : 'گفتگو در واتساپ'}</Contact></aside>}
+    {stickyVisible && <aside className="sticky-contact glass" aria-label="گفتگو درباره طراحی سایت"><span>{gorgan ? 'طراحی سایت در گرگان' : webDesign ? 'مشاوره رایگان طراحی سایت' : 'یک شروع حرفه‌ای'}{!webDesignLanding && <><br/><small>برای کسب‌وکار تو</small></>}</span><Contact className="primary" location={gorgan ? 'web-design-gorgan-mobile-sticky' : webDesign ? 'web-design-mobile-sticky' : 'sticky'} service={gorgan ? 'طراحی سایت در گرگان' : webDesign ? 'طراحی سایت و مشاوره اولیه رایگان' : 'طراحی سایت'}>{gorgan ? 'درخواست مشاوره' : webDesign ? 'شروع گفتگو' : 'گفتگو در واتساپ'}</Contact></aside>}
   </>;
 }
 
