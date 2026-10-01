@@ -1,6 +1,7 @@
 import { Contact } from './Contact';
 import { Icon, type IconName } from './Icons';
 import WebDesignHeroArt from './WebDesignHeroArt';
+import { PricingPreview } from './PricingCards';
 
 const services: { title: string; icon: IconName }[] = [
   { title: 'سایت شرکتی', icon: 'globe' },
@@ -68,6 +69,8 @@ export default function WebDesignGorganPage() {
     <section className="wd-trust" aria-labelledby="gorgan-intro-title" data-wd-reveal><div className="container wd-trust-inner"><div><h2 id="gorgan-intro-title">طراحی سایت برای کسب‌وکارهای گرگان</h2></div><p>یک سایت حرفه‌ای فقط یک ویترین آنلاین نیست؛ باید خدمات کسب‌وکار شما را به‌درستی معرفی کند، مسیر ارتباط با مشتری را ساده کند و زیرساخت مناسبی برای توسعه و بازاریابی آنلاین داشته باشد. ما سایت را متناسب با نوع فعالیت، مخاطبان و اهداف کسب‌وکار شما طراحی و توسعه می‌کنیم.</p></div></section>
 
     <section id="types" className="container wd-section wd-types" aria-labelledby="gorgan-types-title" data-wd-reveal><div className="wd-section-heading"><div><h2 id="gorgan-types-title">چه نوع سایت‌هایی طراحی می‌کنیم؟</h2></div></div><div className="wd-type-grid">{services.map(({title,icon},index)=><article className="wd-type" key={title}><div className="wd-type-head"><span className="wd-icon"><Icon name={icon} size={21}/></span><span className="wd-index" aria-hidden="true">{String(index+1).padStart(2,'0')}</span></div><h3>{title}</h3></article>)}</div></section>
+
+    <PricingPreview location="web-design-gorgan-pricing" headingId="gorgan-pricing-title"/>
 
     <section id="deliverables" className="wd-deliverables" aria-labelledby="gorgan-advantages-title"><div className="container wd-deliverables-layout" data-wd-reveal><div className="wd-deliverables-copy"><h2 id="gorgan-advantages-title">یک سایت حرفه‌ای چه ویژگی‌هایی دارد؟</h2></div><div className="wd-deliverables-list">{advantages.map(({title,icon},index)=><article className="wd-deliverable" key={title}><span className="wd-deliverable-icon"><Icon name={icon} size={20}/></span><span className="wd-deliverable-number" aria-hidden="true">{String(index+1).padStart(2,'0')}</span><div><h3>{title}</h3></div></article>)}</div></div></section>
 

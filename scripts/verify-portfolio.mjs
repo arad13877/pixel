@@ -23,7 +23,9 @@ try {
   assert.ok(await page.getByText('کانسپت نمایشی پیکسل؛ کلینیک واقعی نیست').isVisible());
   assert.ok(await page.getByText('کانسپت نمایشی پیکسل؛ برند واقعی نیست').isVisible());
   assert.ok(await page.getByText('کانسپت نمایشی پیکسل؛ کسب‌وکار واقعی نیست').isVisible());
-  assert.deepEqual(await page.getByRole('link', { name: 'مشاهده لندینگ', exact: true }).evaluateAll(links => links.map(link => link.getAttribute('href'))), ['/portfolio/nilora/', '/portfolio/veloma/', '/portfolio/zero-line/']);
+  assert.ok(await page.getByRole('heading', { level: 2, name: /کافه روما/ }).isVisible());
+  assert.ok(await page.getByText('کانسپت نمایشی پیکسل؛ کافهٔ واقعی نیست').isVisible());
+  assert.deepEqual(await page.getByRole('link', { name: 'مشاهده لندینگ', exact: true }).evaluateAll(links => links.map(link => link.getAttribute('href'))), ['/portfolio/nilora/', '/portfolio/veloma/', '/portfolio/zero-line/', '/portfolio/roma/']);
 
   for (const width of [360, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
@@ -60,6 +62,7 @@ try {
   assert.ok(await noScript.getByRole('heading', { level: 2, name: /نیلورا/ }).isVisible());
   assert.ok(await noScript.getByRole('heading', { level: 2, name: /وِلوما/ }).isVisible());
   assert.ok(await noScript.getByRole('heading', { level: 2, name: /لاین صفر/ }).isVisible());
+  assert.ok(await noScript.getByRole('heading', { level: 2, name: /کافه روما/ }).isVisible());
   assert.match(await noScript.locator('[data-contact-location="portfolio-hero"]').getAttribute('href'), /^https:\/\/wa\.me\//);
   report.links.push('Static content and CTA without JavaScript');
   await noScriptContext.close();

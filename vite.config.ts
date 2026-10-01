@@ -6,6 +6,7 @@ import App from './src/App';
 import NiloraPage from './src/NiloraPage';
 import VelomaPage from './src/VelomaPage';
 import ZeroLinePage from './src/ZeroLinePage';
+import RomaPage from './src/RomaPage';
 import { articles } from './src/articles.generated';
 import { resolve } from 'node:path';
 import { cp, mkdir, rm, writeFile } from 'node:fs/promises';
@@ -34,7 +35,7 @@ function archiveSchema() {
 }
 
 function sitemap() {
-  const staticUrls = ['/', '/web-design/', '/web-design-gorgan/', '/portfolio/', '/request/', '/articles/'];
+  const staticUrls = ['/', '/web-design/', '/web-design-gorgan/', '/web-design-doctors-gorgan/', '/web-design-company-gorgan/', '/web-design-restaurant-gorgan/', '/web-design-price-gorgan/', '/website-support-gorgan/', '/pricing/', '/portfolio/', '/request/', '/articles/'];
   const urls = [...staticUrls.map(path => `<url><loc>https://pxlgrid.design${path}</loc></url>`), ...articles.map(article => `<url><loc>https://pxlgrid.design/articles/${article.slug}/</loc><lastmod>${(article.modifiedAt || article.publishedAt).slice(0, 10)}</lastmod></url>`)];
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  ${urls.join('\n  ')}\n</urlset>\n`;
 }
@@ -58,9 +59,10 @@ export default defineConfig({
         const nilora = context.path.startsWith('/portfolio/nilora/');
         const veloma = context.path.startsWith('/portfolio/veloma/');
         const zeroLine = context.path.startsWith('/portfolio/zero-line/');
+        const roma = context.path.startsWith('/portfolio/roma/');
         const articleMatch = context.path.match(/^\/(?:\.generated\/)?articles\/([^/]+)(?:\/|\/index\.html)/);
-        const page = articleMatch ? 'article' : context.path.startsWith('/articles') ? 'articles' : context.path.startsWith('/web-design-gorgan') ? 'web-design-gorgan' : context.path.startsWith('/web-design') ? 'web-design' : context.path.startsWith('/portfolio') ? 'portfolio' : context.path.startsWith('/request') ? 'request' : 'home';
-        let output = html.replace('<!--app-html-->', renderToString(nilora ? createElement(NiloraPage) : veloma ? createElement(VelomaPage) : zeroLine ? createElement(ZeroLinePage) : createElement(App, { page, articleSlug: articleMatch?.[1] })));
+        const page = articleMatch ? 'article' : context.path.startsWith('/articles') ? 'articles' : context.path.startsWith('/website-support-gorgan') ? 'website-support-gorgan' : context.path.startsWith('/web-design-restaurant-gorgan') ? 'restaurant-web-design-gorgan' : context.path.startsWith('/web-design-price-gorgan') ? 'web-design-price-gorgan' : context.path.startsWith('/web-design-company-gorgan') ? 'corporate-web-design-gorgan' : context.path.startsWith('/web-design-doctors-gorgan') ? 'doctor-web-design-gorgan' : context.path.startsWith('/web-design-gorgan') ? 'web-design-gorgan' : context.path.startsWith('/web-design') ? 'web-design' : context.path.startsWith('/pricing') ? 'pricing' : context.path.startsWith('/portfolio') ? 'portfolio' : context.path.startsWith('/request') ? 'request' : 'home';
+        let output = html.replace('<!--app-html-->', renderToString(nilora ? createElement(NiloraPage) : veloma ? createElement(VelomaPage) : zeroLine ? createElement(ZeroLinePage) : roma ? createElement(RomaPage) : createElement(App, { page, articleSlug: articleMatch?.[1] })));
         if (articleMatch) output = output.replace('<!--article-meta-->', articleMetadata(articleMatch[1]));
         if (page === 'articles') output = output.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/, `<script type="application/ld+json">${archiveSchema()}</script>`);
         return output;
@@ -98,10 +100,17 @@ export default defineConfig({
         home: resolve(import.meta.dirname, 'index.html'),
         webDesign: resolve(import.meta.dirname, 'web-design/index.html'),
         webDesignGorgan: resolve(import.meta.dirname, 'web-design-gorgan/index.html'),
+        doctorWebDesignGorgan: resolve(import.meta.dirname, 'web-design-doctors-gorgan/index.html'),
+        corporateWebDesignGorgan: resolve(import.meta.dirname, 'web-design-company-gorgan/index.html'),
+        webDesignPriceGorgan: resolve(import.meta.dirname, 'web-design-price-gorgan/index.html'),
+        websiteSupportGorgan: resolve(import.meta.dirname, 'website-support-gorgan/index.html'),
+        restaurantWebDesignGorgan: resolve(import.meta.dirname, 'web-design-restaurant-gorgan/index.html'),
+        pricing: resolve(import.meta.dirname, 'pricing/index.html'),
         portfolio: resolve(import.meta.dirname, 'portfolio/index.html'),
         nilora: resolve(import.meta.dirname, 'portfolio/nilora/index.html'),
         veloma: resolve(import.meta.dirname, 'portfolio/veloma/index.html'),
         zeroLine: resolve(import.meta.dirname, 'portfolio/zero-line/index.html'),
+        roma: resolve(import.meta.dirname, 'portfolio/roma/index.html'),
         request: resolve(import.meta.dirname, 'request/index.html'),
         articles: resolve(import.meta.dirname, 'articles/index.html'),
         ...articleInputs,

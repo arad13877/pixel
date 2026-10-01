@@ -4,6 +4,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import assert from 'node:assert/strict';
 
 const base = process.env.PIXEL_TEST_URL || 'http://127.0.0.1:4173';
+const expectedArticleCount = Number(process.env.PIXEL_EXPECTED_ARTICLE_COUNT || 3);
 const browser = await chromium.launch({ executablePath: process.env.PIXEL_BROWSER_PATH || 'C:/Program Files/Google/Chrome/Application/chrome.exe', headless: true });
 const report = { routes: [], viewports: [], interactions: [], violations: [], errors: [] };
 const articleRoutes = [
@@ -25,11 +26,11 @@ try {
   assert.equal(await page.title(), 'مقالات طراحی سایت و هوش مصنوعی | مجله پیکسل');
   assert.equal(await page.locator('main h1').count(), 1);
   assert.match(await page.locator('h1').innerText(), /ایده‌هایی برای ساختن کسب‌وکاری/);
-  assert.equal(await page.locator('.articles-list .article-card').count(), 3);
+  assert.equal(await page.locator('.articles-list .article-card').count(), expectedArticleCount);
   assert.equal(await page.locator('script[type="application/ld+json"]').count(), 1);
   const archiveSchema = JSON.parse(await page.locator('script[type="application/ld+json"]').textContent());
   assert.equal(archiveSchema['@type'], 'ItemList');
-  assert.equal(archiveSchema.itemListElement.length, 3);
+  assert.equal(archiveSchema.itemListElement.length, expectedArticleCount);
   const archiveNav = page.getByRole('navigation', { name: 'ناوبری اصلی' });
   assert.equal(await archiveNav.getByRole('link', { name: 'مقالات' }).getAttribute('aria-current'), 'page');
   assert.equal(await archiveNav.getByRole('link', { name: 'مقالات' }).getAttribute('href'), '/articles/');
@@ -57,7 +58,7 @@ try {
     assert.ok(sectionCount >= 8, `${slug} needs at least 8 content sections`);
     assert.equal(await page.locator('.article-toc a').count(), sectionCount);
     assert.equal(await page.locator('.article-sources a').count(), 3);
-    assert.equal(await page.locator('.related-articles .article-card').count(), 2);
+    assert.equal(await page.locator('.related-articles .article-card').count(), expectedArticleCount - 1);
     assert.match(await page.locator('.article-inline-cta a').getAttribute('href'), /^https:\/\/wa\.me\/989937825753\?text=/);
     const wordCount = (await page.locator('.article-body').innerText()).split(/\s+/).filter(Boolean).length;
     assert.ok(wordCount >= 1000, `${slug} is too short: ${wordCount} words`);

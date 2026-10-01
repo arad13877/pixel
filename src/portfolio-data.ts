@@ -10,7 +10,7 @@ export interface PortfolioPayload {
   label: string;
   service: string;
   conceptNote: string;
-  theme: 'mint' | 'sand' | 'carbon' | 'client';
+  theme: 'mint' | 'sand' | 'carbon' | 'coffee' | 'client';
 }
 
 export interface PublishedPortfolioItem {
@@ -32,5 +32,9 @@ export const portfolioFixtures: PublishedPortfolioItem[] = [
   {
     id: '20000000-0000-0000-0000-000000000003', kind: 'concept', sortOrder: 30,
     payload: { title: 'لاین صفر؛', subtitle: 'جزئیات، اتفاقی نیستند.', description: 'یک لندینگ فارسی برای استودیوی فرضی دیتیلینگ خودرو؛ با تصویرپردازی صنعتی، خدمات پیشنهادی و مسیر روشن درخواست نمایشی.', link: '/portfolio/zero-line/', imagePath: '/images/zero-line/hero.jpg', imageAlt: 'خودروی تیرهٔ بی‌نشان در استودیوی صنعتی با نور لیمویی', imageWidth: 1672, imageHeight: 941, label: 'ZERO LINE / DETAILING CONCEPT', service: 'طراحی لندینگ', conceptNote: 'کانسپت نمایشی پیکسل؛ کسب‌وکار واقعی نیست', theme: 'carbon' },
+  },
+  {
+    id: '20000000-0000-0000-0000-000000000004', kind: 'concept', sortOrder: 40,
+    payload: { title: 'کافه روما؛', subtitle: 'کمی مکث، کمی روما.', description: 'یک لندینگ فارسی برای کافه‌ای فرضی در گرگان؛ با هویت گرم و ادیتوریال، تصاویر اختصاصی، منوی قابل فیلتر و تجربهٔ نمایشی رزرو میز.', link: '/portfolio/roma/', imagePath: '/images/roma/interior.jpg', imageAlt: 'فضای پیشنهادی کافه روما با چوب گردویی، صندلی زیتونی و نور طبیعی', imageWidth: 1536, imageHeight: 1024, label: 'ROMA / CAFÉ CONCEPT', service: 'طراحی لندینگ', conceptNote: 'کانسپت نمایشی پیکسل؛ کافهٔ واقعی نیست', theme: 'coffee' },
   },
 ];

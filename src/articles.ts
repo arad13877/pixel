@@ -20,6 +20,7 @@ export type ArticleRecord = {
   publishedAt: string;
   publishedLabel: string;
   readingMinutes: string;
+  readingMinutesValue?: number;
   cover: 'signal' | 'layers' | 'orbit';
   coverData?: ArticleCover;
   authorName?: string;

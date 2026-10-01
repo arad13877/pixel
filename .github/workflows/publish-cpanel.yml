@@ -1,0 +1,55 @@
+name: Publish public site to cPanel
+run-name: Public site · ${{ inputs.source }} · ${{ inputs.action }}
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        type: string
+        default: manual
+      record_id:
+        type: string
+        default: ''
+      action:
+        type: string
+        default: rebuild
+      dry_run:
+        type: boolean
+        default: true
+permissions:
+  contents: read
+concurrency:
+  group: pixel-public-site-production
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      ARTICLE_DATA_MODE: supabase
+      PORTFOLIO_DATA_MODE: supabase
+      SITE_SUPABASE_URL: https://xyhrscvywupxfinwxdup.supabase.co
+      SITE_SUPABASE_PUBLISHABLE_KEY: sb_publishable_jGS2YpxFonxwDopRE-1GQg_Vd4g8bbN
+      VITE_SUPABASE_URL: https://xyhrscvywupxfinwxdup.supabase.co
+      VITE_SUPABASE_PUBLISHABLE_KEY: sb_publishable_jGS2YpxFonxwDopRE-1GQg_Vd4g8bbN
+      VITE_TURNSTILE_SITE_KEY: ${{ vars.SITE_TURNSTILE_SITE_KEY }}
+      VERCEL_ENV: production
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: codex/cpanel-publication
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22.16.0'
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Validate public artifact
+        run: node scripts/verify-site-artifact.mjs
+      - name: Upload public website only
+        if: ${{ !inputs.dry_run }}
+        env:
+          FTPS_HOST: ${{ secrets.SITE_FTPS_HOST }}
+          FTPS_USERNAME: ${{ secrets.SITE_FTPS_USERNAME }}
+          FTPS_PASSWORD: ${{ secrets.SITE_FTPS_PASSWORD }}
+        run: python3 scripts/deploy-public-ftps.py

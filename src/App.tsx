@@ -5,10 +5,16 @@ import AgentSection from './AgentSection';
 import { faqs } from './content';
 import WebDesignPage from './WebDesignPage';
 import WebDesignGorganPage from './WebDesignGorganPage';
+import DoctorWebDesignGorganPage from './DoctorWebDesignGorganPage';
+import CorporateWebDesignGorganPage from './CorporateWebDesignGorganPage';
 import PortfolioPage from './PortfolioPage';
 import LiquidGlassMaterial from './LiquidGlassMaterial';
 import { ArticleDetailPage, ArticlesIndexPage } from './ArticlesPage';
 import RequestPage from './RequestPage';
+import PricingPage from './PricingPage';
+import WebDesignPriceGorganPage from './WebDesignPriceGorganPage';
+import WebsiteSupportGorganPage from './WebsiteSupportGorganPage';
+import RestaurantWebDesignGorganPage from './RestaurantWebDesignGorganPage';
 
 function Brand({ href = '#' }: { href?: string }) { return <a className="brand" href={href} aria-label="پیکسل PIXEL STUDIO، ابتدای صفحه"><span className="brand-symbol" aria-hidden="true"><i/><i/><i/><i/></span><span>پیکسل<span className="brand-latin">PIXEL STUDIO</span></span></a>; }
 
@@ -52,11 +58,17 @@ const homePrinciples: { number: string; icon: IconName; label: string }[] = [
   { number: '04', icon: 'spark', label: 'آماده برای قدم بعدی' },
 ];
 
-export default function App({ page = 'home', articleSlug }: { page?: 'home' | 'web-design' | 'web-design-gorgan' | 'portfolio' | 'articles' | 'article' | 'request'; articleSlug?: string }) {
+export default function App({ page = 'home', articleSlug }: { page?: 'home' | 'web-design' | 'web-design-gorgan' | 'doctor-web-design-gorgan' | 'corporate-web-design-gorgan' | 'restaurant-web-design-gorgan' | 'web-design-price-gorgan' | 'website-support-gorgan' | 'pricing' | 'portfolio' | 'articles' | 'article' | 'request'; articleSlug?: string }) {
   const home = page === 'home';
   const webDesign = page === 'web-design';
   const gorgan = page === 'web-design-gorgan';
-  const webDesignLanding = webDesign || gorgan;
+  const doctorGorgan = page === 'doctor-web-design-gorgan';
+  const corporateGorgan = page === 'corporate-web-design-gorgan';
+  const restaurantGorgan = page === 'restaurant-web-design-gorgan';
+  const priceGorgan = page === 'web-design-price-gorgan';
+  const supportGorgan = page === 'website-support-gorgan';
+  const pricing = page === 'pricing' || priceGorgan;
+  const webDesignLanding = webDesign || gorgan || doctorGorgan || corporateGorgan || restaurantGorgan;
   const portfolio = page === 'portfolio';
   const articlesIndex = page === 'articles';
   const articleDetail = page === 'article';
@@ -64,6 +76,7 @@ export default function App({ page = 'home', articleSlug }: { page?: 'home' | 'w
   const articlesPage = articlesIndex || articleDetail;
   const navItems = [
     { href: webDesignLanding ? '#types' : '/web-design/', label: 'طراحی سایت', current: webDesignLanding },
+    { href: '/pricing/', label: 'تعرفه‌ها', current: pricing },
     { href: '/portfolio/', label: 'نمونه‌کارها', current: portfolio },
     { href: home ? '#agents' : '/#agents', label: 'ایجنت‌های هوش مصنوعی', badge: true },
     { href: '/articles/', label: 'مقالات', current: articlesPage },
@@ -344,7 +357,7 @@ export default function App({ page = 'home', articleSlug }: { page?: 'home' | 'w
   }, []);
   return <>
     <a className="skip-link" href="#main">رفتن به محتوای اصلی</a>
-    {(home || webDesignLanding || articlesPage) && <HeroContours/>}
+    {(home || webDesignLanding || supportGorgan || articlesPage) && <HeroContours/>}
     <header ref={header} className="header" data-hidden={headerHidden}>
       <nav className="nav glass liquid-glass" aria-label="ناوبری اصلی">
         <LiquidGlassMaterial/>
@@ -355,7 +368,7 @@ export default function App({ page = 'home', articleSlug }: { page?: 'home' | 'w
       <nav id="mobile-menu" hidden={!menuOpen} className="mobile-menu glass" aria-label="منوی موبایل">{navItems.map(({href,label,current})=><a key={label} href={href} aria-current={current ? 'page' : undefined} onClick={()=>setMenuOpen(false)}>{label}<Icon name="arrow" size={16}/></a>)}</nav>
     </header>
     <main id="main">
-      {request ? <RequestPage/> : articleDetail ? <ArticleDetailPage slug={articleSlug}/> : articlesIndex ? <ArticlesIndexPage/> : portfolio ? <PortfolioPage/> : webDesign ? <WebDesignPage /> : gorgan ? <WebDesignGorganPage/> : <div className="home-page">
+      {request ? <RequestPage/> : articleDetail ? <ArticleDetailPage slug={articleSlug}/> : articlesIndex ? <ArticlesIndexPage/> : portfolio ? <PortfolioPage/> : webDesign ? <WebDesignPage /> : gorgan ? <WebDesignGorganPage/> : doctorGorgan ? <DoctorWebDesignGorganPage/> : corporateGorgan ? <CorporateWebDesignGorganPage/> : restaurantGorgan ? <RestaurantWebDesignGorganPage/> : priceGorgan ? <WebDesignPriceGorganPage/> : supportGorgan ? <WebsiteSupportGorganPage/> : pricing ? <PricingPage/> : <div className="home-page">
       <section ref={heroRef} className="hero container" aria-labelledby="hero-title"><span className="hero-studio-mark" lang="en" dir="ltr" aria-hidden="true">PIXEL / 01</span><div className="hero-copy"><span className="eyebrow"><span className="blue-dot"/> یک شروع تازه برای کسب‌وکارت</span><h1 id="hero-title">کسب‌وکارت،<br/>یک <span className="blue-word">سایت حرفه‌ای<svg viewBox="0 0 340 16" preserveAspectRatio="none" aria-hidden="true"><path d="M3 12Q150-5 335 8"/></svg></span><br/>کم دارد.</h1><p className="hero-description">ایده و تخصص از تو؛ یک حضور حرفه‌ای در دنیای آنلاین از ما. سایتی می‌سازیم که کسب‌وکارت را درست معرفی کند و راه ارتباط با مشتری‌هایت باشد.</p><div className="hero-actions"><Contact className="primary" location="hero" id="hero-contact">درباره سایتم صحبت کنیم</Contact><a href="/request/" className="text-link">ثبت درخواست پروژه <Icon name="arrow" size={18}/></a></div><div className="hero-footnotes"><span><Icon name="check" size={16}/>طراحی متناسب با برند تو</span><span><Icon name="check" size={16}/>از اولین ایده تا انتشار</span></div></div>
       <div className="hero-art"><span className="hero-cobalt-shape" aria-hidden="true"/><div className="art-orbit orbit-one"/><div className="art-orbit orbit-two"/><span className="hero-path-node" aria-hidden="true"/><div className="floating-tag glass"><span className="tag-icon"><Icon name="layers" size={18}/></span><span>طراحی فکرشده.<br/><strong>برای کسب‌وکار تو.</strong></span><span className="tag-spark">✦</span></div><MockSite/><MockSite phone/><div className="responsive-tag glass"><span className="mini-devices" aria-hidden="true">▣</span><span>یک تجربه خوب،<br/><strong>در هر اندازه.</strong></span><span className="green-check"><Icon name="check" size={13}/></span></div><span className="demo-label">نمونه نمایشی طراحی پیکسل <span>↗</span></span></div>
       </section>
@@ -375,7 +388,7 @@ export default function App({ page = 'home', articleSlug }: { page?: 'home' | 'w
       </div>}
     </main>
     <footer className="container footer"><div className="footer-top"><Brand href={home ? '#' : '/'}/><p>طراحی برای امروز. هوشمند برای فردا.</p><a className="back-top" href="#">بازگشت به بالا <Icon name="arrow" size={15}/></a></div><div className="footer-bottom"><span>پیکسل؛ طراحی سایت و ایجنت‌های هوش مصنوعی</span><a href="https://wa.me/989937825753" target="_blank" rel="noopener noreferrer" data-contact-location="footer" data-contact-service="عمومی"><span>واتساپ</span> <bdi>+98 993 782 5753</bdi></a><span lang="en" dir="ltr">Made with purpose. Built by Pixel.</span></div></footer>
-    {stickyVisible && <aside className="sticky-contact glass" aria-label="گفتگو درباره طراحی سایت"><span>{gorgan ? 'طراحی سایت در گرگان' : webDesign ? 'مشاوره رایگان طراحی سایت' : 'یک شروع حرفه‌ای'}{!webDesignLanding && <><br/><small>برای کسب‌وکار تو</small></>}</span><Contact className="primary" location={gorgan ? 'web-design-gorgan-mobile-sticky' : webDesign ? 'web-design-mobile-sticky' : 'sticky'} service={gorgan ? 'طراحی سایت در گرگان' : webDesign ? 'طراحی سایت و مشاوره اولیه رایگان' : 'طراحی سایت'}>{gorgan ? 'درخواست مشاوره' : webDesign ? 'شروع گفتگو' : 'گفتگو در واتساپ'}</Contact></aside>}
+    {stickyVisible && <aside className="sticky-contact glass" aria-label={supportGorgan ? 'گفتگو درباره پشتیبانی سایت' : 'گفتگو درباره طراحی سایت'}><span>{restaurantGorgan ? 'طراحی سایت رستوران در گرگان' : supportGorgan ? 'پشتیبانی سایت در گرگان' : priceGorgan ? 'قیمت طراحی سایت در گرگان' : corporateGorgan ? 'طراحی سایت شرکتی در گرگان' : doctorGorgan ? 'طراحی سایت پزشکان در گرگان' : gorgan ? 'طراحی سایت در گرگان' : webDesign ? 'مشاوره رایگان طراحی سایت' : 'یک شروع حرفه‌ای'}{!webDesignLanding && !priceGorgan && !supportGorgan && <><br/><small>برای کسب‌وکار تو</small></>}</span><Contact className="primary" location={restaurantGorgan ? 'restaurant-gorgan-mobile-sticky' : supportGorgan ? 'support-gorgan-mobile-sticky' : priceGorgan ? 'price-gorgan-mobile-sticky' : corporateGorgan ? 'corporate-gorgan-mobile-sticky' : doctorGorgan ? 'doctor-gorgan-mobile-sticky' : gorgan ? 'web-design-gorgan-mobile-sticky' : webDesign ? 'web-design-mobile-sticky' : 'sticky'} service={restaurantGorgan ? 'طراحی سایت رستوران در گرگان' : supportGorgan ? 'پشتیبانی سایت در گرگان' : priceGorgan ? 'برآورد قیمت طراحی سایت در گرگان' : corporateGorgan ? 'طراحی سایت شرکتی در گرگان' : doctorGorgan ? 'طراحی سایت پزشکان در گرگان' : gorgan ? 'طراحی سایت در گرگان' : webDesign ? 'طراحی سایت و مشاوره اولیه رایگان' : 'طراحی سایت'}>{restaurantGorgan ? 'دریافت مشاوره طراحی سایت رستوران' : supportGorgan ? 'دریافت مشاوره پشتیبانی سایت' : priceGorgan ? 'دریافت برآورد قیمت طراحی سایت' : corporateGorgan ? 'مشاوره و برآورد طراحی سایت شرکتی' : doctorGorgan ? 'دریافت مشاوره برای طراحی سایت پزشک' : gorgan ? 'درخواست مشاوره' : webDesign ? 'شروع گفتگو' : 'گفتگو در واتساپ'}</Contact></aside>}
   </>;
 }
 

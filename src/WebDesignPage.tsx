@@ -1,6 +1,7 @@
 import { Contact } from './Contact';
 import { Icon, type IconName } from './Icons';
 import WebDesignHeroArt from './WebDesignHeroArt';
+import { PricingPreview } from './PricingCards';
 
 const websiteTypes: { title: string; description: string; icon: IconName }[] = [
   { title: 'وب‌سایت شرکتی', description: 'برند، خدمات و راه‌های ارتباطی را حرفه‌ای معرفی کن تا مشتری با اطمینان بیشتری تو را انتخاب کند.', icon: 'globe' },
@@ -63,6 +64,8 @@ export default function WebDesignPage() {
     <section className="wd-trust" aria-labelledby="wd-trust-title" data-wd-reveal><div className="container wd-trust-inner"><div><span className="wd-section-index">01 / نقطه شروع</span><h2 id="wd-trust-title">سایت فقط ویترین نیست؛<br/><span>شروع اعتماد مشتری است.</span></h2></div><p>وقتی مشتری نام کسب‌وکارت را جستجو می‌کند، سایت باید سریع به سه سؤال جواب بدهد: چه کاری انجام می‌دهی، چرا می‌تواند به تو اعتماد کند و چطور باید با تو تماس بگیرد.</p><div className="wd-trust-points"><span><Icon name="check" size={16}/> معرفی روشن خدمات</span><span><Icon name="check" size={16}/> تصویر حرفه‌ای از برند</span><span><Icon name="check" size={16}/> دسترسی سریع به تماس</span></div></div></section>
 
     <section id="types" className="container wd-section wd-types" aria-labelledby="wd-types-title" data-wd-reveal><div className="wd-section-heading"><div><span className="wd-section-index">02 / متناسب با نیاز تو</span><h2 id="wd-types-title">چه نوع وب‌سایتی<br/><span>برای کسب‌وکارت مناسب است؟</span></h2></div><p>نوع سایت را از روی مد روز انتخاب نمی‌کنیم؛ هدف، مخاطب و مسیر واقعی مشتری مشخص می‌کند چه چیزی باید ساخته شود.</p></div><div className="wd-type-grid">{websiteTypes.map(({title,description,icon},index)=><article className="wd-type" key={title}><div className="wd-type-head"><span className="wd-icon"><Icon name={icon} size={21}/></span><span className="wd-index" aria-hidden="true">{String(index+1).padStart(2,'0')}</span></div><h3>{title}</h3><p>{description}</p></article>)}</div></section>
+
+    <PricingPreview location="web-design-pricing" headingId="wd-pricing-title"/>
 
     <section id="deliverables" className="wd-deliverables" aria-labelledby="wd-deliverables-title"><div className="container wd-deliverables-layout" data-wd-reveal><div className="wd-deliverables-copy"><span className="wd-section-index">03 / خروجی روشن</span><h2 id="wd-deliverables-title">در پایان چه<br/><span>تحویل می‌گیری؟</span></h2><p>خروجی پروژه فقط چند صفحه زیبا نیست؛ یک ابزار کامل و آماده استفاده برای حضور حرفه‌ای کسب‌وکارت است.</p><Contact glass className="wd-deliverables-contact" location="web-design-deliverables" service="طراحی سایت و مشاوره اولیه رایگان">درباره پروژه‌ام صحبت کنیم</Contact></div><div className="wd-deliverables-list">{deliverables.map(({title,description,icon},index)=><article className="wd-deliverable" key={title}><span className="wd-deliverable-icon"><Icon name={icon} size={20}/></span><span className="wd-deliverable-number" aria-hidden="true">{String(index+1).padStart(2,'0')}</span><div><h3>{title}</h3><p>{description}</p></div></article>)}</div></div></section>
 

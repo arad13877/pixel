@@ -4,7 +4,7 @@ import type { PublishedPortfolioItem } from './portfolio-data';
 export default function PortfolioCard({ item, index }: { item: PublishedPortfolioItem; index: number }) {
   const { payload } = item;
   const headingId = `portfolio-${item.id}-title`;
-  return <article className={`portfolio-project${payload.theme === 'sand' ? ' portfolio-project-fashion' : ''}${payload.theme === 'carbon' ? ' portfolio-project-carbon' : ''}${item.kind === 'client' ? ' portfolio-project-client' : ''}`} aria-labelledby={headingId}>
+  return <article className={`portfolio-project${payload.theme === 'sand' ? ' portfolio-project-fashion' : ''}${payload.theme === 'carbon' ? ' portfolio-project-carbon' : ''}${payload.theme === 'coffee' ? ' portfolio-project-coffee' : ''}${item.kind === 'client' ? ' portfolio-project-client' : ''}`} aria-labelledby={headingId}>
     <a className="portfolio-project-visual" href={payload.link} aria-label={`مشاهده ${item.kind === 'concept' ? 'لندینگ نمایشی' : 'نمونه‌کار'} ${payload.title}`}>
       <img src={payload.imagePath} alt={payload.imageAlt} width={payload.imageWidth} height={payload.imageHeight} loading={index > 0 ? 'lazy' : undefined}/>
       {payload.label && <span className="portfolio-project-visual-label" lang="en" dir="ltr">{payload.label}</span>}

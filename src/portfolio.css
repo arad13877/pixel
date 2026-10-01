@@ -118,6 +118,14 @@
 .portfolio-project-carbon .portfolio-project-copy>p{color:#c1cec0}
 .portfolio-project-carbon .portfolio-project-link{border-color:#a1bf69;color:#e0f4b2}
 .portfolio-project-client{background:#f2f6fd;border-color:#dbe5f3}
+.portfolio-project-coffee{margin-top:30px;background:#f5f0e7;border-color:#d8d3c5}
+.portfolio-project-coffee .portfolio-project-visual{background:#cbb798}
+.portfolio-project-coffee .portfolio-project-index{color:#596448}
+.portfolio-project-coffee .portfolio-demo-badge{border-color:#bbc5a7;background:#e5e8d9;color:#45513b}
+.portfolio-project-coffee .portfolio-project-copy h2{color:#302e27}
+.portfolio-project-coffee .portfolio-project-copy h2 span{color:#566346}
+.portfolio-project-coffee .portfolio-project-copy>p{color:#646951}
+.portfolio-project-coffee .portfolio-project-link{border-color:#737d5c;color:#3e4a38}
 .portfolio-project-client .portfolio-project-visual{background:#e3ebf8}
 .portfolio-project-client .portfolio-project-index{color:#4a6592}
 .portfolio-project-client .portfolio-project-copy h2{color:#101c35}
@@ -146,6 +154,7 @@
   .portfolio-project-copy h2{margin-top:20px}
   .portfolio-project-fashion{margin-top:22px}
   .portfolio-project-carbon{margin-top:22px}
+  .portfolio-project-coffee{margin-top:22px}
 }
 
 @media (max-width: 390px) {

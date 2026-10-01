@@ -132,6 +132,34 @@
 
 @media(max-width:760px){.wd-gorgan-page .wd-deliverable:last-child{min-height:0}}
 
+.wd-local-service-page .wd-hero{grid-template-columns:1fr;min-height:0;padding-top:92px;padding-bottom:112px}
+.wd-local-service-page .wd-hero-copy{max-width:830px}
+.wd-local-service-page .wd-hero h1{max-width:none}
+.wd-local-service-page .wd-local-service-lead{color:var(--wd-navy);font-size:clamp(1.2rem,2.1vw,1.7rem);font-weight:650;line-height:1.7}
+.wd-local-service-page .wd-hero-copy>p:not(.wd-local-service-lead){max-width:780px}
+.wd-local-service-page .wd-trust-inner>div>p,.wd-doctor-prose p,.wd-support-prose p,.wd-restaurant-prose p{margin:0 0 13px;color:#627087;font-size:.93rem;line-height:2.1}
+.wd-local-service-page .wd-trust-points{list-style:none;margin:0;padding-inline-start:0}
+.wd-local-service-page .wd-trust-points li{display:flex;align-items:flex-start;gap:8px;line-height:1.9}
+.wd-local-service-page .wd-trust-points li svg{margin-top:5px;flex:none;color:var(--wd-blue)}
+.wd-local-service-page .wd-deliverable:last-child{grid-column:auto;min-height:205px}
+.wd-doctor-page .wd-doctor-prose .wd-text-link{margin-top:9px}
+.wd-local-service-page .wd-contact .wd-actions{justify-content:center}
+.wd-local-service-page .wd-local-service-after-grid{margin:25px 0 0;color:#627087;font-size:.93rem;line-height:2.1}
+.wd-support-page .wd-trust-inner .button,.wd-support-page .wd-support-prose .button{margin-top:12px}
+.wd-support-page .wd-contact .wd-actions{justify-content:center}
+.wd-local-related{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 26px;padding-bottom:70px}
+.wd-local-related .wd-text-link{min-height:42px}
+.wd-restaurant-prose .button{margin-top:12px}
+@media(max-width:760px){
+  .wd-local-service-page .wd-hero{padding-top:53px;padding-bottom:74px}
+  .wd-local-service-page .wd-hero-copy{max-width:none}
+  .wd-local-service-page .wd-hero h1{font-size:clamp(2rem,8vw,3rem)}
+  .wd-local-service-page .wd-local-service-lead{font-size:1.16rem}
+  .wd-local-service-page .wd-hero .button{max-width:100%;text-align:center;white-space:normal}
+  .wd-local-service-page .wd-deliverable:last-child{min-height:0}
+  .wd-local-related{justify-content:flex-start;gap:2px 17px;padding-bottom:56px}
+}
+
 @media(prefers-reduced-motion:reduce){
   .web-design-page *,.web-design-page *::before,.web-design-page *::after{transition:none!important}
   .web-design-page [data-wd-reveal],.web-design-page .wd-process-fill{opacity:1!important;transform:none!important}
