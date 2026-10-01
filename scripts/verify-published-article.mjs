@@ -5,6 +5,7 @@ import AxeBuilder from '@axe-core/playwright';
 
 const slug = 'crm-upload-check-20261001';
 const route = `/articles/${slug}/`;
+const base = process.env.PIXEL_TEST_URL || 'http://127.0.0.1:4173';
 const browser = await chromium.launch({ executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe', headless: true });
 try {
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
@@ -12,8 +13,8 @@ try {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   page.on('requestfailed', request => console.error('Request failed:', request.url(), request.failure()?.errorText));
-  page.on('console', message => { if(message.type() === 'error') console.error(message.text()); });
-  const response = await page.goto(`http://127.0.0.1:4173${route}`, { waitUntil: 'domcontentloaded' });
+  page.on('console', message => { if(message.type() === 'error') errors.push(message.text()); });
+  const response = await page.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' });
   assert.equal(response.status(), 200);
   assert.match(await page.locator('h1').innerText(), /آزمون فنی ذخیره مقاله/);
   assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), `https://pxlgrid.design${route}`);
@@ -33,12 +34,13 @@ try {
   const audit = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
   assert.deepEqual(audit.violations, []);
   assert.deepEqual(errors, []);
-  await page.screenshot({ path: 'outputs/site-production/article-publication-preview.jpg', fullPage: true });
+  await page.screenshot({ path: `outputs/site-production/article-publication-${process.env.PIXEL_TEST_URL ? 'live' : 'preview'}.jpg`, fullPage: true });
   const noJs = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } });
   const staticPage = await noJs.newPage();
-  await staticPage.goto(`http://127.0.0.1:4173${route}`);
+  await staticPage.goto(`${base}${route}`);
   assert.match(await staticPage.locator('.article-body').innerText(), /پیش‌نویس آزمایشی/);
-  assert.match(await readFile('dist/sitemap.xml', 'utf8'), new RegExp(slug));
-  assert.ok((await readFile(`dist${route}index.html`, 'utf8')).includes('application/ld+json'));
+  const sitemap = process.env.PIXEL_TEST_URL ? await (await context.request.get(`${base}/sitemap.xml`)).text() : await readFile('dist/sitemap.xml', 'utf8');
+  assert.match(sitemap, new RegExp(slug));
+  assert.ok((await staticPage.content()).includes('application/ld+json'));
   console.log('PASS: new published article, Production cover, SSR/no-JS, canonical/JSON-LD/sitemap, mobile and axe.');
 } finally { await browser.close(); }
