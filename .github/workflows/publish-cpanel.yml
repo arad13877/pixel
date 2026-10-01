@@ -49,6 +49,10 @@ jobs:
       - run: npm run build
       - name: Validate public artifact
         run: node scripts/verify-site-artifact.mjs
+      - name: Test publication safety
+        run: |
+          node scripts/verify-site-dispatch.mjs
+          python3 scripts/test-public-ftps.py
       - name: Upload public website only
         if: ${{ github.event_name == 'workflow_dispatch' && !inputs.dry_run }}
         env:
