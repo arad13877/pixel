@@ -1,6 +1,9 @@
 name: Publish public site to cPanel
 run-name: Public site · ${{ inputs.source }} · ${{ inputs.action }}
 on:
+  push:
+    branches: [codex/cpanel-publication]
+    paths: [.github/workflows/publish-cpanel.yml]
   workflow_dispatch:
     inputs:
       source:
@@ -47,7 +50,7 @@ jobs:
       - name: Validate public artifact
         run: node scripts/verify-site-artifact.mjs
       - name: Upload public website only
-        if: ${{ !inputs.dry_run }}
+        if: ${{ github.event_name == 'workflow_dispatch' && !inputs.dry_run }}
         env:
           FTPS_HOST: ${{ secrets.SITE_FTPS_HOST }}
           FTPS_USERNAME: ${{ secrets.SITE_FTPS_USERNAME }}
