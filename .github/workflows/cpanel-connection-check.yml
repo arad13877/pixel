@@ -1,0 +1,41 @@
+name: Check cPanel FTPS connection
+on:
+  push:
+    branches: [codex/cpanel-ftps-check]
+    paths: [.github/workflows/cpanel-connection-check.yml]
+  workflow_dispatch:
+permissions: {}
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Verify encrypted connection and upload isolated test page
+        env:
+          FTPS_HOST: ${{ secrets.SITE_FTPS_HOST }}
+          FTPS_USERNAME: ${{ secrets.SITE_FTPS_USERNAME }}
+          FTPS_PASSWORD: ${{ secrets.SITE_FTPS_PASSWORD }}
+        run: |
+          python3 - <<'PY'
+          import ftplib, io, os, ssl
+          for name in ('FTPS_HOST', 'FTPS_USERNAME', 'FTPS_PASSWORD'):
+              if not os.environ.get(name):
+                  raise RuntimeError(f'Missing secret: {name}')
+          client = ftplib.FTP_TLS(context=ssl.create_default_context(), timeout=30)
+          try:
+              client.connect(os.environ['FTPS_HOST'], 21)
+              client.login(os.environ['FTPS_USERNAME'], os.environ['FTPS_PASSWORD'])
+              client.prot_p()
+              client.nlst()
+              try:
+                  client.cwd('deployment-preview')
+              except ftplib.error_perm:
+                  client.mkd('deployment-preview')
+                  client.cwd('deployment-preview')
+              payload = '<!doctype html><html lang="fa" dir="rtl"><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><title>بررسی انتشار پیکسل</title><body>اتصال امن انتشار خودکار پیکسل برقرار است.</body></html>'.encode('utf-8')
+              client.storbinary('STOR probe.html', io.BytesIO(payload))
+              print('PASS: authenticated FTPS, certificate validation, isolated upload. Main site and CRM untouched.')
+          finally:
+              client.close()
+          PY
+
