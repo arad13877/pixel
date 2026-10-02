@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+# CRM HTML and HTTP headers provide noindex; crawling remains allowed.

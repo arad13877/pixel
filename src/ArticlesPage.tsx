@@ -4,7 +4,7 @@ import { articles, getArticle, type ArticleRecord } from './articles.generated';
 
 export function ArticleCover({ article, compact = false }: { article: ArticleRecord; compact?: boolean }) {
   if (article.coverData?.kind === 'image') return <figure className={`article-cover article-cover-image${compact ? ' is-compact' : ''}`}>
-    <img src={article.coverData.url} alt={article.coverData.alt} loading={compact ? 'lazy' : 'eager'}/>
+    <img src={article.coverData.url} alt={article.coverData.alt} width={article.coverData.width} height={article.coverData.height} decoding="async" loading={compact ? 'lazy' : 'eager'}/>
   </figure>;
   return <div className={`article-cover article-cover-${article.cover}${compact ? ' is-compact' : ''}`} aria-hidden="true">
     <span className="article-cover-grid"/>
@@ -48,10 +48,16 @@ export function ArticleDetailPage({ slug }: { slug?: string }) {
   return <ArticleDetailContent article={article} related={related}/>;
 }
 
+const articleServiceLinks: Record<string, { href: string; label: string }[]> = {
+  'website-design-cost-guide': [{ href: '/pricing/', label: 'تعرفه‌های طراحی سایت' }, { href: '/web-design/', label: 'خدمات طراحی سایت' }],
+  'why-business-needs-website': [{ href: '/web-design/', label: 'خدمات طراحی سایت' }, { href: '/request/', label: 'ثبت درخواست پروژه' }],
+  'ai-agent-for-business': [{ href: '/#agents', label: 'ایجنت‌های هوش مصنوعی پیکسل' }],
+};
+
 export function ArticleDetailContent({ article, related = [] }: { article: ArticleRecord; related?: ArticleRecord[] }) {
   return <div className="article-detail-page">
     <header className="container article-detail-hero">
-      <nav className="article-breadcrumb" aria-label="مسیر صفحه"><a href="/">پیکسل</a><Icon name="chevron" size={14}/><a href="/articles/">مقالات</a><Icon name="chevron" size={14}/><span aria-current="page">{article.category}</span></nav>
+      <nav className="article-breadcrumb" aria-label="مسیر صفحه"><a href="/">پیکسل</a><Icon name="chevron" size={14}/><a href="/articles/">مقالات</a><Icon name="chevron" size={14}/><span aria-current="page">{article.title}</span></nav>
       <div className="article-detail-heading"><div><ArticleMeta article={article}/><h1>{article.title}</h1><p>{article.excerpt}</p><div className="article-author"><span className="article-author-mark" aria-hidden="true"><i/><i/><i/><i/></span><span><strong>{article.authorName || 'تحریریه پیکسل'}</strong><small>{article.authorSubtitle || 'راهنمای عملی برای تصمیم بهتر'}</small></span></div></div><ArticleCover article={article}/></div>
     </header>
 
@@ -60,7 +66,7 @@ export function ArticleDetailContent({ article, related = [] }: { article: Artic
       <article className="article-body">
         {article.sections.map((section,index)=><section id={section.id} key={section.id} data-article-reveal><span className="article-section-number" aria-hidden="true">{String(index+1).padStart(2,'0')}</span><h2>{section.title}</h2>{section.paragraphs.map((paragraph,paragraphIndex)=><p key={paragraphIndex}>{paragraph}</p>)}{section.bullets&&<ul>{section.bullets.map(item=><li key={item}><Icon name="check" size={16}/><span>{item}</span></li>)}</ul>}{section.callout&&<blockquote><Icon name="spark" size={18}/><p>{section.callout}</p></blockquote>}</section>)}
         <section className="article-sources" aria-labelledby="article-sources-title"><span className="article-section-number" aria-hidden="true">—</span><h2 id="article-sources-title">منابع و مطالعه بیشتر</h2><p>برای دقت بیشتر، مفاهیم فنی این راهنما با منابع اصلی زیر بررسی شده‌اند.</p><ul>{article.sources.map(source=><li key={source.href}><a href={source.href} target="_blank" rel="noopener noreferrer">{source.label}<Icon name="arrow" size={15}/></a></li>)}</ul></section>
-        <section className="article-inline-cta" aria-labelledby="article-cta-title"><span className="article-inline-kicker">قدم بعدی</span><h2 id="article-cta-title">{article.ctaTitle}</h2><p>{article.ctaText}</p><Contact className="primary" location={article.ctaLocation} service={article.ctaService}>{article.ctaLabel}</Contact></section>
+        <section className="article-inline-cta" aria-labelledby="article-cta-title"><span className="article-inline-kicker">قدم بعدی</span><h2 id="article-cta-title">{article.ctaTitle}</h2><p>{article.ctaText}</p><Contact className="primary" location={article.ctaLocation} service={article.ctaService}>{article.ctaLabel}</Contact><nav className="seo-related-links" aria-label="خدمات مرتبط">{(articleServiceLinks[article.slug] || []).map(link => <a key={link.href} href={link.href}>{link.label}</a>)}</nav></section>
       </article>
     </main>
 

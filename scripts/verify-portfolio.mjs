@@ -25,7 +25,7 @@ try {
   assert.ok(await page.getByText('کانسپت نمایشی پیکسل؛ کسب‌وکار واقعی نیست').isVisible());
   assert.ok(await page.getByRole('heading', { level: 2, name: /کافه روما/ }).isVisible());
   assert.ok(await page.getByText('کانسپت نمایشی پیکسل؛ کافهٔ واقعی نیست').isVisible());
-  assert.deepEqual(await page.getByRole('link', { name: 'مشاهده لندینگ', exact: true }).evaluateAll(links => links.map(link => link.getAttribute('href'))), ['/portfolio/nilora/', '/portfolio/veloma/', '/portfolio/zero-line/', '/portfolio/roma/']);
+  assert.deepEqual(await page.getByRole('link', { name: 'مشاهده لندینگ', exact: true }).evaluateAll(links => links.map(link => link.getAttribute('href')).sort()), ['/portfolio/nilora/', '/portfolio/veloma/', '/portfolio/zero-line/', '/portfolio/roma/'].sort());
 
   for (const width of [360, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
@@ -39,7 +39,7 @@ try {
   assert.equal(await nav.getByRole('link', { name: 'طراحی سایت' }).getAttribute('href'), '/web-design/');
   assert.equal(await nav.getByRole('link', { name: /ایجنت‌های هوش مصنوعی/ }).getAttribute('href'), '/#agents');
   assert.equal(await nav.getByRole('link', { name: 'مقالات' }).getAttribute('href'), '/articles/');
-  assert.equal(await page.getByRole('link', { name: 'خدمات طراحی سایت' }).getAttribute('href'), '/web-design/');
+  assert.equal(await page.locator('.portfolio-actions').getByRole('link', { name: 'خدمات طراحی سایت' }).getAttribute('href'), '/web-design/');
   const contact = page.locator('[data-contact-location="portfolio-hero"]');
   assert.match(await contact.getAttribute('href'), /^https:\/\/wa\.me\/989937825753\?text=/);
   report.links.push('Desktop navigation, service link and WhatsApp CTA');

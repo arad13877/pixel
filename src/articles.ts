@@ -10,7 +10,7 @@ export type ArticleSource = { label: string; href: string };
 
 export type ArticleCover =
   | { kind: 'preset'; preset: 'signal' | 'layers' | 'orbit' }
-  | { kind: 'image'; url: string; alt: string; path: string };
+  | { kind: 'image'; url: string; alt: string; path: string; width?: number; height?: number };
 
 export type ArticleRecord = {
   slug: string;

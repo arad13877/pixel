@@ -1,3 +1,4 @@
+import ResponsiveImage from './ResponsiveImage';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 
 type MenuCategory = 'all' | 'coffee' | 'sweet' | 'food';
@@ -30,7 +31,7 @@ function RomaMark() {
 
 function CafePhoto({ name, alt, className = '', priority = false }: { name: string; alt: string; className?: string; priority?: boolean }) {
   const portrait = name === 'coffee-story' || name === 'window-corner';
-  return <img className={className} src={`/images/roma/${name}.jpg`} alt={alt} width={name === 'interior' ? 1536 : portrait ? 1000 : 760} height={name === 'interior' ? 1024 : portrait ? 1250 : 760} loading={priority ? undefined : 'lazy'} fetchPriority={priority ? 'high' : undefined} decoding="async" />;
+  return <ResponsiveImage className={className} src={`/images/roma/${name}.jpg`} alt={alt} width={name === 'interior' ? 1536 : portrait ? 1000 : 760} height={name === 'interior' ? 1024 : portrait ? 1250 : 760} loading={priority ? undefined : 'lazy'} fetchPriority={priority ? 'high' : undefined} decoding="async" />;
 }
 
 function Navigation() {

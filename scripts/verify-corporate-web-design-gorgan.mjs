@@ -25,7 +25,7 @@ try {
   assert.equal(await page.locator('.wd-faq-list details').count(), 7);
   assert.match(decodeURIComponent(await page.locator('#hero-contact').getAttribute('href')), /طراحی سایت شرکتی در گرگان/);
   assert.equal(await page.locator('main a[href="tel:+989937825753"]').count(), 2);
-  assert.equal(await page.locator('main a[href="/web-design-gorgan/"]').count(), 1);
+  assert.equal(await page.locator('main a[href="/web-design-gorgan/"]:not(.seo-breadcrumb a)').count(), 1);
   await page.locator('.wd-faq-list summary').first().focus();
   await page.keyboard.press('Enter');
   assert.equal(await page.locator('.wd-faq-list details').first().getAttribute('open'), '');

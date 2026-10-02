@@ -46,6 +46,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      - run: npm run test:seo
       - name: Validate public artifact
         run: node scripts/verify-site-artifact.mjs
       - name: Test publication safety

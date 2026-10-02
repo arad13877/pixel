@@ -3,11 +3,15 @@ import react from '@vitejs/plugin-react';
 import { createElement } from 'react';
 import { renderToString } from 'react-dom/server';
 import App from './src/App';
+import { renderPage } from './src/server-pages';
 import NiloraPage from './src/NiloraPage';
 import VelomaPage from './src/VelomaPage';
 import ZeroLinePage from './src/ZeroLinePage';
 import RomaPage from './src/RomaPage';
 import { articles } from './src/articles.generated';
+import { publicPages, isPublicArticleSlug } from './src/seo';
+import { validateSeo } from './scripts/validate-seo.mjs';
+import { staticSeoMetadata } from './scripts/seo-metadata';
 import { resolve } from 'node:path';
 import { cp, mkdir, rm, writeFile } from 'node:fs/promises';
 
@@ -35,12 +39,14 @@ function archiveSchema() {
 }
 
 function sitemap() {
-  const staticUrls = ['/', '/web-design/', '/web-design-gorgan/', '/web-design-doctors-gorgan/', '/web-design-company-gorgan/', '/web-design-restaurant-gorgan/', '/web-design-price-gorgan/', '/website-support-gorgan/', '/pricing/', '/portfolio/', '/request/', '/free-website-audit/', '/articles/'];
+  const staticUrls = publicPages.map(page => page.path);
   const urls = [...staticUrls.map(path => `<url><loc>https://pxlgrid.design${path}</loc></url>`), ...articles.map(article => `<url><loc>https://pxlgrid.design/articles/${article.slug}/</loc><lastmod>${(article.modifiedAt || article.publishedAt).slice(0, 10)}</lastmod></url>`)];
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  ${urls.join('\n  ')}\n</urlset>\n`;
 }
 
 const articleInputs = Object.fromEntries(articles.map(article => [`article-${article.slug}`, resolve(import.meta.dirname, `.generated/articles/${article.slug}/index.html`)]));
+let outputWritten = false;
+if (articles.some(article => !isPublicArticleSlug(article.slug))) throw new Error('SEO: generated article data contains a non-public slug; regenerate before building');
 
 export default defineConfig({
   optimizeDeps: { noDiscovery: true, include: ['react', 'react-dom/client'] },
@@ -55,17 +61,17 @@ export default defineConfig({
     },
     transformIndexHtml: {
       order: 'pre',
-      handler(html, context) {
+      async handler(html, context) {
         const nilora = context.path.startsWith('/portfolio/nilora/');
         const veloma = context.path.startsWith('/portfolio/veloma/');
         const zeroLine = context.path.startsWith('/portfolio/zero-line/');
         const roma = context.path.startsWith('/portfolio/roma/');
         const articleMatch = context.path.match(/^\/(?:\.generated\/)?articles\/([^/]+)(?:\/|\/index\.html)/);
         const page = context.path.startsWith('/free-website-audit') ? 'free-website-audit' : articleMatch ? 'article' : context.path.startsWith('/articles') ? 'articles' : context.path.startsWith('/website-support-gorgan') ? 'website-support-gorgan' : context.path.startsWith('/web-design-restaurant-gorgan') ? 'restaurant-web-design-gorgan' : context.path.startsWith('/web-design-price-gorgan') ? 'web-design-price-gorgan' : context.path.startsWith('/web-design-company-gorgan') ? 'corporate-web-design-gorgan' : context.path.startsWith('/web-design-doctors-gorgan') ? 'doctor-web-design-gorgan' : context.path.startsWith('/web-design-gorgan') ? 'web-design-gorgan' : context.path.startsWith('/web-design') ? 'web-design' : context.path.startsWith('/pricing') ? 'pricing' : context.path.startsWith('/portfolio') ? 'portfolio' : context.path.startsWith('/request') ? 'request' : 'home';
-        let output = html.replace('<!--app-html-->', renderToString(nilora ? createElement(NiloraPage) : veloma ? createElement(VelomaPage) : zeroLine ? createElement(ZeroLinePage) : roma ? createElement(RomaPage) : createElement(App, { page, articleSlug: articleMatch?.[1] })));
+        let output = html.replace('<!--app-html-->', renderToString(nilora ? createElement(NiloraPage) : veloma ? createElement(VelomaPage) : zeroLine ? createElement(ZeroLinePage) : roma ? createElement(RomaPage) : createElement(App, { page, content: renderPage(page, articleMatch?.[1]) })));
         if (articleMatch) output = output.replace('<!--article-meta-->', articleMetadata(articleMatch[1]));
         if (page === 'articles') output = output.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/, `<script type="application/ld+json">${archiveSchema()}</script>`);
-        return output;
+        return staticSeoMetadata(output, context.path.replace(/index\.html$/, ''));
       },
     },
     generateBundle(_options, bundle) {
@@ -73,13 +79,16 @@ export default defineConfig({
       if (map?.type === 'asset') map.source = sitemap();
     },
     async closeBundle() {
+      if (!outputWritten) return;
       const generated = resolve(import.meta.dirname, 'dist/.generated/articles');
       const destination = resolve(import.meta.dirname, 'dist/articles');
       await mkdir(destination, { recursive: true });
       for (const article of articles) await cp(resolve(generated, article.slug), resolve(destination, article.slug), { recursive: true, force: true });
       await rm(resolve(import.meta.dirname, 'dist/.generated'), { recursive: true, force: true });
       await writeFile(resolve(import.meta.dirname, 'dist/sitemap.xml'), sitemap(), 'utf8');
+      await validateSeo(resolve(import.meta.dirname, 'dist'));
     },
+    writeBundle() { outputWritten = true; },
   }, {
     name: 'pixel-inline-request-css',
     enforce: 'post',

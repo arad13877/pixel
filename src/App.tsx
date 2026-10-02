@@ -1,21 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Icon, type IconName } from './Icons';
 import { Contact } from './Contact';
 import AgentSection from './AgentSection';
 import { faqs } from './content';
-import WebDesignPage from './WebDesignPage';
-import WebDesignGorganPage from './WebDesignGorganPage';
-import DoctorWebDesignGorganPage from './DoctorWebDesignGorganPage';
-import CorporateWebDesignGorganPage from './CorporateWebDesignGorganPage';
-import PortfolioPage from './PortfolioPage';
+import { LocalBreadcrumb } from './SeoLinks';
 import LiquidGlassMaterial from './LiquidGlassMaterial';
-import { ArticleDetailPage, ArticlesIndexPage } from './ArticlesPage';
-import RequestPage from './RequestPage';
-import FreeWebsiteAuditPage from './FreeWebsiteAuditPage';
-import PricingPage from './PricingPage';
-import WebDesignPriceGorganPage from './WebDesignPriceGorganPage';
-import WebsiteSupportGorganPage from './WebsiteSupportGorganPage';
-import RestaurantWebDesignGorganPage from './RestaurantWebDesignGorganPage';
 
 function Brand({ href = '#' }: { href?: string }) { return <a className="brand" href={href} aria-label="پیکسل PIXEL STUDIO، ابتدای صفحه"><span className="brand-symbol" aria-hidden="true"><i/><i/><i/><i/></span><span>پیکسل<span className="brand-latin">PIXEL STUDIO</span></span></a>; }
 
@@ -23,8 +12,8 @@ function MockSite({ phone = false, showcase = false }: { phone?: boolean; showca
   return <div role="img" className={phone ? 'mock-phone' : 'mock-browser'} aria-label={phone ? 'نسخه موبایل نمونه نمایشی آرا' : 'نمونه نمایشی سایت استودیو معماری آرا'}>
     {phone ? <div className="phone-island"/> : <div className="browser-toolbar"><span className="browser-dots"><i/><i/><i/></span><span className="browser-address"><Icon name="globe" size={10}/> ara-studio.example</span><Icon name="plus" size={12}/></div>}
     <div className="mock-content" aria-hidden="true"><div className="mock-nav"><strong>آرا<span>استودیو معماری</span></strong>{!phone && <span className="mock-links">پروژه‌ها&nbsp;&nbsp;&nbsp; درباره آرا&nbsp;&nbsp;&nbsp; ارتباط با ما</span>}<Icon name={phone ? 'menu' : 'arrow'} size={15}/></div>
-      <div className="mock-copy"><span className="mock-eyebrow">معماری، به زبان زندگی</span><h3>فضایی برای زندگی،<br/><span>جایی برای آرامش.</span></h3>{!phone && <p>طراحی فضاهایی که داستان شما را روایت می‌کنند.</p>}<span className="mock-cta">کشف پروژه‌ها <Icon name="arrow" size={13}/></span></div>
-      <div className="architecture-photo"><img src="/images/interior-600.webp" srcSet="/images/interior-600.webp 600w, /images/interior-900.webp 900w, /images/interior.webp 1200w" sizes={phone ? '110px' : '(max-width: 760px) 85vw, 500px'} alt="فضای روشن معماری داخلی با مبلمان مینیمال و پنجره‌های بزرگ" width="1200" height="800" fetchPriority={phone || showcase ? 'auto' : 'high'} loading={showcase ? 'lazy' : 'eager'} /></div>
+      <div className="mock-copy"><span className="mock-eyebrow">معماری، به زبان زندگی</span><div className="mock-heading">فضایی برای زندگی،<br/><span>جایی برای آرامش.</span></div>{!phone && <p>طراحی فضاهایی که داستان شما را روایت می‌کنند.</p>}<span className="mock-cta">کشف پروژه‌ها <Icon name="arrow" size={13}/></span></div>
+      <div className="architecture-photo"><img src="/images/interior-600.webp" srcSet="/images/interior-240.webp 240w, /images/interior-360.webp 360w, /images/interior-600.webp 600w, /images/interior-900.webp 900w, /images/interior.webp 1200w" sizes={phone ? '110px' : '(max-width: 760px) 78vw, 500px'} alt="فضای روشن معماری داخلی با مبلمان مینیمال و پنجره‌های بزرگ" width="1200" height="800" fetchPriority={phone || showcase ? 'auto' : 'high'} loading={showcase ? 'lazy' : 'eager'} /></div>
       {!phone && <div className="mock-bottom"><span>خانه‌ای به اندازه زندگی شما</span><span>طراحی داخلی <span className="tiny-dot"/> معماری</span></div>}
     </div>
   </div>;
@@ -59,7 +48,9 @@ const homePrinciples: { number: string; icon: IconName; label: string }[] = [
   { number: '04', icon: 'spark', label: 'آماده برای قدم بعدی' },
 ];
 
-export default function App({ page = 'home', articleSlug }: { page?: 'home' | 'web-design' | 'web-design-gorgan' | 'doctor-web-design-gorgan' | 'corporate-web-design-gorgan' | 'restaurant-web-design-gorgan' | 'web-design-price-gorgan' | 'website-support-gorgan' | 'pricing' | 'portfolio' | 'articles' | 'article' | 'request' | 'free-website-audit'; articleSlug?: string }) {
+export type SitePage = 'home' | 'web-design' | 'web-design-gorgan' | 'doctor-web-design-gorgan' | 'corporate-web-design-gorgan' | 'restaurant-web-design-gorgan' | 'web-design-price-gorgan' | 'website-support-gorgan' | 'pricing' | 'portfolio' | 'articles' | 'article' | 'request' | 'free-website-audit';
+export default function App({ page = 'home', content }: { page?: SitePage; articleSlug?: string; content?: ReactNode }) {
+  const localPath = ({ 'web-design-gorgan': '/web-design-gorgan/', 'doctor-web-design-gorgan': '/web-design-doctors-gorgan/', 'corporate-web-design-gorgan': '/web-design-company-gorgan/', 'restaurant-web-design-gorgan': '/web-design-restaurant-gorgan/', 'web-design-price-gorgan': '/web-design-price-gorgan/', 'website-support-gorgan': '/website-support-gorgan/' } as Record<string, string>)[page];
   const home = page === 'home';
   const webDesign = page === 'web-design';
   const gorgan = page === 'web-design-gorgan';
@@ -369,13 +360,14 @@ export default function App({ page = 'home', articleSlug }: { page?: 'home' | 'w
       <nav id="mobile-menu" hidden={!menuOpen} className="mobile-menu glass" aria-label="منوی موبایل"><a href="/free-website-audit/" aria-current={page === 'free-website-audit' ? 'page' : undefined} onClick={()=>setMenuOpen(false)}>بررسی رایگان سایت<Icon name="arrow" size={16}/></a>{navItems.map(({href,label,current})=><a key={label} href={href} aria-current={current ? 'page' : undefined} onClick={()=>setMenuOpen(false)}>{label}<Icon name="arrow" size={16}/></a>)}</nav>
     </header>
     <main id="main">
-      {page === 'free-website-audit' ? <FreeWebsiteAuditPage/> : request ? <RequestPage/> : articleDetail ? <ArticleDetailPage slug={articleSlug}/> : articlesIndex ? <ArticlesIndexPage/> : portfolio ? <PortfolioPage/> : webDesign ? <WebDesignPage /> : gorgan ? <WebDesignGorganPage/> : doctorGorgan ? <DoctorWebDesignGorganPage/> : corporateGorgan ? <CorporateWebDesignGorganPage/> : restaurantGorgan ? <RestaurantWebDesignGorganPage/> : priceGorgan ? <WebDesignPriceGorganPage/> : supportGorgan ? <WebsiteSupportGorganPage/> : pricing ? <PricingPage/> : <div className="home-page">
+      {localPath && <LocalBreadcrumb path={localPath}/>}
+      {!home ? content : <div className="home-page">
       <section ref={heroRef} className="hero container" aria-labelledby="hero-title"><span className="hero-studio-mark" lang="en" dir="ltr" aria-hidden="true">PIXEL / 01</span><div className="hero-copy"><span className="eyebrow"><span className="blue-dot"/> یک شروع تازه برای کسب‌وکارت</span><h1 id="hero-title">کسب‌وکارت،<br/>یک <span className="blue-word">سایت حرفه‌ای<svg viewBox="0 0 340 16" preserveAspectRatio="none" aria-hidden="true"><path d="M3 12Q150-5 335 8"/></svg></span><br/>کم دارد.</h1><p className="hero-description">ایده و تخصص از تو؛ یک حضور حرفه‌ای در دنیای آنلاین از ما. سایتی می‌سازیم که کسب‌وکارت را درست معرفی کند و راه ارتباط با مشتری‌هایت باشد.</p><div className="hero-actions"><Contact className="primary" location="hero" id="hero-contact">درباره سایتم صحبت کنیم</Contact><a href="/request/" className="text-link">ثبت درخواست پروژه <Icon name="arrow" size={18}/></a></div><div className="hero-footnotes"><span><Icon name="check" size={16}/>طراحی متناسب با برند تو</span><span><Icon name="check" size={16}/>از اولین ایده تا انتشار</span></div></div>
       <div className="hero-art"><span className="hero-cobalt-shape" aria-hidden="true"/><div className="art-orbit orbit-one"/><div className="art-orbit orbit-two"/><span className="hero-path-node" aria-hidden="true"/><div className="floating-tag glass"><span className="tag-icon"><Icon name="layers" size={18}/></span><span>طراحی فکرشده.<br/><strong>برای کسب‌وکار تو.</strong></span><span className="tag-spark">✦</span></div><MockSite/><MockSite phone/><div className="responsive-tag glass"><span className="mini-devices" aria-hidden="true">▣</span><span>یک تجربه خوب،<br/><strong>در هر اندازه.</strong></span><span className="green-check"><Icon name="check" size={13}/></span></div><span className="demo-label">نمونه نمایشی طراحی پیکسل <span>↗</span></span></div>
       </section>
       <div className="principles container" data-home-reveal><span className="principles-title">جزئیاتی که تفاوت می‌سازند</span>{homePrinciples.map(({number,icon,label})=><span className="principle-item" key={number}><small>{number}</small><Icon name={icon}/>{label}</span>)}</div>
       <section id="websites" className="container section websites-section" data-home-reveal><div className="section-heading"><div><span className="eyebrow">۰۱ / طراحی و توسعه سایت</span><h2>فقط یک آدرس اینترنتی نیست.<br/><span className="muted">تصویر کسب‌وکار توست.</span></h2></div><p className="section-description">از اولین نگاه تا اولین تماس؛ هر بخش از سایت باید به مشتری کمک کند تو را بهتر بشناسد و قدم بعدی را راحت‌تر بردارد.</p></div>
-        <div className="showcase"><div className="showcase-copy"><span className="showcase-pill"><span className="blue-dot"/> طراحی اختصاصی، برای داستان تو</span><h3>اولین برخورد.<br/>یک تأثیر ماندگار.</h3><p>یک سایت خوب، فقط زیبا نیست. خدماتت را واضح معرفی می‌کند، در موبایل راحت استفاده می‌شود و مشتری را به تو می‌رساند.</p><ul className="feature-list"><li><Icon name="check"/> معرفی روشن خدمات و هویت برند</li><li><Icon name="check"/> تجربه روان روی موبایل و دسکتاپ</li><li><Icon name="check"/> مسیر کوتاه از آشنایی تا تماس</li></ul><Contact glass className="showcase-contact" location="showcase">از سایت من شروع کنیم</Contact></div><div className="showcase-visual"><MockSite showcase/><div className="project-caption"><span><strong>آرا / استودیو معماری</strong><small>کانسپت نمایشی پیکسل · پروژه مشتری نیست</small></span><span className="project-arrow"><Icon name="arrow" size={21}/></span></div></div></div>
+        <div className="showcase"><div className="showcase-copy"><span className="showcase-pill"><span className="blue-dot"/> طراحی اختصاصی، برای داستان تو</span><h3>اولین برخورد.<br/>یک تأثیر ماندگار.</h3><p>یک سایت خوب، فقط زیبا نیست. خدماتت را واضح معرفی می‌کند، در موبایل راحت استفاده می‌شود و مشتری را به تو می‌رساند.</p><ul className="feature-list"><li><Icon name="check"/> معرفی روشن خدمات و هویت برند</li><li><Icon name="check"/> تجربه روان روی موبایل و دسکتاپ</li><li><Icon name="check"/> مسیر کوتاه از آشنایی تا تماس</li></ul><Contact glass className="showcase-contact" location="showcase">از سایت من شروع کنیم</Contact><a className="text-link seo-request-link" href="/web-design-gorgan/">طراحی سایت در گرگان <Icon name="arrow" size={16}/></a></div><div className="showcase-visual"><MockSite showcase/><div className="project-caption"><span><strong>آرا / استودیو معماری</strong><small>کانسپت نمایشی پیکسل · پروژه مشتری نیست</small></span><span className="project-arrow"><Icon name="arrow" size={21}/></span></div></div></div>
       </section>
       <section className="container deliverables-section" aria-labelledby="deliverables-title" data-home-reveal><div className="deliverables-head"><span className="eyebrow">خروجی روشن، از ابتدا</span><h2 id="deliverables-title">در پایان چه چیزی<br/><span>تحویل می‌گیری؟</span></h2><p>چیزهایی که برای یک شروع حرفه‌ای لازم داری؛ مشخص، قابل استفاده و آماده برای انتشار.</p></div><div className="deliverables-list">{projectDeliverables.map(item=><article className="deliverable-item" key={item.number}><span className="deliverable-icon"><Icon name={item.icon} size={20}/></span><span className="deliverable-number" aria-hidden="true">{item.number}</span><div><h3>{item.title}</h3><p>{item.description}</p></div></article>)}</div></section>
       <section id="process" className="container section process-section" data-home-reveal><div className="process-heading"><span className="eyebrow">۰۲ / مسیر همکاری</span><h2>از «یک ایده دارم»<br/>تا «این سایتِ منه».</h2><p className="section-description">قدم‌به‌قدم، با یک مسیر روشن.</p></div><div className="process-steps"><span className="process-track" aria-hidden="true"><i className="process-track-fill"/></span>{[

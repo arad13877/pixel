@@ -37,7 +37,7 @@ Push-Location -LiteralPath $projectRoot
 try {
   npm run build
   if ($LASTEXITCODE -ne 0) { throw 'Public site Production build failed.' }
-  foreach ($path in @('index.html','assets','articles/index.html','articles/crm-upload-check-20261001/index.html','portfolio/index.html','sitemap.xml')) {
+  foreach ($path in @('index.html','assets','articles/index.html','portfolio/index.html','sitemap.xml')) {
     if (-not (Test-Path -LiteralPath (Join-Path $distPath $path))) { throw "Missing static output: $path" }
   }
   foreach ($file in Get-ChildItem -LiteralPath $distPath -File -Recurse -Force) {
@@ -62,7 +62,7 @@ try {
   $archive = [System.IO.Compression.ZipFile]::OpenRead($archivePath)
   try {
     $entries = @($archive.Entries | ForEach-Object { $_.FullName.Replace('\','/') })
-    if ('index.html' -notin $entries -or 'articles/crm-upload-check-20261001/index.html' -notin $entries) { throw 'ZIP root layout incorrect.' }
+    if ('index.html' -notin $entries -or 'sitemap.xml' -notin $entries -or 'articles/crm-upload-check-20261001/index.html' -in $entries) { throw 'ZIP root layout incorrect.' }
   } finally { $archive.Dispose() }
   Write-Output "Ready: $archivePath"
   Write-Output 'Production CMS snapshots only; no staging/secret credentials. Turnstile Production key still needs configuration.'

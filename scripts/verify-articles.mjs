@@ -59,7 +59,7 @@ try {
     assert.equal(await page.locator('.article-toc a').count(), sectionCount);
     assert.equal(await page.locator('.article-sources a').count(), 3);
     assert.equal(await page.locator('.related-articles .article-card').count(), expectedArticleCount - 1);
-    assert.match(await page.locator('.article-inline-cta a').getAttribute('href'), /^https:\/\/wa\.me\/989937825753\?text=/);
+    assert.match(await page.locator('.article-inline-cta a[data-contact-location]').getAttribute('href'), /^https:\/\/wa\.me\/989937825753\?text=/);
     const wordCount = (await page.locator('.article-body').innerText()).split(/\s+/).filter(Boolean).length;
     assert.ok(wordCount >= 1000, `${slug} is too short: ${wordCount} words`);
     const canonical = await page.locator('link[rel="canonical"]').getAttribute('href');

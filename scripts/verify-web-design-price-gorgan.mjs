@@ -36,7 +36,7 @@ try {
     assert.equal(await card.locator('.pricing-card-price strong').innerText(), price);
   }
   assert.match(decodeURIComponent(await page.locator('#hero-contact').getAttribute('href')), /برآورد قیمت طراحی سایت در گرگان/);
-  for (const href of ['/web-design-gorgan/', '/web-design-company-gorgan/', '/web-design-doctors-gorgan/']) assert.equal(await page.locator(`main a[href="${href}"]`).count(), 1);
+  for (const href of ['/web-design-gorgan/', '/web-design-company-gorgan/', '/web-design-doctors-gorgan/']) assert.equal(await page.locator(`main a[href="${href}"]:not(.seo-breadcrumb a)`).count(), 1);
   await page.locator('.pricing-faq-list summary').first().focus();
   await page.keyboard.press('Enter');
   assert.equal(await page.locator('.pricing-faq-list details').first().getAttribute('open'), '');

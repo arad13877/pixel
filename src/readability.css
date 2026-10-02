@@ -31,7 +31,7 @@
 .hero-art>.demo-label{bottom:0;left:50%;transform:translateX(-50%);white-space:nowrap;z-index:7}
 .hero-art>.responsive-tag{bottom:76px}
 .hero-art>.mock-phone{bottom:57px}
-.mock-phone .mock-copy h3{font-size:11px;white-space:nowrap}
+.mock-phone .mock-copy .mock-heading{font-size:11px;white-space:nowrap}
 .principles{gap:20px}
 .header .button{white-space:nowrap}
 .footer-bottom{flex-wrap:wrap}

@@ -9,10 +9,10 @@ export default function WebDesignHeroArt() {
       <div className="wd-art-canvas">
         <div className="wd-art-nav"><strong>آرا<small>استودیو معماری</small></strong><span>پروژه‌ها&nbsp;&nbsp; خدمات&nbsp;&nbsp; تماس</span><Icon name="arrow" size={14}/></div>
         <div className="wd-art-heading"><small>معماری، به زبان زندگی</small><strong>فضایی برای زندگی،<br/><em>جایی برای آرامش.</em></strong></div>
-        <div className="wd-art-image"><img src="/images/interior-900.webp" srcSet="/images/interior-600.webp 600w, /images/interior-900.webp 900w" sizes="(max-width: 760px) 88vw, 480px" alt="" width="900" height="600" fetchPriority="high"/></div>
+        <div className="wd-art-image"><img src="/images/interior-900.webp" srcSet="/images/interior-240.webp 240w, /images/interior-360.webp 360w, /images/interior-600.webp 600w, /images/interior-900.webp 900w" sizes="(max-width: 760px) 78vw, 480px" alt="" width="900" height="600" fetchPriority="high"/></div>
       </div>
     </div>
-    <div className="wd-art-phone" aria-hidden="true"><span className="wd-phone-notch"/><strong>آرا</strong><div className="wd-phone-copy"><i/><i/></div><div className="wd-phone-image"><img src="/images/interior-600.webp" alt="" width="600" height="400" loading="lazy"/></div><span className="wd-phone-button"/></div>
+    <div className="wd-art-phone" aria-hidden="true"><span className="wd-phone-notch"/><strong>آرا</strong><div className="wd-phone-copy"><i/><i/></div><div className="wd-phone-image"><img src="/images/interior-240.webp" srcSet="/images/interior-240.webp 240w, /images/interior-360.webp 360w, /images/interior-600.webp 600w" sizes="90px" alt="" width="600" height="400" loading="lazy"/></div><span className="wd-phone-button"/></div>
     <div className="wd-art-glass glass" aria-hidden="true"><span className="wd-glass-icon"><Icon name="check" size={17}/></span><span>آماده برای<br/><strong>هر اندازه.</strong></span></div>
     <span className="wd-demo-label">نمونه نمایشی طراحی پیکسل <Icon name="arrow" size={14}/></span>
   </div>;

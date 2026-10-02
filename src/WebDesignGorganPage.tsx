@@ -2,6 +2,7 @@ import { Contact } from './Contact';
 import { Icon, type IconName } from './Icons';
 import WebDesignHeroArt from './WebDesignHeroArt';
 import { PricingPreview } from './PricingCards';
+import { LocalServiceLinks } from './SeoLinks';
 
 const services: { title: string; icon: IconName }[] = [
   { title: 'سایت شرکتی', icon: 'globe' },
@@ -68,7 +69,7 @@ export default function WebDesignGorganPage() {
 
     <section className="wd-trust" aria-labelledby="gorgan-intro-title" data-wd-reveal><div className="container wd-trust-inner"><div><h2 id="gorgan-intro-title">طراحی سایت برای کسب‌وکارهای گرگان</h2></div><p>یک سایت حرفه‌ای فقط یک ویترین آنلاین نیست؛ باید خدمات کسب‌وکار شما را به‌درستی معرفی کند، مسیر ارتباط با مشتری را ساده کند و زیرساخت مناسبی برای توسعه و بازاریابی آنلاین داشته باشد. ما سایت را متناسب با نوع فعالیت، مخاطبان و اهداف کسب‌وکار شما طراحی و توسعه می‌کنیم.</p></div></section>
 
-    <section id="types" className="container wd-section wd-types" aria-labelledby="gorgan-types-title" data-wd-reveal><div className="wd-section-heading"><div><h2 id="gorgan-types-title">چه نوع سایت‌هایی طراحی می‌کنیم؟</h2></div></div><div className="wd-type-grid">{services.map(({title,icon},index)=><article className="wd-type" key={title}><div className="wd-type-head"><span className="wd-icon"><Icon name={icon} size={21}/></span><span className="wd-index" aria-hidden="true">{String(index+1).padStart(2,'0')}</span></div><h3>{title}</h3></article>)}</div></section>
+    <section id="types" className="container wd-section wd-types" aria-labelledby="gorgan-types-title" data-wd-reveal><div className="wd-section-heading"><div><h2 id="gorgan-types-title">چه نوع سایت‌هایی طراحی می‌کنیم؟</h2></div></div><div className="wd-type-grid">{services.map(({title,icon},index)=><article className="wd-type" key={title}><div className="wd-type-head"><span className="wd-icon"><Icon name={icon} size={21}/></span><span className="wd-index" aria-hidden="true">{String(index+1).padStart(2,'0')}</span></div><h3>{title}</h3></article>)}</div><LocalServiceLinks/></section>
 
     <PricingPreview location="web-design-gorgan-pricing" headingId="gorgan-pricing-title"/>
 
@@ -84,6 +85,6 @@ export default function WebDesignGorganPage() {
 
     <section id="faq" className="container wd-section wd-faq" aria-labelledby="gorgan-faq-title" data-wd-reveal><div className="wd-faq-heading"><h2 id="gorgan-faq-title">سوالات متداول</h2></div><div className="wd-faq-list">{faqs.map(([question,answer],index)=><details key={question}><summary><span className="wd-faq-index">{String(index+1).padStart(2,'0')}</span><span>{question}</span><Icon name="plus" size={18}/></summary><p>{answer}</p></details>)}</div></section>
 
-    <section id="contact" className="container contact-section wd-contact" data-wd-reveal aria-labelledby="gorgan-contact-title"><div className="closing-card"><div className="closing-orbit" aria-hidden="true"/><h2 id="gorgan-contact-title">برای کسب‌وکار شما چه نوع سایتی مناسب است؟</h2><p>اگر برای کسب‌وکارتان در گرگان به یک سایت حرفه‌ای نیاز دارید، اطلاعات کسب‌وکارتان را با ما در میان بگذارید تا بر اساس نیازها و اهداف پروژه، مسیر مناسب طراحی سایت را بررسی کنیم.</p><Contact className="primary" location="web-design-gorgan-final" service="طراحی سایت در گرگان">درخواست مشاوره</Contact></div></section>
+    <section id="contact" className="container contact-section wd-contact" data-wd-reveal aria-labelledby="gorgan-contact-title"><div className="closing-card"><div className="closing-orbit" aria-hidden="true"/><h2 id="gorgan-contact-title">برای کسب‌وکار شما چه نوع سایتی مناسب است؟</h2><p>اگر برای کسب‌وکارتان در گرگان به یک سایت حرفه‌ای نیاز دارید، اطلاعات کسب‌وکارتان را با ما در میان بگذارید تا بر اساس نیازها و اهداف پروژه، مسیر مناسب طراحی سایت را بررسی کنیم.</p><Contact className="primary" location="web-design-gorgan-final" service="طراحی سایت در گرگان">درخواست مشاوره</Contact><a className="wd-text-link seo-request-link" href="/request/">ثبت درخواست پروژه <Icon name="arrow" size={16}/></a></div></section>
   </div>;
 }

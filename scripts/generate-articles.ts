@@ -1,6 +1,8 @@
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { articles as fixtures, type ArticleRecord } from '../src/articles.ts';
+import { isPublicArticleSlug } from '../src/seo.ts';
+import { imageDimensions } from '../supabase/functions/_shared/portfolio.ts';
 
 type PublishedRow = {
   slug: string;
@@ -59,10 +61,27 @@ async function loadArticles() {
 }
 
 function pageShell(slug: string) {
-  return `<!doctype html><html lang="fa" dir="rtl"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><meta name="theme-color" content="#f6f8fc"/><!--article-meta--><link rel="preload" href="/src/fonts/Modam-Regular.woff" as="font" type="font/woff" crossorigin/><link rel="preload" href="/src/fonts/Modam-SemiBold.woff" as="font" type="font/woff" crossorigin/><link rel="preload" href="/src/fonts/Modam-Bold.woff" as="font" type="font/woff" crossorigin/><link rel="preload" href="/src/fonts/Modam-ExtraBold.woff" as="font" type="font/woff" crossorigin/><link rel="icon" type="image/svg+xml" href="/favicon.svg"/></head><body><div id="root" data-page="article" data-article-slug="${slug}"><!--app-html--></div><script type="module" src="/src/main.tsx"></script></body></html>`;
+  return `<!doctype html><html lang="fa" dir="rtl"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><meta name="theme-color" content="#f6f8fc"/><!--article-meta--><link rel="preload" href="/src/fonts/Modam-Regular.woff" as="font" type="font/woff" crossorigin/><link rel="icon" type="image/svg+xml" href="/favicon.svg"/><link rel="stylesheet" href="/src/base.css"/><link rel="stylesheet" href="/src/articles.css"/></head><body><div id="root" data-page="article" data-article-slug="${slug}"><!--app-html--></div><script type="module" src="/src/main.tsx"></script></body></html>`;
 }
 
-const articles = await loadArticles();
+const loadedArticles = await loadArticles();
+const articles = isCrmBuild ? loadedArticles : loadedArticles.filter(article => isPublicArticleSlug(article.slug));
+if (articles.length !== loadedArticles.length) console.warn(`Excluded ${loadedArticles.length - articles.length} non-public article(s) from the public build; CMS data was not modified.`);
+if (!articles.length) throw new Error('No public articles remain after SEO publication filtering');
+if (new Set(articles.map(article => article.slug)).size !== articles.length) throw new Error('Duplicate article slugs in build data');
+for (const article of articles) {
+  const cover = article.coverData;
+  if (cover?.kind !== 'image') continue;
+  const url = new URL(cover.url);
+  if (url.protocol !== 'https:' || url.username || url.password) throw new Error(`Invalid public article cover URL: ${article.slug}`);
+  const response = await fetch(url, { signal: AbortSignal.timeout(20000) });
+  if (!response.ok || Number(response.headers.get('content-length') || 0) > 10000000) throw new Error(`Article cover unavailable or too large: ${article.slug}`);
+  const bytes = new Uint8Array(await response.arrayBuffer());
+  if (bytes.length > 10000000) throw new Error(`Article cover too large: ${article.slug}`);
+  const size = imageDimensions(bytes, (response.headers.get('content-type') || '').split(';')[0]);
+  if (size.width < 1 || size.height < 1) throw new Error(`Invalid article cover dimensions: ${article.slug}`);
+  article.coverData = { ...cover, ...size };
+}
 await rm(generatedRoot, { recursive: true, force: true });
 await mkdir(generatedRoot, { recursive: true });
 for (const article of articles) {

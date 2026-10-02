@@ -10,7 +10,7 @@
     "generate:portfolio:crm": "node --experimental-strip-types scripts/generate-portfolio.ts --crm",
     "dev": "npm run generate:articles && npm run generate:portfolio && vite --host 127.0.0.1 --configLoader runner",
     "dev:crm": "npm run generate:articles:crm && npm run generate:portfolio:crm && vite --config vite.crm.config.ts --host 127.0.0.1 --configLoader runner",
-    "build": "npm run generate:articles && npm run generate:portfolio && tsc --noEmit && vite build --configLoader runner",
+    "build": "npm run generate:articles && npm run generate:portfolio && tsc --noEmit && vite build --configLoader runner && npm run validate:seo",
     "build:crm": "npm run generate:articles:crm && npm run generate:portfolio:crm && tsc --noEmit && vite build --config vite.crm.config.ts --configLoader runner",
     "preview": "vite preview --host 127.0.0.1 --configLoader runner",
     "preview:crm": "vite preview --config vite.crm.config.ts --host 127.0.0.1 --configLoader runner",
@@ -23,7 +23,9 @@
     "test:crm:auth": "node --experimental-strip-types --test scripts/verify-crm-auth.mjs",
     "test:portfolio:security": "node --experimental-strip-types --test scripts/verify-portfolio-security.mjs",
     "test:request": "node scripts/verify-request.mjs",
-    "test:free-audit": "node scripts/verify-free-website-audit.mjs"
+    "test:free-audit": "node scripts/verify-free-website-audit.mjs",
+    "validate:seo": "node --experimental-strip-types scripts/validate-seo.mjs",
+    "test:seo": "node --experimental-strip-types --test scripts/test-seo-validation.mjs"
   },
   "dependencies": {
     "@daypicker/persian": "10.0.1",
