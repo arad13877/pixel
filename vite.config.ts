@@ -35,7 +35,7 @@ function archiveSchema() {
 }
 
 function sitemap() {
-  const staticUrls = ['/', '/web-design/', '/web-design-gorgan/', '/web-design-doctors-gorgan/', '/web-design-company-gorgan/', '/web-design-restaurant-gorgan/', '/web-design-price-gorgan/', '/website-support-gorgan/', '/pricing/', '/portfolio/', '/request/', '/articles/'];
+  const staticUrls = ['/', '/web-design/', '/web-design-gorgan/', '/web-design-doctors-gorgan/', '/web-design-company-gorgan/', '/web-design-restaurant-gorgan/', '/web-design-price-gorgan/', '/website-support-gorgan/', '/pricing/', '/portfolio/', '/request/', '/free-website-audit/', '/articles/'];
   const urls = [...staticUrls.map(path => `<url><loc>https://pxlgrid.design${path}</loc></url>`), ...articles.map(article => `<url><loc>https://pxlgrid.design/articles/${article.slug}/</loc><lastmod>${(article.modifiedAt || article.publishedAt).slice(0, 10)}</lastmod></url>`)];
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  ${urls.join('\n  ')}\n</urlset>\n`;
 }
@@ -61,7 +61,7 @@ export default defineConfig({
         const zeroLine = context.path.startsWith('/portfolio/zero-line/');
         const roma = context.path.startsWith('/portfolio/roma/');
         const articleMatch = context.path.match(/^\/(?:\.generated\/)?articles\/([^/]+)(?:\/|\/index\.html)/);
-        const page = articleMatch ? 'article' : context.path.startsWith('/articles') ? 'articles' : context.path.startsWith('/website-support-gorgan') ? 'website-support-gorgan' : context.path.startsWith('/web-design-restaurant-gorgan') ? 'restaurant-web-design-gorgan' : context.path.startsWith('/web-design-price-gorgan') ? 'web-design-price-gorgan' : context.path.startsWith('/web-design-company-gorgan') ? 'corporate-web-design-gorgan' : context.path.startsWith('/web-design-doctors-gorgan') ? 'doctor-web-design-gorgan' : context.path.startsWith('/web-design-gorgan') ? 'web-design-gorgan' : context.path.startsWith('/web-design') ? 'web-design' : context.path.startsWith('/pricing') ? 'pricing' : context.path.startsWith('/portfolio') ? 'portfolio' : context.path.startsWith('/request') ? 'request' : 'home';
+        const page = context.path.startsWith('/free-website-audit') ? 'free-website-audit' : articleMatch ? 'article' : context.path.startsWith('/articles') ? 'articles' : context.path.startsWith('/website-support-gorgan') ? 'website-support-gorgan' : context.path.startsWith('/web-design-restaurant-gorgan') ? 'restaurant-web-design-gorgan' : context.path.startsWith('/web-design-price-gorgan') ? 'web-design-price-gorgan' : context.path.startsWith('/web-design-company-gorgan') ? 'corporate-web-design-gorgan' : context.path.startsWith('/web-design-doctors-gorgan') ? 'doctor-web-design-gorgan' : context.path.startsWith('/web-design-gorgan') ? 'web-design-gorgan' : context.path.startsWith('/web-design') ? 'web-design' : context.path.startsWith('/pricing') ? 'pricing' : context.path.startsWith('/portfolio') ? 'portfolio' : context.path.startsWith('/request') ? 'request' : 'home';
         let output = html.replace('<!--app-html-->', renderToString(nilora ? createElement(NiloraPage) : veloma ? createElement(VelomaPage) : zeroLine ? createElement(ZeroLinePage) : roma ? createElement(RomaPage) : createElement(App, { page, articleSlug: articleMatch?.[1] })));
         if (articleMatch) output = output.replace('<!--article-meta-->', articleMetadata(articleMatch[1]));
         if (page === 'articles') output = output.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/, `<script type="application/ld+json">${archiveSchema()}</script>`);
@@ -112,6 +112,7 @@ export default defineConfig({
         zeroLine: resolve(import.meta.dirname, 'portfolio/zero-line/index.html'),
         roma: resolve(import.meta.dirname, 'portfolio/roma/index.html'),
         request: resolve(import.meta.dirname, 'request/index.html'),
+        freeWebsiteAudit: resolve(import.meta.dirname, 'free-website-audit/index.html'),
         articles: resolve(import.meta.dirname, 'articles/index.html'),
         ...articleInputs,
       },

@@ -28,7 +28,7 @@ until configured, WhatsApp remains its fallback. This does not block article pub
 
 ## Safety and completion
 
-- Push runs validate/build only; uploading requires a workflow dispatch with `dry_run=false`.
+- Pushes to `codex/cpanel-publication` build, validate and upload the public website automatically. Manual dispatch uploads only with `dry_run=false`.
 - Concurrent publications are serialized, not canceled halfway through upload.
 - Old files are backed up under `.pixel-deploy-backups/<run>-<attempt>/` with Apache access denied.
 - Assets go first; HTML afterward; the deployment manifest is uploaded last.

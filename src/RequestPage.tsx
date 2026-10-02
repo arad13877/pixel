@@ -1,59 +1,9 @@
-import { FormEvent, useEffect, useId, useState } from 'react';
 import { Contact } from './Contact';
 import { Icon } from './Icons';
-
-type SubmitState = 'idle' | 'submitting' | 'success' | 'error';
-
-function getEnv(name: string) {
-  const env = (import.meta as ImportMeta & { env?: Record<string, string | undefined> }).env;
-  return env?.[name]?.trim() || '';
-}
-
-const supabaseUrl = getEnv('VITE_SUPABASE_URL');
-const endpoint = supabaseUrl ? `${supabaseUrl}/functions/v1/submit-lead` : '';
-const turnstileKey = getEnv('VITE_TURNSTILE_SITE_KEY');
+import { useLeadRequest } from './useLeadRequest';
 
 export default function RequestPage() {
-  const [state, setState] = useState<SubmitState>('idle');
-  const [message, setMessage] = useState('');
-  const statusId = useId();
-
-  useEffect(() => {
-    if (!turnstileKey || document.querySelector('script[data-pixel-turnstile]')) return;
-    const script = document.createElement('script');
-    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
-    script.async = true;
-    script.defer = true;
-    script.dataset.pixelTurnstile = 'true';
-    document.head.append(script);
-  }, []);
-
-  async function submit(event: FormEvent<HTMLFormElement>) {
-    if (!endpoint) return;
-    event.preventDefault();
-    const form = event.currentTarget;
-    if (!form.reportValidity()) return;
-    setState('submitting');
-    setMessage('');
-    try {
-      const data = new FormData(form);
-      const payload = Object.fromEntries(data.entries());
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      const result = await response.json().catch(() => ({})) as { message?: string };
-      if (!response.ok) throw new Error(result.message || 'ثبت درخواست انجام نشد.');
-      form.reset();
-      setState('success');
-      setMessage('درخواستت ثبت شد. تیم پیکسل برای ادامه گفتگو با تو تماس می‌گیرد.');
-    } catch (error) {
-      setState('error');
-      setMessage(error instanceof Error ? error.message : 'ارتباط برقرار نشد. لطفاً دوباره تلاش کن.');
-    }
-  }
-
+  const { state, message, statusId, submit, endpoint, turnstileKey } = useLeadRequest();
   return <div className="request-page">
     <section className="request-hero container" aria-labelledby="request-title">
       <div className="request-copy">

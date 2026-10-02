@@ -11,6 +11,7 @@ import PortfolioPage from './PortfolioPage';
 import LiquidGlassMaterial from './LiquidGlassMaterial';
 import { ArticleDetailPage, ArticlesIndexPage } from './ArticlesPage';
 import RequestPage from './RequestPage';
+import FreeWebsiteAuditPage from './FreeWebsiteAuditPage';
 import PricingPage from './PricingPage';
 import WebDesignPriceGorganPage from './WebDesignPriceGorganPage';
 import WebsiteSupportGorganPage from './WebsiteSupportGorganPage';
@@ -58,7 +59,7 @@ const homePrinciples: { number: string; icon: IconName; label: string }[] = [
   { number: '04', icon: 'spark', label: 'آماده برای قدم بعدی' },
 ];
 
-export default function App({ page = 'home', articleSlug }: { page?: 'home' | 'web-design' | 'web-design-gorgan' | 'doctor-web-design-gorgan' | 'corporate-web-design-gorgan' | 'restaurant-web-design-gorgan' | 'web-design-price-gorgan' | 'website-support-gorgan' | 'pricing' | 'portfolio' | 'articles' | 'article' | 'request'; articleSlug?: string }) {
+export default function App({ page = 'home', articleSlug }: { page?: 'home' | 'web-design' | 'web-design-gorgan' | 'doctor-web-design-gorgan' | 'corporate-web-design-gorgan' | 'restaurant-web-design-gorgan' | 'web-design-price-gorgan' | 'website-support-gorgan' | 'pricing' | 'portfolio' | 'articles' | 'article' | 'request' | 'free-website-audit'; articleSlug?: string }) {
   const home = page === 'home';
   const webDesign = page === 'web-design';
   const gorgan = page === 'web-design-gorgan';
@@ -363,12 +364,12 @@ export default function App({ page = 'home', articleSlug }: { page?: 'home' | 'w
         <LiquidGlassMaterial/>
         <Brand href={home ? '#' : '/'}/>
         <div className="desktop-links">{navItems.map(({href,label,current,badge})=><a key={label} href={href} aria-current={current ? 'page' : undefined}>{label}{badge && <> <span className="nav-new">AI</span></>}</a>)}</div>
-        <div className="nav-action"><Contact glass/><button ref={menuButton} className="menu-toggle" aria-label={menuOpen ? 'بستن منو' : 'باز کردن منو'} aria-expanded={menuOpen} aria-controls="mobile-menu" onClick={()=>setMenuOpen(!menuOpen)}><Icon name={menuOpen ? 'close' : 'menu'}/></button></div>
+        <div className="nav-action"><a className="button liquid-glass" href="/free-website-audit/"><LiquidGlassMaterial/><span>بررسی رایگان سایت</span><Icon name="arrow" size={16}/></a><button ref={menuButton} className="menu-toggle" aria-label={menuOpen ? 'بستن منو' : 'باز کردن منو'} aria-expanded={menuOpen} aria-controls="mobile-menu" onClick={()=>setMenuOpen(!menuOpen)}><Icon name={menuOpen ? 'close' : 'menu'}/></button></div>
       </nav>
-      <nav id="mobile-menu" hidden={!menuOpen} className="mobile-menu glass" aria-label="منوی موبایل">{navItems.map(({href,label,current})=><a key={label} href={href} aria-current={current ? 'page' : undefined} onClick={()=>setMenuOpen(false)}>{label}<Icon name="arrow" size={16}/></a>)}</nav>
+      <nav id="mobile-menu" hidden={!menuOpen} className="mobile-menu glass" aria-label="منوی موبایل"><a href="/free-website-audit/" aria-current={page === 'free-website-audit' ? 'page' : undefined} onClick={()=>setMenuOpen(false)}>بررسی رایگان سایت<Icon name="arrow" size={16}/></a>{navItems.map(({href,label,current})=><a key={label} href={href} aria-current={current ? 'page' : undefined} onClick={()=>setMenuOpen(false)}>{label}<Icon name="arrow" size={16}/></a>)}</nav>
     </header>
     <main id="main">
-      {request ? <RequestPage/> : articleDetail ? <ArticleDetailPage slug={articleSlug}/> : articlesIndex ? <ArticlesIndexPage/> : portfolio ? <PortfolioPage/> : webDesign ? <WebDesignPage /> : gorgan ? <WebDesignGorganPage/> : doctorGorgan ? <DoctorWebDesignGorganPage/> : corporateGorgan ? <CorporateWebDesignGorganPage/> : restaurantGorgan ? <RestaurantWebDesignGorganPage/> : priceGorgan ? <WebDesignPriceGorganPage/> : supportGorgan ? <WebsiteSupportGorganPage/> : pricing ? <PricingPage/> : <div className="home-page">
+      {page === 'free-website-audit' ? <FreeWebsiteAuditPage/> : request ? <RequestPage/> : articleDetail ? <ArticleDetailPage slug={articleSlug}/> : articlesIndex ? <ArticlesIndexPage/> : portfolio ? <PortfolioPage/> : webDesign ? <WebDesignPage /> : gorgan ? <WebDesignGorganPage/> : doctorGorgan ? <DoctorWebDesignGorganPage/> : corporateGorgan ? <CorporateWebDesignGorganPage/> : restaurantGorgan ? <RestaurantWebDesignGorganPage/> : priceGorgan ? <WebDesignPriceGorganPage/> : supportGorgan ? <WebsiteSupportGorganPage/> : pricing ? <PricingPage/> : <div className="home-page">
       <section ref={heroRef} className="hero container" aria-labelledby="hero-title"><span className="hero-studio-mark" lang="en" dir="ltr" aria-hidden="true">PIXEL / 01</span><div className="hero-copy"><span className="eyebrow"><span className="blue-dot"/> یک شروع تازه برای کسب‌وکارت</span><h1 id="hero-title">کسب‌وکارت،<br/>یک <span className="blue-word">سایت حرفه‌ای<svg viewBox="0 0 340 16" preserveAspectRatio="none" aria-hidden="true"><path d="M3 12Q150-5 335 8"/></svg></span><br/>کم دارد.</h1><p className="hero-description">ایده و تخصص از تو؛ یک حضور حرفه‌ای در دنیای آنلاین از ما. سایتی می‌سازیم که کسب‌وکارت را درست معرفی کند و راه ارتباط با مشتری‌هایت باشد.</p><div className="hero-actions"><Contact className="primary" location="hero" id="hero-contact">درباره سایتم صحبت کنیم</Contact><a href="/request/" className="text-link">ثبت درخواست پروژه <Icon name="arrow" size={18}/></a></div><div className="hero-footnotes"><span><Icon name="check" size={16}/>طراحی متناسب با برند تو</span><span><Icon name="check" size={16}/>از اولین ایده تا انتشار</span></div></div>
       <div className="hero-art"><span className="hero-cobalt-shape" aria-hidden="true"/><div className="art-orbit orbit-one"/><div className="art-orbit orbit-two"/><span className="hero-path-node" aria-hidden="true"/><div className="floating-tag glass"><span className="tag-icon"><Icon name="layers" size={18}/></span><span>طراحی فکرشده.<br/><strong>برای کسب‌وکار تو.</strong></span><span className="tag-spark">✦</span></div><MockSite/><MockSite phone/><div className="responsive-tag glass"><span className="mini-devices" aria-hidden="true">▣</span><span>یک تجربه خوب،<br/><strong>در هر اندازه.</strong></span><span className="green-check"><Icon name="check" size={13}/></span></div><span className="demo-label">نمونه نمایشی طراحی پیکسل <span>↗</span></span></div>
       </section>

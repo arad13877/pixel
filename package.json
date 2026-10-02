@@ -22,7 +22,8 @@
     "test:crm": "node scripts/verify-crm.mjs",
     "test:crm:auth": "node --experimental-strip-types --test scripts/verify-crm-auth.mjs",
     "test:portfolio:security": "node --experimental-strip-types --test scripts/verify-portfolio-security.mjs",
-    "test:request": "node scripts/verify-request.mjs"
+    "test:request": "node scripts/verify-request.mjs",
+    "test:free-audit": "node scripts/verify-free-website-audit.mjs"
   },
   "dependencies": {
     "@daypicker/persian": "10.0.1",
