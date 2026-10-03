@@ -1,3 +1,4 @@
+import FeaturedPortfolio from './FeaturedPortfolio';
 import { Contact } from './Contact';
 import { Icon, type IconName } from './Icons';
 
@@ -102,6 +103,7 @@ export default function CorporateWebDesignGorganPage() {
 
     <section id="process" className="container wd-section wd-process" aria-labelledby="corporate-process-title"><div className="wd-process-heading"><h2 id="corporate-process-title">مراحل طراحی سایت شرکتی</h2></div><div className="wd-steps"><span className="wd-process-track" aria-hidden="true"><i className="wd-process-fill"/></span>{steps.map(({ title, description }, index) => <article className="wd-step" key={title}><span className="wd-step-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span><div><h3>{title}</h3><p>{description}</p></div></article>)}</div></section>
 
+    <FeaturedPortfolio/>
     <section id="faq" className="container wd-section wd-faq" aria-labelledby="corporate-faq-title"><div className="wd-faq-heading"><h2 id="corporate-faq-title">سوالات متداول</h2></div><div className="wd-faq-list">{faqs.map(([question, answer], index) => <details key={question}><summary><span className="wd-faq-index">{String(index + 1).padStart(2, '0')}</span><span>{question}</span><Icon name="plus" size={18}/></summary><p>{answer}</p></details>)}</div></section>
 
     <section id="contact" className="container contact-section wd-contact" aria-labelledby="corporate-contact-title"><div className="closing-card"><div className="closing-orbit" aria-hidden="true"/><h2 id="corporate-contact-title">سایت حرفه‌ای شرکت خود را راه‌اندازی کنید</h2><p>اگر شرکت شما به یک سایت حرفه‌ای برای معرفی خدمات، محصولات و فعالیت‌های خود نیاز دارد، می‌توانیم نیازهای مجموعه شما را بررسی و ساختار مناسب سایت را پیشنهاد کنیم.</p><div className="wd-actions"><Contact className="primary" location="corporate-gorgan-final" service="طراحی سایت شرکتی در گرگان">مشاوره و برآورد طراحی سایت شرکتی</Contact><a className="wd-text-link seo-request-link" href="/request/">ثبت درخواست پروژه <Icon name="arrow" size={16}/></a><a className="wd-text-link" href="tel:+989937825753">تماس با ما <Icon name="arrow" size={18}/></a></div></div></section>

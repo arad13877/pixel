@@ -1,3 +1,4 @@
+import FeaturedPortfolio from './FeaturedPortfolio';
 import { Contact } from './Contact';
 import { Icon, type IconName } from './Icons';
 import WebDesignHeroArt from './WebDesignHeroArt';
@@ -83,7 +84,7 @@ export default function WebDesignGorganPage() {
 
     <section className="wd-trust" aria-labelledby="gorgan-seo-title" data-wd-reveal><div className="container wd-trust-inner"><div><h2 id="gorgan-seo-title">طراحی سایت با زیرساخت مناسب برای SEO</h2></div><p>از ابتدا ساختار سایت را به شکلی پیاده می‌کنیم که زمینه مناسبی برای بهینه‌سازی موتورهای جستجو داشته باشد؛ از ساختار صفحات و محتوا گرفته تا عملکرد فنی و قابلیت اتصال به ابزارهای Google. دیده‌شدن در نتایج جستجو به عوامل مختلفی وابسته است و هیچ رتبه یا نتیجه مشخصی از قبل تضمین نمی‌شود.</p><a className="wd-text-link" href="/seo/">خدمات بهینه‌سازی و سئوی مستمر <Icon name="arrow" size={16}/></a><a className="wd-text-link" href="/seo-gorgan/">خدمات سئو در گرگان <Icon name="arrow" size={16}/></a></div></section>
 
-    <section className="container wd-section wd-types" aria-labelledby="gorgan-portfolio-title" data-wd-reveal><div className="wd-section-heading"><div><h2 id="gorgan-portfolio-title">نمونه طراحی سایت</h2></div><a className="wd-text-link" href="/portfolio/">مشاهده نمونه‌کارها <Icon name="arrow" size={18}/></a></div></section>
+    <FeaturedPortfolio/>
 
     <section id="faq" className="container wd-section wd-faq" aria-labelledby="gorgan-faq-title" data-wd-reveal><div className="wd-faq-heading"><h2 id="gorgan-faq-title">سوالات متداول</h2></div><div className="wd-faq-list">{faqs.map(([question,answer],index)=><details key={question}><summary><span className="wd-faq-index">{String(index+1).padStart(2,'0')}</span><span>{question}</span><Icon name="plus" size={18}/></summary><p>{answer}</p></details>)}</div></section>
 

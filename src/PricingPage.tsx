@@ -1,3 +1,4 @@
+import FeaturedPortfolio from './FeaturedPortfolio';
 import { Contact } from './Contact';
 import { Icon } from './Icons';
 import { PricingCards } from './PricingCards';
@@ -30,6 +31,7 @@ export default function PricingPage() {
 
     <section className="pricing-plans container" aria-labelledby="pricing-guides-title"><div className="pricing-terms"><h2 id="pricing-guides-title">برای انتخاب پلن، محدوده پروژه را روشن کنید</h2><p>اگر تعداد صفحات یا امکانات موردنیاز هنوز مشخص نیست، <a href="/articles/website-design-cost-guide/">راهنمای هزینه طراحی سایت</a> را بخوانید. برای کسب‌وکاری با مشتریان محلی، <a href="/web-design-price-gorgan/">راهنمای برآورد قیمت طراحی سایت در گرگان</a> اطلاعات لازم و تفاوت سناریوهای خدماتی، پزشکی و فروشگاهی را توضیح می‌دهد.</p></div></section>
 
+    <FeaturedPortfolio/>
     <section className="pricing-faq container" aria-labelledby="pricing-faq-title"><div><span className="pricing-kicker">قبل از شروع</span><h2 id="pricing-faq-title">سؤال‌های رایج<br/><span>درباره تعرفه‌ها</span></h2></div><div className="pricing-faq-list">{questions.map(([question, answer], index) => <details key={question}><summary><span>{String(index + 1).padStart(2, '0')}</span><strong>{question}</strong><Icon name="plus" size={18}/></summary><p>{answer}</p></details>)}</div></section>
 
     <section id="contact" className="pricing-contact container" aria-labelledby="pricing-contact-title"><div><span className="pricing-kicker">قدم بعدی</span><h2 id="pricing-contact-title">کدام پلن برای<br/><span>کسب‌وکار تو مناسب است؟</span></h2><p>نیاز پروژه‌ات را بگو تا محدودهٔ کار و هزینهٔ دقیق را با هم بررسی کنیم.</p><Contact className="primary" location="pricing-final" service="تعرفه طراحی سایت">درباره پروژه‌ام صحبت کنیم</Contact></div></section>

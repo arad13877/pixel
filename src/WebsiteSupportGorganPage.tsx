@@ -1,3 +1,4 @@
+import FeaturedPortfolio from './FeaturedPortfolio';
 import { Contact } from './Contact';
 import { Icon, type IconName } from './Icons';
 
@@ -84,6 +85,7 @@ export default function WebsiteSupportGorganPage() {
 
     <section className="container wd-section wd-process" aria-labelledby="support-other-site-title"><div className="wd-process-heading"><h2 id="support-other-site-title">سایت شما از قبل طراحی شده است؟</h2></div><div className="wd-support-prose"><p>برای دریافت خدمات پشتیبانی، لزوماً لازم نیست سایت شما توسط ما طراحی شده باشد.</p><p>اگر سایت فعلی شما از نظر فنی قابلیت ادامه کار داشته باشد، می‌توان ابتدا وضعیت آن را بررسی کرد و سپس درباره امکان ارائه خدمات پشتیبانی و توسعه تصمیم گرفت.</p><Contact className="primary" location="support-gorgan-other-site" service="بررسی سایت فعلی برای پشتیبانی در گرگان">بررسی سایت فعلی</Contact></div></section>
 
+    <FeaturedPortfolio/>
     <section id="faq" className="container wd-section wd-faq" aria-labelledby="support-faq-title"><div className="wd-faq-heading"><h2 id="support-faq-title">سوالات متداول</h2></div><div className="wd-faq-list">{faqs.map(([question, answer], index) => <details key={question}><summary><span className="wd-faq-index">{String(index + 1).padStart(2, '0')}</span><span>{question}</span><Icon name="plus" size={18}/></summary><p>{answer}</p></details>)}</div></section>
 
     <section id="contact" className="container contact-section wd-contact" aria-labelledby="support-contact-title"><div className="closing-card"><div className="closing-orbit" aria-hidden="true"/><h2 id="support-contact-title">برای سایت خود پشتیبان مطمئن داشته باشید</h2><p>اگر سایت شما نیاز به بروزرسانی، رفع مشکل، نگهداری یا توسعه دارد، می‌توان وضعیت فعلی آن را بررسی کرد و خدمات مورد نیاز را مشخص کرد.</p><div className="wd-actions"><Contact className="primary" location="support-gorgan-final" service="پشتیبانی سایت در گرگان">دریافت مشاوره پشتیبانی سایت</Contact><Contact glass location="support-gorgan-final-review" service="بررسی سایت برای پشتیبانی در گرگان">بررسی سایت من</Contact><a className="wd-text-link seo-request-link" href="/request/">ثبت درخواست پروژه <Icon name="arrow" size={16}/></a></div></div></section>

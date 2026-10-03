@@ -1,3 +1,4 @@
+import FeaturedPortfolio from './FeaturedPortfolio';
 import { Contact } from './Contact';
 import { Icon } from './Icons';
 import { formatPlanPrice, pricingPlans } from './pricing';
@@ -50,6 +51,7 @@ export default function WebDesignPriceGorganPage() {
 
     <section id="process" className="container wd-section wd-process" aria-labelledby="price-gorgan-process-title"><div className="wd-process-heading"><h2 id="price-gorgan-process-title">قبل از اعلام قیمت چه چیزهایی بررسی می‌شود؟</h2></div><div className="wd-steps"><span className="wd-process-track" aria-hidden="true"><i className="wd-process-fill"/></span>{quoteSteps.map(([title, description], index) => <article className="wd-step" key={title}><span className="wd-step-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span><div><h3>{title}</h3><p>{description}</p></div></article>)}</div></section>
 
+    <FeaturedPortfolio/>
     <section id="faq" className="pricing-faq container" aria-labelledby="price-gorgan-faq-title"><div><h2 id="price-gorgan-faq-title">سوالات متداول</h2></div><div className="pricing-faq-list">{faqs.map(([question, answer], index) => <details key={question}><summary><span>{String(index + 1).padStart(2, '0')}</span><strong>{question}</strong><Icon name="plus" size={18}/></summary><p>{answer}</p></details>)}</div></section>
 
     <section id="contact" className="pricing-contact container" aria-labelledby="price-gorgan-contact-title"><div><h2 id="price-gorgan-contact-title">قیمت دقیق پروژه خود را دریافت کنید</h2><p>نیاز پروژه‌ات را بگو تا محدودهٔ کار و هزینهٔ دقیق را با هم بررسی کنیم.</p><div className="wd-actions"><Contact className="primary" location="price-gorgan-final" service="برآورد قیمت طراحی سایت در گرگان">دریافت برآورد قیمت طراحی سایت</Contact><a className="wd-text-link seo-request-link" href="/request/">ثبت درخواست پروژه <Icon name="arrow" size={16}/></a><a className="wd-text-link" href="tel:+989937825753">تماس با ما <Icon name="arrow" size={18}/></a></div></div></section>
