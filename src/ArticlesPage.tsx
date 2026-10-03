@@ -49,7 +49,7 @@ export function ArticleDetailPage({ slug }: { slug?: string }) {
 }
 
 const articleServiceLinks: Record<string, { href: string; label: string }[]> = {
-  'website-design-cost-guide': [{ href: '/pricing/', label: 'تعرفه‌های طراحی سایت' }, { href: '/web-design/', label: 'خدمات طراحی سایت' }],
+  'website-design-cost-guide': [{ href: '/pricing/', label: 'مقایسه پلن‌های طراحی سایت' }, { href: '/web-design-price-gorgan/', label: 'برآورد هزینه طراحی سایت برای کسب‌وکارهای گرگان' }, { href: '/web-design/', label: 'خدمات طراحی سایت' }],
   'why-business-needs-website': [{ href: '/web-design/', label: 'خدمات طراحی سایت' }, { href: '/request/', label: 'ثبت درخواست پروژه' }],
   'ai-agent-for-business': [{ href: '/#agents', label: 'ایجنت‌های هوش مصنوعی پیکسل' }],
 };

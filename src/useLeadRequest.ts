@@ -36,6 +36,9 @@ export function useLeadRequest(prepare?: (data: FormData) => Record<string, Form
     try {
       const data = new FormData(form);
       const payload = prepare ? prepare(data) : Object.fromEntries(data.entries());
+      if (!String(payload['cf-turnstile-response'] || '').trim()) {
+        throw new Error('لطفاً اعتبارسنجی امنیتی فرم را کامل کن؛ اگر نمایش داده نمی‌شود، صفحه را تازه کن.');
+      }
       sent = true;
       const response = await fetch(endpoint, {
         method: 'POST',

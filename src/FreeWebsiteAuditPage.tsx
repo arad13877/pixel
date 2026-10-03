@@ -60,6 +60,7 @@ function AuditForm() {
 
 export default function FreeWebsiteAuditPage() {
   return <div className="audit-page web-design-page">
+    <nav className="container seo-related-links" aria-label="مسیرهای بهبود سایت"><a href="/website-support-gorgan/">رفع خطا و پشتیبانی سایت در گرگان</a><a href="/seo/">بهبود فنی و محتوایی سئو</a></nav>
     <section className="request-page"><div className="request-hero container">
       <div className="request-copy"><span className="eyebrow"><span className="blue-dot"/> یک نگاه دقیق، پیش از قدم بعدی</span><h1>بررسی رایگان سایت کسب‌وکار شما</h1><p className="audit-hero-question">رایگان بررسی کنیم سایت کسب‌وکار شما چه چیزی کم دارد؟</p><p>آدرس سایتتان را برای ما ارسال کنید تا وضعیت طراحی، تجربه کاربری، سرعت و سئوی آن را بررسی کنیم و مهم‌ترین فرصت‌های بهبود را به شما بگوییم.</p><a className="button primary" href="#audit-form">درخواست بررسی رایگان <Icon name="arrow" size={18}/></a><ul className="request-promises"><li><Icon name="check" size={17}/> بررسی اولیه، بدون تعهد خرید</li><li><Icon name="check" size={17}/> پیشنهادهای روشن برای قدم بعدی</li></ul></div>
       <AuditForm/>

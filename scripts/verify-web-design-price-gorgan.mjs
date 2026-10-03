@@ -21,20 +21,12 @@ try {
   assert.equal(await page.locator('main h1').count(), 1);
   assert.equal(await page.locator('main h1').innerText(), 'قیمت طراحی سایت\nدر گرگان');
   assert.equal(await page.locator('#types .wd-type').count(), 4);
-  assert.equal(await page.locator('#plans .pricing-card').count(), 6);
+  assert.equal(await page.locator('#plans .pricing-card').count(), 0, 'Full plan comparison belongs on /pricing/');
+  assert.match(await page.locator('.pricing-hero-note').innerText(), /۱۰ میلیون تومان/);
+  for (const href of ['/pricing/', '/articles/website-design-cost-guide/']) assert.ok(await page.locator(`#plans a[href="${href}"]`).count());
   assert.equal(await page.locator('.pricing-faq-list details').count(), 6);
   assert.equal(await page.locator('#process .wd-step').count(), 7);
-  const expected = [
-    ['لندینگ تبلیغاتی', '۱۰ میلیون تومان'],
-    ['سایت شرکتی', '۲۰ میلیون تومان'],
-    ['سایت خدماتی', '۳۰ میلیون تومان'],
-    ['وب‌سایت محصول و SaaS', '۲۵ میلیون تومان'],
-    ['فروشگاه پایه', '۳۰ میلیون تومان'],
-  ];
-  for (const [title, price] of expected) {
-    const card = page.locator('#plans .pricing-card', { has: page.locator('h3', { hasText: title }) });
-    assert.equal(await card.locator('.pricing-card-price strong').innerText(), price);
-  }
+  assert.equal(await page.locator('#process .wd-step p').count(), 7);
   assert.match(decodeURIComponent(await page.locator('#hero-contact').getAttribute('href')), /برآورد قیمت طراحی سایت در گرگان/);
   for (const href of ['/web-design-gorgan/', '/web-design-company-gorgan/', '/web-design-doctors-gorgan/']) assert.equal(await page.locator(`main a[href="${href}"]:not(.seo-breadcrumb a)`).count(), 1);
   await page.locator('.pricing-faq-list summary').first().focus();
@@ -50,10 +42,10 @@ try {
   const staticPage = await noJs.newPage();
   await staticPage.goto(`${base}/web-design-price-gorgan/`);
   assert.equal(await staticPage.locator('main h1').count(), 1);
-  assert.equal(await staticPage.locator('#plans .pricing-card').count(), 6);
+  assert.equal(await staticPage.locator('#plans a[href="/pricing/"]').count(), 1);
   await noJs.close();
   assert.deepEqual(errors, []);
-  console.log('Gorgan price landing: static HTML, shared prices, CTA, FAQ, RTL, responsive widths and console verified.');
+  console.log('Gorgan price landing: static HTML, scoped cost guide, links to plan comparison, CTA, FAQ, RTL, responsive widths and console verified.');
 } finally {
   await browser.close();
 }
