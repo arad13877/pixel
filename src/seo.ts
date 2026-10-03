@@ -17,7 +17,7 @@ export const publicPages = [
   { path: '/seo-gorgan/', label: 'سئو در گرگان' },
 ] as const;
 export const localPages = publicPages.slice(2, 8);
-export const demoPaths = ['/portfolio/nilora/', '/portfolio/veloma/', '/portfolio/roma/', '/portfolio/zero-line/'];
+export const demoPaths = ['/portfolio/nilora/', '/portfolio/veloma/', '/portfolio/roma/', '/portfolio/zero-line/', '/portfolio/gorgan-khaneh/'];
 export function isPublicArticleSlug(slug: string): boolean {
   return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)
     && slug !== 'crm-upload-check-20261001'

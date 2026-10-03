@@ -17,7 +17,7 @@ function validItem(item: PublishedPortfolioItem) {
   if (item.kind === 'client') {
     const siteUrl = process.env.SITE_SUPABASE_URL;
     if (!siteUrl || !p.imagePath.startsWith(`${siteUrl}/storage/v1/object/public/portfolio-covers/`)) throw new Error('Invalid published client cover URL');
-  } else if (!/^\/images\/(?:nilora|veloma|zero-line|roma)\/[a-z0-9-]+\.(?:jpe?g|png|webp)$/.test(p.imagePath)) throw new Error('Invalid published concept cover');
+  } else if (!/^\/images\/(?:nilora|veloma|zero-line|roma|gorgan-khaneh)\/[a-z0-9-]+\.(?:jpe?g|png|webp)$/.test(p.imagePath)) throw new Error('Invalid published concept cover');
   return item;
 }
 

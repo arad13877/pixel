@@ -29,7 +29,7 @@ export function validatePortfolioPayload(input: unknown, kind: 'client' | 'conce
   if (kind === 'client') {
     const prefix = `${workspaceId}/${itemId}/`;
     if (!imagePath.startsWith(prefix) || !/\.(?:jpe?g|png|webp)$/i.test(imagePath)) throw new Error('invalid_image_path');
-  } else if (!/^\/images\/(?:nilora|veloma|zero-line)\/[a-z0-9-]+\.(?:jpe?g|png|webp)$/.test(imagePath)) throw new Error('invalid_image_path');
+  } else if (!/^\/images\/(?:nilora|veloma|zero-line|roma|gorgan-khaneh)\/[a-z0-9-]+\.(?:jpe?g|png|webp)$/.test(imagePath)) throw new Error('invalid_image_path');
   const imageWidth = Number(data.imageWidth);
   const imageHeight = Number(data.imageHeight);
   if (!Number.isInteger(imageWidth) || !Number.isInteger(imageHeight) || imageWidth < (kind === 'client' ? 1200 : 1) || imageHeight < (kind === 'client' ? 630 : 1)) throw new Error('invalid_image_dimensions');
@@ -45,7 +45,7 @@ export function validatePortfolioPayload(input: unknown, kind: 'client' | 'conce
     label: clean(data.label ?? '', 'label', 100, false),
     service: clean(data.service ?? 'طراحی سایت', 'service', 80),
     conceptNote: kind === 'concept' ? clean(data.conceptNote, 'concept_note', 160) : '',
-    theme: kind === 'concept' ? (data.theme === 'sand' ? 'sand' : data.theme === 'carbon' ? 'carbon' : 'mint') : 'client',
+    theme: kind === 'concept' ? (data.theme === 'sand' ? 'sand' : data.theme === 'carbon' ? 'carbon' : data.theme === 'coffee' ? 'coffee' : data.theme === 'estate' ? 'estate' : 'mint') : 'client',
   };
 }
 

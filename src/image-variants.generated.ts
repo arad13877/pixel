@@ -202,5 +202,79 @@ export const imageVariants: Record<string, { width: number; height: number; vari
         "width": 1000
       }
     ]
+  },
+  "/images/gorgan-khaneh/villa.jpg": {
+    "width": 1536,
+    "height": 1024,
+    "variants": [
+      {
+        "url": "/images/gorgan-khaneh/villa-600.jpg",
+        "width": 600
+      },
+      {
+        "url": "/images/gorgan-khaneh/villa-1000.jpg",
+        "width": 1000
+      }
+    ]
+  },
+  "/images/gorgan-khaneh/apartment-120.jpg": {
+    "width": 1000,
+    "height": 667,
+    "variants": [
+      {
+        "url": "/images/gorgan-khaneh/apartment-120-600.jpg",
+        "width": 600
+      }
+    ]
+  },
+  "/images/gorgan-khaneh/apartment-95.jpg": {
+    "width": 1000,
+    "height": 667,
+    "variants": [
+      {
+        "url": "/images/gorgan-khaneh/apartment-95-600.jpg",
+        "width": 600
+      }
+    ]
+  },
+  "/images/gorgan-khaneh/apartment-140.jpg": {
+    "width": 1000,
+    "height": 667,
+    "variants": [
+      {
+        "url": "/images/gorgan-khaneh/apartment-140-600.jpg",
+        "width": 600
+      }
+    ]
+  },
+  "/images/gorgan-khaneh/land.jpg": {
+    "width": 1000,
+    "height": 667,
+    "variants": [
+      {
+        "url": "/images/gorgan-khaneh/land-600.jpg",
+        "width": 600
+      }
+    ]
+  },
+  "/images/gorgan-khaneh/commercial.jpg": {
+    "width": 1000,
+    "height": 667,
+    "variants": [
+      {
+        "url": "/images/gorgan-khaneh/commercial-600.jpg",
+        "width": 600
+      }
+    ]
+  },
+  "/images/gorgan-khaneh/office.jpg": {
+    "width": 1000,
+    "height": 667,
+    "variants": [
+      {
+        "url": "/images/gorgan-khaneh/office-600.jpg",
+        "width": 600
+      }
+    ]
   }
 };

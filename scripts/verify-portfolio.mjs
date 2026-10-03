@@ -25,7 +25,9 @@ try {
   assert.ok(await page.getByText('کانسپت نمایشی پیکسل؛ کسب‌وکار واقعی نیست').isVisible());
   assert.ok(await page.getByRole('heading', { level: 2, name: /کافه روما/ }).isVisible());
   assert.ok(await page.getByText('کانسپت نمایشی پیکسل؛ کافهٔ واقعی نیست').isVisible());
-  assert.deepEqual(await page.getByRole('link', { name: 'مشاهده لندینگ', exact: true }).evaluateAll(links => links.map(link => link.getAttribute('href')).sort()), ['/portfolio/nilora/', '/portfolio/veloma/', '/portfolio/zero-line/', '/portfolio/roma/'].sort());
+  assert.ok(await page.getByRole('heading', { level: 2, name: /گرگان‌خانه/ }).isVisible());
+  assert.ok(await page.getByText('کانسپت نمایشی پیکسل؛ دفتر املاک واقعی نیست').isVisible());
+  assert.deepEqual(await page.getByRole('link', { name: 'مشاهده لندینگ', exact: true }).evaluateAll(links => links.map(link => link.getAttribute('href')).sort()), ['/portfolio/nilora/', '/portfolio/veloma/', '/portfolio/zero-line/', '/portfolio/roma/', '/portfolio/gorgan-khaneh/'].sort());
 
   for (const width of [360, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });

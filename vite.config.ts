@@ -8,6 +8,7 @@ import NiloraPage from './src/NiloraPage';
 import VelomaPage from './src/VelomaPage';
 import ZeroLinePage from './src/ZeroLinePage';
 import RomaPage from './src/RomaPage';
+import GorganKhanehPage from './src/GorganKhanehPage';
 import { articles } from './src/articles.generated';
 import { publicPages, isPublicArticleSlug } from './src/seo';
 import { validateSeo } from './scripts/validate-seo.mjs';
@@ -66,9 +67,10 @@ export default defineConfig({
         const veloma = context.path.startsWith('/portfolio/veloma/');
         const zeroLine = context.path.startsWith('/portfolio/zero-line/');
         const roma = context.path.startsWith('/portfolio/roma/');
+        const gorganKhaneh = context.path.startsWith('/portfolio/gorgan-khaneh/');
         const articleMatch = context.path.match(/^\/(?:\.generated\/)?articles\/([^/]+)(?:\/|\/index\.html)/);
         const page = context.path.startsWith('/seo-gorgan/') ? 'seo-gorgan' : context.path.startsWith('/seo/') ? 'seo' : context.path.startsWith('/free-website-audit') ? 'free-website-audit' : articleMatch ? 'article' : context.path.startsWith('/articles') ? 'articles' : context.path.startsWith('/website-support-gorgan') ? 'website-support-gorgan' : context.path.startsWith('/web-design-restaurant-gorgan') ? 'restaurant-web-design-gorgan' : context.path.startsWith('/web-design-price-gorgan') ? 'web-design-price-gorgan' : context.path.startsWith('/web-design-company-gorgan') ? 'corporate-web-design-gorgan' : context.path.startsWith('/web-design-doctors-gorgan') ? 'doctor-web-design-gorgan' : context.path.startsWith('/web-design-gorgan') ? 'web-design-gorgan' : context.path.startsWith('/web-design') ? 'web-design' : context.path.startsWith('/pricing') ? 'pricing' : context.path.startsWith('/portfolio') ? 'portfolio' : context.path.startsWith('/request') ? 'request' : 'home';
-        let output = html.replace('<!--app-html-->', renderToString(nilora ? createElement(NiloraPage) : veloma ? createElement(VelomaPage) : zeroLine ? createElement(ZeroLinePage) : roma ? createElement(RomaPage) : createElement(App, { page, content: renderPage(page, articleMatch?.[1]) })));
+        let output = html.replace('<!--app-html-->', renderToString(nilora ? createElement(NiloraPage) : veloma ? createElement(VelomaPage) : zeroLine ? createElement(ZeroLinePage) : roma ? createElement(RomaPage) : gorganKhaneh ? createElement(GorganKhanehPage) : createElement(App, { page, content: renderPage(page, articleMatch?.[1]) })));
         if (articleMatch) output = output.replace('<!--article-meta-->', articleMetadata(articleMatch[1]));
         if (page === 'articles') output = output.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/, `<script type="application/ld+json">${archiveSchema()}</script>`);
         return staticSeoMetadata(output, context.path.replace(/index\.html$/, ''));
@@ -122,6 +124,7 @@ export default defineConfig({
         veloma: resolve(import.meta.dirname, 'portfolio/veloma/index.html'),
         zeroLine: resolve(import.meta.dirname, 'portfolio/zero-line/index.html'),
         roma: resolve(import.meta.dirname, 'portfolio/roma/index.html'),
+        gorganKhaneh: resolve(import.meta.dirname, 'portfolio/gorgan-khaneh/index.html'),
         request: resolve(import.meta.dirname, 'request/index.html'),
         freeWebsiteAudit: resolve(import.meta.dirname, 'free-website-audit/index.html'),
         articles: resolve(import.meta.dirname, 'articles/index.html'),

@@ -118,6 +118,14 @@
 .portfolio-project-carbon .portfolio-project-copy>p{color:#c1cec0}
 .portfolio-project-carbon .portfolio-project-link{border-color:#a1bf69;color:#e0f4b2}
 .portfolio-project-client{background:#f2f6fd;border-color:#dbe5f3}
+.portfolio-project-estate{margin-top:30px;background:#162e3d;border-color:#355360}
+.portfolio-project-estate .portfolio-project-visual{background:#596963}
+.portfolio-project-estate .portfolio-project-index{color:#d2b389}
+.portfolio-project-estate .portfolio-demo-badge{border-color:#87917e;background:#33463e;color:#f1e5ca}
+.portfolio-project-estate .portfolio-project-copy h2{color:#f6f3ed}
+.portfolio-project-estate .portfolio-project-copy h2 span{color:#d2b389}
+.portfolio-project-estate .portfolio-project-copy>p{color:#cfdbdf}
+.portfolio-project-estate .portfolio-project-link{border-color:#b2a183;color:#ead4b1}
 .portfolio-project-coffee{margin-top:30px;background:#f5f0e7;border-color:#d8d3c5}
 .portfolio-project-coffee .portfolio-project-visual{background:#cbb798}
 .portfolio-project-coffee .portfolio-project-index{color:#596448}
@@ -155,6 +163,7 @@
   .portfolio-project-fashion{margin-top:22px}
   .portfolio-project-carbon{margin-top:22px}
   .portfolio-project-coffee{margin-top:22px}
+  .portfolio-project-estate{margin-top:22px}
 }
 
 @media (max-width: 390px) {
