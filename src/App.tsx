@@ -48,9 +48,9 @@ const homePrinciples: { number: string; icon: IconName; label: string }[] = [
   { number: '04', icon: 'spark', label: 'آماده برای قدم بعدی' },
 ];
 
-export type SitePage = 'home' | 'web-design' | 'web-design-gorgan' | 'doctor-web-design-gorgan' | 'corporate-web-design-gorgan' | 'restaurant-web-design-gorgan' | 'web-design-price-gorgan' | 'website-support-gorgan' | 'pricing' | 'portfolio' | 'articles' | 'article' | 'request' | 'free-website-audit';
+export type SitePage = 'home' | 'web-design' | 'web-design-gorgan' | 'doctor-web-design-gorgan' | 'corporate-web-design-gorgan' | 'restaurant-web-design-gorgan' | 'web-design-price-gorgan' | 'website-support-gorgan' | 'pricing' | 'portfolio' | 'articles' | 'article' | 'request' | 'free-website-audit' | 'seo' | 'seo-gorgan';
 export default function App({ page = 'home', content }: { page?: SitePage; articleSlug?: string; content?: ReactNode }) {
-  const localPath = ({ 'web-design-gorgan': '/web-design-gorgan/', 'doctor-web-design-gorgan': '/web-design-doctors-gorgan/', 'corporate-web-design-gorgan': '/web-design-company-gorgan/', 'restaurant-web-design-gorgan': '/web-design-restaurant-gorgan/', 'web-design-price-gorgan': '/web-design-price-gorgan/', 'website-support-gorgan': '/website-support-gorgan/' } as Record<string, string>)[page];
+  const localPath = ({ 'seo-gorgan': '/seo-gorgan/', 'web-design-gorgan': '/web-design-gorgan/', 'doctor-web-design-gorgan': '/web-design-doctors-gorgan/', 'corporate-web-design-gorgan': '/web-design-company-gorgan/', 'restaurant-web-design-gorgan': '/web-design-restaurant-gorgan/', 'web-design-price-gorgan': '/web-design-price-gorgan/', 'website-support-gorgan': '/website-support-gorgan/' } as Record<string, string>)[page];
   const home = page === 'home';
   const webDesign = page === 'web-design';
   const gorgan = page === 'web-design-gorgan';
@@ -68,6 +68,7 @@ export default function App({ page = 'home', content }: { page?: SitePage; artic
   const articlesPage = articlesIndex || articleDetail;
   const navItems = [
     { href: webDesignLanding ? '#types' : '/web-design/', label: 'طراحی سایت', current: webDesignLanding },
+    { href: '/seo/', label: 'خدمات سئو', current: page === 'seo' },
     { href: '/pricing/', label: 'تعرفه‌ها', current: pricing },
     { href: '/portfolio/', label: 'نمونه‌کارها', current: portfolio },
     { href: home ? '#agents' : '/#agents', label: 'ایجنت‌های هوش مصنوعی', badge: true },

@@ -25,7 +25,9 @@
     "test:request": "node scripts/verify-request.mjs",
     "test:free-audit": "node scripts/verify-free-website-audit.mjs",
     "validate:seo": "node --experimental-strip-types scripts/validate-seo.mjs",
-    "test:seo": "node --experimental-strip-types --test scripts/test-seo-validation.mjs"
+    "test:seo": "node --experimental-strip-types --test scripts/test-seo-validation.mjs",
+    "test:seo-page": "node scripts/verify-seo-page.mjs",
+    "test:seo-gorgan": "node scripts/verify-seo-gorgan.mjs"
   },
   "dependencies": {
     "@daypicker/persian": "10.0.1",

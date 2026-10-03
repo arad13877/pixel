@@ -67,7 +67,7 @@ export default defineConfig({
         const zeroLine = context.path.startsWith('/portfolio/zero-line/');
         const roma = context.path.startsWith('/portfolio/roma/');
         const articleMatch = context.path.match(/^\/(?:\.generated\/)?articles\/([^/]+)(?:\/|\/index\.html)/);
-        const page = context.path.startsWith('/free-website-audit') ? 'free-website-audit' : articleMatch ? 'article' : context.path.startsWith('/articles') ? 'articles' : context.path.startsWith('/website-support-gorgan') ? 'website-support-gorgan' : context.path.startsWith('/web-design-restaurant-gorgan') ? 'restaurant-web-design-gorgan' : context.path.startsWith('/web-design-price-gorgan') ? 'web-design-price-gorgan' : context.path.startsWith('/web-design-company-gorgan') ? 'corporate-web-design-gorgan' : context.path.startsWith('/web-design-doctors-gorgan') ? 'doctor-web-design-gorgan' : context.path.startsWith('/web-design-gorgan') ? 'web-design-gorgan' : context.path.startsWith('/web-design') ? 'web-design' : context.path.startsWith('/pricing') ? 'pricing' : context.path.startsWith('/portfolio') ? 'portfolio' : context.path.startsWith('/request') ? 'request' : 'home';
+        const page = context.path.startsWith('/seo-gorgan/') ? 'seo-gorgan' : context.path.startsWith('/seo/') ? 'seo' : context.path.startsWith('/free-website-audit') ? 'free-website-audit' : articleMatch ? 'article' : context.path.startsWith('/articles') ? 'articles' : context.path.startsWith('/website-support-gorgan') ? 'website-support-gorgan' : context.path.startsWith('/web-design-restaurant-gorgan') ? 'restaurant-web-design-gorgan' : context.path.startsWith('/web-design-price-gorgan') ? 'web-design-price-gorgan' : context.path.startsWith('/web-design-company-gorgan') ? 'corporate-web-design-gorgan' : context.path.startsWith('/web-design-doctors-gorgan') ? 'doctor-web-design-gorgan' : context.path.startsWith('/web-design-gorgan') ? 'web-design-gorgan' : context.path.startsWith('/web-design') ? 'web-design' : context.path.startsWith('/pricing') ? 'pricing' : context.path.startsWith('/portfolio') ? 'portfolio' : context.path.startsWith('/request') ? 'request' : 'home';
         let output = html.replace('<!--app-html-->', renderToString(nilora ? createElement(NiloraPage) : veloma ? createElement(VelomaPage) : zeroLine ? createElement(ZeroLinePage) : roma ? createElement(RomaPage) : createElement(App, { page, content: renderPage(page, articleMatch?.[1]) })));
         if (articleMatch) output = output.replace('<!--article-meta-->', articleMetadata(articleMatch[1]));
         if (page === 'articles') output = output.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/, `<script type="application/ld+json">${archiveSchema()}</script>`);
@@ -115,6 +115,8 @@ export default defineConfig({
         websiteSupportGorgan: resolve(import.meta.dirname, 'website-support-gorgan/index.html'),
         restaurantWebDesignGorgan: resolve(import.meta.dirname, 'web-design-restaurant-gorgan/index.html'),
         pricing: resolve(import.meta.dirname, 'pricing/index.html'),
+        seo: resolve(import.meta.dirname, 'seo/index.html'),
+        seoGorgan: resolve(import.meta.dirname, 'seo-gorgan/index.html'),
         portfolio: resolve(import.meta.dirname, 'portfolio/index.html'),
         nilora: resolve(import.meta.dirname, 'portfolio/nilora/index.html'),
         veloma: resolve(import.meta.dirname, 'portfolio/veloma/index.html'),

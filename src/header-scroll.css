@@ -33,3 +33,12 @@
 @media (max-width: 760px) {
   .header { top: 8px; }
 }
+
+/* Keep navigation labels readable when the full menu no longer fits. */
+@media (min-width: 761px) and (max-width: 950px) {
+  .desktop-links { display: none; }
+  .menu-toggle { display: inline-flex; color: #3c485d; }
+  .mobile-menu { display: flex; flex-direction: column; margin-top: 8px; border-radius: 16px; padding: 12px 20px; }
+  .mobile-menu[hidden] { display: none; }
+  .mobile-menu a { padding: 13px 4px; display: flex; align-items: center; justify-content: space-between; font-size: 14px; }
+}

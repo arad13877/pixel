@@ -2,15 +2,15 @@ import { Contact } from './Contact';
 import { Icon } from './Icons';
 import { featuredPricingPlans, formatPlanPrice, pricingPlans, type PricingPlan } from './pricing';
 
-function PricingCard({ plan, compact, location }: { plan: PricingPlan; compact: boolean; location: string }) {
+export function PricingCard({ plan, compact, location, index = pricingPlans.indexOf(plan) + 1, service = `پلن ${plan.title} طراحی سایت`, priceLabel }: { plan: PricingPlan; compact: boolean; location: string; index?: number; service?: string; priceLabel?: string }) {
   return <article className={`pricing-card${plan.id === 'corporate' ? ' pricing-card-featured' : ''}`}>
-    <div className="pricing-card-top"><span className="pricing-card-index" aria-hidden="true">{String(pricingPlans.indexOf(plan) + 1).padStart(2, '0')}</span><span className="pricing-card-audience">{plan.audience}</span></div>
+    <div className="pricing-card-top"><span className="pricing-card-index" aria-hidden="true">{String(index).padStart(2, '0')}</span><span className="pricing-card-audience">{plan.audience}</span></div>
     <h3>{plan.title}</h3>
     <p className="pricing-card-scope">{plan.scope}</p>
-    <div className="pricing-card-price">{plan.priceMillions !== null && <small>شروع از</small>}<strong>{formatPlanPrice(plan)}</strong></div>
+    <div className="pricing-card-price">{plan.priceMillions !== null && <small>شروع از</small>}<strong>{priceLabel || formatPlanPrice(plan)}</strong></div>
     <ul>{(compact ? plan.features.slice(0, 3) : plan.features).map(feature => <li key={feature}><Icon name="check" size={16}/><span>{feature}</span></li>)}</ul>
     {!compact && <p className="pricing-card-limit">{plan.limit}</p>}
-    <Contact className={plan.id === 'corporate' ? 'primary' : ''} location={`${location}-${plan.id}`} service={`پلن ${plan.title} طراحی سایت`}>مشاوره درباره این پلن</Contact>
+    <Contact className={plan.id === 'corporate' ? 'primary' : ''} location={`${location}-${plan.id}`} service={service}>مشاوره درباره این پلن</Contact>
   </article>;
 }
 

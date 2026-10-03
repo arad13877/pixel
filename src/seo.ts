@@ -13,6 +13,8 @@ export const publicPages = [
   { path: '/request/', label: 'ثبت درخواست پروژه' },
   { path: '/articles/', label: 'مقالات' },
   { path: '/free-website-audit/', label: 'بررسی رایگان سایت' },
+  { path: '/seo/', label: 'خدمات سئو' },
+  { path: '/seo-gorgan/', label: 'سئو در گرگان' },
 ] as const;
 export const localPages = publicPages.slice(2, 8);
 export const demoPaths = ['/portfolio/nilora/', '/portfolio/veloma/', '/portfolio/roma/', '/portfolio/zero-line/'];
@@ -23,6 +25,7 @@ export function isPublicArticleSlug(slug: string): boolean {
 }
 export function breadcrumbs(path: string) {
   const page = publicPages.find(item => item.path === path);
+  if (path === '/seo-gorgan/' && page) return [publicPages[0], publicPages.find(item => item.path === '/seo/')!, page];
   if (!page || !localPages.some(item => item.path === path)) return [];
   const items = [publicPages[0], publicPages[1], publicPages[2]];
   return path === publicPages[2].path ? items : [...items, page];

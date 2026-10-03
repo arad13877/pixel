@@ -1,3 +1,5 @@
+import SeoGorganPage from './SeoGorganPage';
+import SeoPage from './SeoPage';
 import WebDesignPage from './WebDesignPage';
 import WebDesignGorganPage from './WebDesignGorganPage';
 import DoctorWebDesignGorganPage from './DoctorWebDesignGorganPage';
@@ -18,6 +20,8 @@ import type { SitePage } from './App';
 export function renderPage(page: SitePage, slug?: string) {
   switch (page) {
     case 'home': return null;
+    case 'seo-gorgan': return createElement(SeoGorganPage);
+    case 'seo': return createElement(SeoPage);
     case 'web-design': return createElement(WebDesignPage);
     case 'web-design-gorgan': return createElement(WebDesignGorganPage);
     case 'doctor-web-design-gorgan': return createElement(DoctorWebDesignGorganPage);

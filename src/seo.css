@@ -1,5 +1,15 @@
-.seo-related-links{display:flex;flex-wrap:wrap;gap:12px 24px;margin-block:20px;font-size:13px;line-height:2;color:var(--blue,#2864eb)}
-.seo-related-links a{text-decoration:underline;text-underline-offset:4px}
+/* Related destinations share a quiet surface; navigation and inline copy stay distinct. */
+.seo-page-links,.seo-related-links{display:flex;flex-wrap:wrap;gap:12px;grid-column:1/-1}
+.seo-related-links{margin-block:20px}
+.seo-page-links a,.seo-related-links a{display:inline-flex;align-items:center;justify-content:space-between;gap:18px;min-height:48px;max-width:100%;padding:11px 15px;border:1px solid #dce5f2;border-radius:12px;background:rgb(255 255 255 / 65%);color:#244f9e;font-size:.82rem;font-weight:600;line-height:1.9;text-decoration:none;transition:background .18s,border-color .18s,transform .18s}
+.seo-page-links a::after,.seo-related-links a::after{content:'';flex:0 0 17px;width:17px;height:17px;background:currentColor;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 12H5m6-6-6 6 6 6' fill='none' stroke='black' stroke-width='1.65' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;opacity:.7;transition:transform .18s,opacity .18s}
+.seo-page-links a:has(svg)::after,.seo-related-links a:has(svg)::after{display:none}
+.seo-page-links a svg,.seo-related-links a svg{flex-shrink:0;opacity:.7;transition:transform .18s,opacity .18s}
+.seo-page-links a:focus-visible,.seo-related-links a:focus-visible{outline:3px solid var(--blue,#2864eb);outline-offset:4px;background:#eaf1ff}
+@media(hover:hover){.seo-page-links a:hover,.seo-related-links a:hover{background:#eaf1ff;border-color:#afc6ee;transform:translateY(-2px)}.seo-page-links a:hover::after,.seo-related-links a:hover::after,.seo-page-links a:hover svg,.seo-related-links a:hover svg{transform:translateX(-3px);opacity:1}}
+.seo-page-links a:active,.seo-related-links a:active{transform:translateY(0);background:#eaf1ff}
+@media(max-width:760px){.seo-page-links a,.seo-related-links a{width:100%;gap:12px;padding:12px 14px;font-size:.8rem}}
+@media(prefers-reduced-motion:reduce){.seo-page-links a,.seo-related-links a,.seo-page-links a::after,.seo-related-links a::after,.seo-page-links a svg,.seo-related-links a svg{transition:none;transform:none!important}}
 .seo-breadcrumb{padding-top:20px;font-size:12px;line-height:2;color:#65778e}
 .seo-breadcrumb ol{display:flex;flex-wrap:wrap;gap:6px 12px;list-style:none;margin:0;padding:0}
 .seo-breadcrumb li+li:before{content:'›';margin-inline-end:12px;color:#899bb6}
