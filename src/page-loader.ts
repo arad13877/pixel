@@ -6,6 +6,7 @@ import type { SitePage } from './App';
 export async function loadPage(page: SitePage, slug?: string) {
   switch (page) {
     case 'home': return null;
+    case 'contact': return createElement((await import('./ContactPage')).default);
     case 'seo-gorgan': return createElement((await import('./SeoGorganPage')).default);
     case 'seo': return createElement((await import('./SeoPage')).default);
     case 'web-design': return createElement((await import('./WebDesignPage')).default);

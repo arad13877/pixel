@@ -15,6 +15,7 @@ export const publicPages = [
   { path: '/free-website-audit/', label: 'بررسی رایگان سایت' },
   { path: '/seo/', label: 'خدمات سئو' },
   { path: '/seo-gorgan/', label: 'سئو در گرگان' },
+  { path: '/contact/', label: 'ارتباط با ما' },
 ] as const;
 export const localPages = publicPages.slice(2, 8);
 export const demoPaths = ['/portfolio/nilora/', '/portfolio/veloma/', '/portfolio/roma/', '/portfolio/zero-line/', '/portfolio/gorgan-khaneh/'];

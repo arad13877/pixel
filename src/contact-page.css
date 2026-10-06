@@ -1,0 +1,16 @@
+.contact-page { padding-bottom:90px; }
+.contact-page-intro { padding-block:90px 44px; }
+.contact-page-intro h1 { margin:20px 0; font-size:clamp(2.5rem,5vw,4.4rem); line-height:1.45; color:#101c35; }
+.contact-page-intro > p { max-width:660px; margin:0; line-height:2.1; color:#58677d; font-size:1.05rem; }
+.contact-channels { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; }
+.contact-channel { min-width:0; display:flex; flex-direction:column; align-items:start; padding:32px; border:1px solid #dce5f0; border-radius:24px; background:#fff; }
+.contact-channel-icon { display:grid; place-items:center; width:54px; height:54px; border-radius:15px; color:var(--blue); background:#eaf1ff; }
+.contact-channel h2 { margin:24px 0 12px; color:#101c35; font-size:1.6rem; }
+.contact-channel-address { color:#58677d; font-size:1rem; margin-bottom:30px; }
+.contact-channel .button { width:100%; margin-top:auto; justify-content:space-between; }
+.contact-channel-link { color:#224a91; border:1px solid #cfddf3; background:#eaf1ff; transition:background .18s ease,border-color .18s ease; }
+.contact-channel-link:hover { background:#dce8fd; border-color:#8bacdf; }
+.contact-channel a:focus-visible { outline:3px solid var(--blue); outline-offset:4px; }
+@media(max-width:950px) { .contact-channels { gap:16px; } .contact-channel { padding:24px 18px; } }
+@media(max-width:760px) { .contact-page { padding-bottom:52px; } .contact-page-intro { padding-block:52px 32px; } .contact-channels { grid-template-columns:minmax(0,1fr); } .contact-channel { padding:26px; } }
+@media(prefers-reduced-motion:reduce) { .contact-channel-link { transition:none; } }

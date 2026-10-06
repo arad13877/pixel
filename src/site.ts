@@ -1,5 +1,5 @@
 // Set the real WhatsApp number in international digits, without + or spaces.
-export const site = { brand: 'پیکسل', whatsappNumber: '989937825753' };
+export const site = { brand: 'پیکسل', whatsappNumber: '989937825753', telegramUrl: 'https://t.me/+989937825753', baleUrl: 'https://ble.ir/aradlll' };
 
 export function whatsappUrl(number: string, message: string): string | null {
   if (!/^[1-9]\d{7,14}$/.test(number)) return null;
